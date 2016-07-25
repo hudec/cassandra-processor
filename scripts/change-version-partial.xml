@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+
+<project name="sql-processor-version" default="change-version" basedir=".">
+	
+	<property name="version.from" value="3.1.9-SNAPSHOT"/>
+	<property name="version.to" value="3.1.9"/>
+	<property name="version.plugin.from" value="1.4.0-SNAPSHOT"/>
+	<property name="version.plugin.to" value="1.4.0"/>
+	<property name="version.plugin2.from" value="1.4.0.qualifier"/>
+	<property name="version.plugin2.to" value="1.4.0"/>
+	
+	<target name="change-version">
+		<replace dir="../sql-samples" token="${version.from}" value="${version.to}">
+			<include name="**/pom.xml"/>
+		</replace>
+		
+		<replace dir="../simple-samples" token="${version.from}" value="${version.to}">
+			<include name="**/pom.xml"/>
+		</replace>
+		
+		<replace dir="../sql-processor-archetypes/sqlproc-archetype-simple-jdbc/src" token="${version.from}" value="${version.to}">
+			<include name="**/pom.xml"/>
+		</replace>
+
+		<replace dir="../sql-processor-archetypes/sqlproc-archetype-simple-spring/src" token="${version.from}" value="${version.to}">
+			<include name="**/pom.xml"/>
+		</replace>
+
+		<!--replace dir="../sql-processor-eclipse" token="${version.plugin.from}" value="${version.plugin.to}">
+			<include name="**/pom.xml"/>
+		</replace>
+
+		<replace dir="../sql-processor-eclipse" token="${version.plugin2.from}" value="${version.plugin2.to}">
+			<include name="**/MANIFEST.MF"/>
+		</replace>
+
+		<replace dir="../sql-processor-eclipse" token="${version.plugin2.from}" value="${version.plugin2.to}">
+			<include name="**/category.xml"/>
+		</replace>
+
+		<replace dir="../sql-processor-eclipse" token="${version.plugin2.from}" value="${version.plugin2.to}">
+			<include name="**/feature.xml"/>
+		</replace-->
+
+		<replace dir="../" token="${version.from}" value="${version.to}">
+			<include name="*/.classpath"/>
+		</replace>
+		
+		<replace dir="../" token="${version.from}" value="${version.to}">
+			<include name="*/.settings/org.eclipse.wst.common.component"/>
+		</replace>
+	</target>
+</project>
