@@ -1,4 +1,8 @@
 SIMPLE_TYPES(QRY)=
-  select %p.ID @id(id)
+  select ID
   from types
+;
+
+SIMPLE_TYPES(OUT)=
+  id$id
 ;
