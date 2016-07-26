@@ -1,7 +1,66 @@
-CREATE TABLE testCQLTable (id uuid, value varchar, PRIMARY KEY(id));
+CREATE TABLE types (
+id int, 
+t_ascii ascii, 
+t_bigint bigint, 
+t_boolean boolean, 
+t_date date, 
+t_decimal decimal, 
+t_double double, 
+t_float float, 
+t_int int, 
+t_smallint smallint, 
+t_text text, 
+t_time time, 
+t_timestamp timestamp, 
+t_tinyint tinyint, 
+t_varchar varchar, 
+t_varint varint, 
+PRIMARY KEY(id));
 
-INSERT INTO testCQLTable(id, value) values(1690e8da-5bf8-49e8-9583-4dff8a570737,'Cql loaded string');
+/*
+t_blob blob, 
+t_counter counter, 
+t_inet inet, 
+t_list list, 
+t_map map, 
+t_set set, 
+t_timeuuid timeuuid, 
+t_tuple tuple, 
+t_uuid uuid, 
+*/
 
-INSERT INTO testCQLTable(id, value) values(1690e8da-5bf8-49e8-9583-4dff8a570738,'BLA2');
-
-INSERT INTO testCQLTable(id, value) values(1690e8da-5bf8-49e8-9583-4dff8a570739,'BLA1');
+INSERT INTO types(
+id
+,t_ascii 
+,t_bigint 
+,t_boolean
+,t_date
+,t_decimal
+,t_double
+,t_float
+,t_int
+,t_smallint
+,t_text
+,t_time
+,t_timestamp
+,t_tinyint
+,t_varchar
+,t_varint 
+) values(
+1
+,'ascii'
+,2
+,true
+,'2016-07-26'
+,3
+,4
+,5
+,6
+,7
+,'text'
+,'10:11:12'
+,'2016-07-26 10:11:12'
+,8
+,'varchar'
+,9
+);
