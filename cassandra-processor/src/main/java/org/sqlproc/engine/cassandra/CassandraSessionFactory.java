@@ -13,7 +13,7 @@ import com.datastax.driver.core.Session;
  * 
  * @author <a href="mailto:Vladimir.Hudec@gmail.com">Vladimir Hudec</a>
  */
-public class JdbcSessionFactory implements SqlSessionFactory {
+public class CassandraSessionFactory implements SqlSessionFactory {
 
     /**
      * The Cassandra session. It holds connections to a Cassandra cluster.
@@ -26,7 +26,7 @@ public class JdbcSessionFactory implements SqlSessionFactory {
      * @param session
      *            the Cassandra session
      */
-    public JdbcSessionFactory(Session session) {
+    public CassandraSessionFactory(Session session) {
         super();
         this.session = session;
     }
@@ -36,6 +36,6 @@ public class JdbcSessionFactory implements SqlSessionFactory {
      */
     @Override
     public SqlSession getSqlSession() {
-        return JdbcSession.generateProxy(session);
+        return CassandraSession.generateProxy(session);
     }
 }

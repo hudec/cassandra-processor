@@ -1,0 +1,4 @@
+SIMPLE_TYPES(QRY)=
+  select %p.ID @id(id)
+  from types
+;

@@ -22,7 +22,7 @@ import com.datastax.driver.core.Session;
  * 
  * @author <a href="mailto:Vladimir.Hudec@gmail.com">Vladimir Hudec</a>
  */
-public class JdbcSimpleSession implements SqlSession {
+public class CassandraSimpleSession implements SqlSession {
 
     /**
      * The Cassandra session. It holds connections to a Cassandra cluster.
@@ -40,7 +40,7 @@ public class JdbcSimpleSession implements SqlSession {
      * @param session
      *            the Cassandra session
      */
-    public JdbcSimpleSession(Session session) {
+    public CassandraSimpleSession(Session session) {
         super();
         this.session = session;
     }
@@ -53,7 +53,7 @@ public class JdbcSimpleSession implements SqlSession {
      * @param name
      *            the name of the database
      */
-    public JdbcSimpleSession(Session session, String name) {
+    public CassandraSimpleSession(Session session, String name) {
         this(session);
         this.name = name;
     }
@@ -72,7 +72,7 @@ public class JdbcSimpleSession implements SqlSession {
      */
     @Override
     public SqlQuery createSqlQuery(String queryString) throws SqlProcessorException {
-        return new JdbcQuery(session, queryString);
+        return new CassandraQuery(session, queryString);
     }
 
     /**

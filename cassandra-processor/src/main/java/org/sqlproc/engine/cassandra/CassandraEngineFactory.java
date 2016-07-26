@@ -42,12 +42,12 @@ import org.sqlproc.engine.SqlDefaultFactory;
  * 
  * @author <a href="mailto:Vladimir.Hudec@gmail.com">Vladimir Hudec</a>
  */
-public class JdbcEngineFactory extends SqlDefaultFactory {
+public class CassandraEngineFactory extends SqlDefaultFactory {
 
     /**
      * Creates a new instance with default values for the JDBC stack.
      */
-    public JdbcEngineFactory() {
+    public CassandraEngineFactory() {
         this(false);
     }
 
@@ -57,7 +57,7 @@ public class JdbcEngineFactory extends SqlDefaultFactory {
      * @param lazyInit
      *            this flag indicates to speed up the initialization process.
      */
-    public JdbcEngineFactory(boolean lazyInit) {
+    public CassandraEngineFactory(boolean lazyInit) {
         super(lazyInit);
         setJdbc(true);
         setTypeFactory(CassandraTypeFactory.getInstance());
@@ -69,7 +69,7 @@ public class JdbcEngineFactory extends SqlDefaultFactory {
      * @param asyncInitThreads
      *            number of threads used for asynchronous initialization
      */
-    public JdbcEngineFactory(int asyncInitThreads) {
+    public CassandraEngineFactory(int asyncInitThreads) {
         super(asyncInitThreads);
         setJdbc(true);
         setTypeFactory(CassandraTypeFactory.getInstance());
@@ -83,7 +83,7 @@ public class JdbcEngineFactory extends SqlDefaultFactory {
      * @param asyncInitThreads
      *            number of threads used for asynchronous initialization
      */
-    public JdbcEngineFactory(boolean lazyInit, int asyncInitThreads) {
+    public CassandraEngineFactory(boolean lazyInit, int asyncInitThreads) {
         super(lazyInit, asyncInitThreads);
         setJdbc(true);
         setTypeFactory(CassandraTypeFactory.getInstance());

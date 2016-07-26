@@ -28,7 +28,7 @@ import com.datastax.driver.core.Session;
  * 
  * @author <a href="mailto:Vladimir.Hudec@gmail.com">Vladimir Hudec</a>
  */
-public class JdbcSession implements InvocationHandler {
+public class CassandraSession implements InvocationHandler {
 
     /**
      * The contracts implemented by this dynamic proxy.
@@ -51,7 +51,7 @@ public class JdbcSession implements InvocationHandler {
      * @param session
      *            the Cassandra session
      */
-    private JdbcSession(Session session) {
+    private CassandraSession(Session session) {
         this.session = session;
     }
 
@@ -63,7 +63,7 @@ public class JdbcSession implements InvocationHandler {
      * @param name
      *            the name of the database
      */
-    public JdbcSession(Session session, String name) {
+    public CassandraSession(Session session, String name) {
         this(session);
         this.name = name;
     }
@@ -79,12 +79,12 @@ public class JdbcSession implements InvocationHandler {
 
         if ("createSqlQuery".equals(method.getName())) {
             String queryString = (String) args[0];
-            return new JdbcQuery(session, queryString);
+            return new CassandraQuery(session, queryString);
         }
 
         if ("executeBatch".equals(method.getName())) {
             String[] statements = (String[]) args[0];
-            JdbcQuery jdbcQuery = new JdbcQuery(session, null);
+            CassandraQuery jdbcQuery = new CassandraQuery(session, null);
             return jdbcQuery.executeBatch(statements);
         }
 
@@ -107,7 +107,7 @@ public class JdbcSession implements InvocationHandler {
      * @return the JDBC stack implementation of the SQL Engine session contract
      */
     public static SqlSession generateProxy(Session session) {
-        JdbcSession handler = new JdbcSession(session);
+        CassandraSession handler = new CassandraSession(session);
         return (SqlSession) Proxy.newProxyInstance(getProxyClassLoader(), PROXY_INTERFACES, handler);
     }
 
@@ -121,7 +121,7 @@ public class JdbcSession implements InvocationHandler {
      * @return the JDBC stack implementation of the SQL Engine session contract
      */
     public static SqlSession generateProxy(Session session, String name) {
-        JdbcSession handler = new JdbcSession(session, name);
+        CassandraSession handler = new CassandraSession(session, name);
         return (SqlSession) Proxy.newProxyInstance(getProxyClassLoader(), PROXY_INTERFACES, handler);
     }
 

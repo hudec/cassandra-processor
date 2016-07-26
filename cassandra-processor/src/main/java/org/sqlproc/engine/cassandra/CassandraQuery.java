@@ -36,7 +36,7 @@ import com.datastax.driver.core.Session;
  * 
  * @author <a href="mailto:Vladimir.Hudec@gmail.com">Vladimir Hudec</a>
  */
-public class JdbcQuery implements SqlQuery {
+public class CassandraQuery implements SqlQuery {
 
     /**
      * The internal slf4j logger.
@@ -133,7 +133,7 @@ public class JdbcQuery implements SqlQuery {
      * @param queryString
      *            the SQL query/statement command
      */
-    public JdbcQuery(Session session, String queryString) {
+    public CassandraQuery(Session session, String queryString) {
         this.session = session;
         this.queryString = queryString;
         // logger.info("query: " + queryString);
