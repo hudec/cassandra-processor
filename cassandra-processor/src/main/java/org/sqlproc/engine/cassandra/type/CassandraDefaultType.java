@@ -48,7 +48,8 @@ public class CassandraDefaultType extends SqlMetaType {
         jdbcTypes.put(String.class, CassandraTypeFactory.STRING);
         jdbcTypes.put(java.util.Date.class, CassandraTypeFactory.TIMESTAMP);
         jdbcTypes.put(java.sql.Timestamp.class, CassandraTypeFactory.TIMESTAMP);
-        jdbcTypes.put(java.sql.Date.class, CassandraTypeFactory.DATE);
+        jdbcTypes.put(java.sql.Date.class, CassandraTypeFactory.TIMESTAMP);
+        jdbcTypes.put(com.datastax.driver.core.LocalDate.class, CassandraTypeFactory.DATE);
         jdbcTypes.put(java.sql.Time.class, CassandraTypeFactory.TIME);
         jdbcTypes.put(boolean.class, CassandraTypeFactory.BOOLEAN);
         jdbcTypes.put(Boolean.class, CassandraTypeFactory.BOOLEAN);

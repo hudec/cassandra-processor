@@ -36,9 +36,9 @@ public class CassandraTimeType extends SqlTimeType implements CassandraSqlType {
     @Override
     public Object get(Row row, String columnLabel) throws SQLException {
         if (Character.isDigit(columnLabel.charAt(0)))
-            return new Date(row.getTime(Integer.parseInt(columnLabel)));
+            return new Time(row.getTime(Integer.parseInt(columnLabel)));
         else
-            return new Date(row.getTime(columnLabel));
+            return new Time(row.getTime(columnLabel));
     }
 
     @Override

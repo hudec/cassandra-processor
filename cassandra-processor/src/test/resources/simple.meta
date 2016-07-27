@@ -1,8 +1,9 @@
 SIMPLE_TYPES(QRY)=
-  select ID
+  select id, t_ascii, t_bigint, t_boolean, t_date, t_decimal, t_double, t_float, t_int, t_smallint, t_text, t_time, t_timestamp, t_tinyint, t_varchar, t_varint
   from types
 ;
 
 SIMPLE_TYPES(OUT)=
-  id$id
+  id$id t_ascii$t_ascii t_bigint$t_bigint t_boolean$t_boolean t_date$t_date t_decimal$t_decimal t_double$t_double t_float$t_float t_int$t_int 
+  t_smallint$t_smallint t_text$t_text t_time$t_time t_timestamp$t_timestamp t_tinyint$t_tinyint t_varchar$t_varchar t_varint$t_varint 
 ;
