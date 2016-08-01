@@ -14,6 +14,9 @@ import org.sqlproc.engine.cassandra.CassandraSimpleSession;
 import org.sqlproc.engine.model.Types;
 
 import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.extras.codecs.jdk8.InstantCodec;
+import com.datastax.driver.extras.codecs.jdk8.LocalDateCodec;
+import com.datastax.driver.extras.codecs.jdk8.LocalTimeCodec;
 
 public class TestBasic extends TestDatabase {
 
@@ -28,6 +31,8 @@ public class TestBasic extends TestDatabase {
 
     @Test
     public void testBasic() {
+        basicCQLUnit.cluster.getConfiguration().getCodecRegistry().register(InstantCodec.instance,
+                LocalTimeCodec.instance, LocalDateCodec.instance);
         CassandraSimpleSession session = new CassandraSimpleSession(basicCQLUnit.session);
         SqlQueryEngine sqlEngine = getQueryEngine("SIMPLE_TYPES");
         String sql = sqlEngine.getSql(null, null, SqlQueryEngine.NO_ORDER);

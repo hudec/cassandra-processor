@@ -20,7 +20,7 @@ import org.sqlproc.engine.cassandra.type.CassandraSqlType;
 import org.sqlproc.engine.plugin.SqlFromToPlugin;
 import org.sqlproc.engine.type.IdentitySetter;
 import org.sqlproc.engine.type.OutValueSetter;
-import org.sqlproc.engine.type.SqlProviderType;
+import org.sqlproc.engine.type.SqlMetaType;
 
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.PreparedStatement;
@@ -788,8 +788,8 @@ public class CassandraQuery implements SqlQuery {
             if (parameterOutValueSetters.containsKey(name)) {
                 CallableStatement cs = (CallableStatement) bs;
                 if (type != null) {
-                    if (type instanceof SqlProviderType) {
-                        cs.registerOutParameter(ix + i, (Integer) ((SqlProviderType) type).getProviderSqlNullType());
+                    if (type instanceof SqlMetaType) {
+                        cs.registerOutParameter(ix + i, (Integer) ((SqlMetaType) type).getProviderSqlNullType());
                     } else {
                         cs.registerOutParameter(ix + i, (Integer) type);
                     }

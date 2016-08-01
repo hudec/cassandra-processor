@@ -1,12 +1,13 @@
 package org.sqlproc.engine.cassandra.type;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.sqlproc.engine.SqlRuntimeException;
 import org.sqlproc.engine.type.SqlIdentityType;
-import org.sqlproc.engine.type.SqlInternalType;
 import org.sqlproc.engine.type.SqlMetaType;
 import org.sqlproc.engine.type.SqlTypeFactory;
 
@@ -147,13 +148,37 @@ public class CassandraTypeFactory implements SqlTypeFactory {
      * Static init.
      */
     static {
+        CLASS_TO_TYPE_MAP.put(BigDecimal.class, BIG_DECIMAL);
+        CLASS_TO_TYPE_MAP.put(BigInteger.class, BIG_INTEGER);
+        CLASS_TO_TYPE_MAP.put(boolean.class, BOOLEAN);
+        CLASS_TO_TYPE_MAP.put(Boolean.class, BOOLEAN);
+        CLASS_TO_TYPE_MAP.put(byte[].class, BYTE_ARRAY);
+        // CLASS_TO_TYPE_MAP.put(Byte[].class, BYTE_ARRAY_WRAPPER);
+        CLASS_TO_TYPE_MAP.put(byte.class, BYTE);
+        CLASS_TO_TYPE_MAP.put(Byte.class, BYTE);
+        CLASS_TO_TYPE_MAP.put(char.class, CHAR);
+        CLASS_TO_TYPE_MAP.put(Character.class, CHAR);
+        CLASS_TO_TYPE_MAP.put(java.sql.Date.class, DATE);
+        CLASS_TO_TYPE_MAP.put(double.class, DOUBLE);
+        CLASS_TO_TYPE_MAP.put(Double.class, DOUBLE);
+        CLASS_TO_TYPE_MAP.put(float.class, FLOAT);
+        CLASS_TO_TYPE_MAP.put(Float.class, FLOAT);
+        CLASS_TO_TYPE_MAP.put(int.class, INTEGER);
+        CLASS_TO_TYPE_MAP.put(Integer.class, INTEGER);
+        CLASS_TO_TYPE_MAP.put(long.class, LONG);
+        CLASS_TO_TYPE_MAP.put(Long.class, LONG);
+        CLASS_TO_TYPE_MAP.put(short.class, SHORT);
+        CLASS_TO_TYPE_MAP.put(Short.class, SHORT);
+        CLASS_TO_TYPE_MAP.put(String.class, STRING);
+        CLASS_TO_TYPE_MAP.put(java.util.Date.class, TIMESTAMP);
+        CLASS_TO_TYPE_MAP.put(java.sql.Timestamp.class, TIMESTAMP);
+        CLASS_TO_TYPE_MAP.put(java.sql.Time.class, TIME);
+
         for (SqlMetaType type : TYPES) {
-            if (type instanceof SqlInternalType) {
-                for (Class<?> classType : ((SqlInternalType) type).getClassTypes())
-                    CLASS_TO_TYPE_MAP.put(classType, type);
-                for (String metaType : ((SqlInternalType) type).getMetaTypes())
-                    META_TO_TYPE_MAP.put(metaType.toUpperCase(), type);
-            }
+            // for (Class<?> classType : ((SqlMetaType) type).getClassTypes())
+            // CLASS_TO_TYPE_MAP.put(classType, type);
+            for (String metaType : ((SqlMetaType) type).getMetaTypes())
+                META_TO_TYPE_MAP.put(metaType.toUpperCase(), type);
         }
         CLASS_TO_TYPE_MAP = Collections.unmodifiableMap(CLASS_TO_TYPE_MAP);
         META_TO_TYPE_MAP = Collections.unmodifiableMap(META_TO_TYPE_MAP);
