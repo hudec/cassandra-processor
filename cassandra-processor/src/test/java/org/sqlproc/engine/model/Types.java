@@ -2,10 +2,9 @@ package org.sqlproc.engine.model;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
-import java.sql.Time;
-import java.util.Date;
-
-import com.datastax.driver.core.LocalDate;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public class Types {
 
@@ -21,8 +20,8 @@ public class Types {
     private Integer t_int;
     private Short t_smallint;
     private String t_text;
-    private Time t_time;
-    private Date t_timestamp;
+    private LocalTime t_time;
+    private Instant t_timestamp;
     private Byte t_tinyint;
     private String t_varchar;
     private BigInteger t_varint;
@@ -115,19 +114,19 @@ public class Types {
         this.t_text = t_text;
     }
 
-    public Time getT_time() {
+    public LocalTime getT_time() {
         return t_time;
     }
 
-    public void setT_time(Time t_time) {
+    public void setT_time(LocalTime t_time) {
         this.t_time = t_time;
     }
 
-    public Date getT_timestamp() {
+    public Instant getT_timestamp() {
         return t_timestamp;
     }
 
-    public void setT_timestamp(Date t_timestamp) {
+    public void setT_timestamp(Instant t_timestamp) {
         this.t_timestamp = t_timestamp;
     }
 

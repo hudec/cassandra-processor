@@ -1,9 +1,8 @@
 package org.sqlproc.engine.cassandra.type;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.sql.Types;
-import java.util.Date;
+import java.time.Instant;
 
 import org.sqlproc.engine.type.SqlTimestampType;
 
@@ -39,9 +38,9 @@ public class CassandraTimestampType extends SqlTimestampType implements Cassandr
     @Override
     public Object get(Row row, String columnLabel) throws SQLException {
         if (Character.isDigit(columnLabel.charAt(0)))
-            return row.getTimestamp(Integer.parseInt(columnLabel));
+            return row.get(Integer.parseInt(columnLabel), Instant.class);
         else
-            return row.getTimestamp(columnLabel);
+            return row.get(columnLabel, Instant.class);
     }
 
     /**
@@ -49,14 +48,16 @@ public class CassandraTimestampType extends SqlTimestampType implements Cassandr
      */
     @Override
     public void set(BoundStatement st, int index, Object value) throws SQLException {
-        Date date;
-        if (value instanceof Timestamp) {
-            date = new Date(((Timestamp) value).getTime());
-        } else if (value instanceof java.sql.Date) {
-            date = new Date(((java.sql.Date) value).getTime());
-        } else {
-            date = (Date) value;
-        }
-        st.setTimestamp(index, date);
+        // Date date;
+        // if (value instanceof Timestamp) {
+        // date = new Date(((Timestamp) value).getTime());
+        // } else if (value instanceof java.sql.Date) {
+        // date = new Date(((java.sql.Date) value).getTime());
+        // } else {
+        // date = (Date) value;
+        // }
+        // st.setTimestamp(index, date);
+        st.set(index, (Instant) value, Instant.class);
+
     }
 }

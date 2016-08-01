@@ -2,12 +2,11 @@ package org.sqlproc.engine.cassandra.type;
 
 import java.sql.SQLException;
 import java.sql.Types;
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.sqlproc.engine.type.SqlDateType;
 
 import com.datastax.driver.core.BoundStatement;
-import com.datastax.driver.core.LocalDate;
 import com.datastax.driver.core.Row;
 
 /**
@@ -39,9 +38,9 @@ public class CassandraDateType extends SqlDateType implements CassandraSqlType {
     @Override
     public Object get(Row row, String columnLabel) throws SQLException {
         if (Character.isDigit(columnLabel.charAt(0)))
-            return row.getDate(Integer.parseInt(columnLabel));
+            return row.get(Integer.parseInt(columnLabel), LocalDate.class);
         else
-            return row.getDate(columnLabel);
+            return row.get(columnLabel, LocalDate.class);
     }
 
     /**
@@ -49,12 +48,13 @@ public class CassandraDateType extends SqlDateType implements CassandraSqlType {
      */
     @Override
     public void set(BoundStatement st, int index, Object value) throws SQLException {
-        if (value instanceof java.sql.Date) {
-            st.setDate(index, LocalDate.fromMillisSinceEpoch(((java.sql.Date) value).getTime()));
-        } else if (value instanceof Date) {
-            st.setDate(index, LocalDate.fromMillisSinceEpoch(((java.util.Date) value).getTime()));
-        } else {
-            st.setDate(index, (LocalDate) value);
-        }
+        // if (value instanceof java.sql.Date) {
+        // st.setDate(index, LocalDate.fromMillisSinceEpoch(((java.sql.Date) value).getTime()));
+        // } else if (value instanceof Date) {
+        // st.setDate(index, LocalDate.fromMillisSinceEpoch(((java.util.Date) value).getTime()));
+        // } else {
+        // st.setDate(index, (LocalDate) value);
+        // }
+        st.set(index, (LocalDate) value, LocalDate.class);
     }
 }
