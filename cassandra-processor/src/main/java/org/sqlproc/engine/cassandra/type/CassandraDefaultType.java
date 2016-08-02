@@ -9,4 +9,14 @@ import org.sqlproc.engine.type.SqlDefaultType;
  * @author <a href="mailto:Vladimir.Hudec@gmail.com">Vladimir Hudec</a>
  */
 public class CassandraDefaultType extends SqlDefaultType {
+
+    @Override
+    public Object getProviderSqlType() {
+        return null;
+    }
+
+    @Override
+    public Object getProviderSqlNullType() {
+        return null;
+    }
 }
