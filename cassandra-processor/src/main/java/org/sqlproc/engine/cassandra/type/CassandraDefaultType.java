@@ -53,14 +53,6 @@ public class CassandraDefaultType implements SqlMetaType {
     /**
      * {@inheritDoc}
      */
-    @Override
-    public Object getDatabaseSqlType() {
-        return null;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public void addScalar(SqlTypeFactory typeFactory, SqlQuery query, String dbName, Class<?> attributeType) {
         if (getProviderSqlType() != null) {
             query.addScalar(dbName, getProviderSqlType());
