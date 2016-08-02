@@ -1,9 +1,6 @@
 package org.sqlproc.engine.cassandra.type;
 
 import java.sql.SQLException;
-import java.sql.Types;
-
-import org.sqlproc.engine.type.SqlCharType;
 
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.Row;
@@ -13,7 +10,7 @@ import com.datastax.driver.core.Row;
  * 
  * @author <a href="mailto:Vladimir.Hudec@gmail.com">Vladimir Hudec</a>
  */
-public class CassandraCharType extends SqlCharType implements CassandraSqlType {
+public class CassandraCharType extends CassandraDefaultType implements CassandraSqlType {
 
     /**
      * {@inheritDoc}
@@ -21,14 +18,6 @@ public class CassandraCharType extends SqlCharType implements CassandraSqlType {
     @Override
     public Object getProviderSqlType() {
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Object getDatabaseSqlType() {
-        return Types.CHAR;
     }
 
     @Override

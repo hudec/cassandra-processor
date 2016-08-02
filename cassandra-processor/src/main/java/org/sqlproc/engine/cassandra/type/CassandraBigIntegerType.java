@@ -2,9 +2,6 @@ package org.sqlproc.engine.cassandra.type;
 
 import java.math.BigInteger;
 import java.sql.SQLException;
-import java.sql.Types;
-
-import org.sqlproc.engine.type.SqlBigIntegerType;
 
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.Row;
@@ -14,7 +11,7 @@ import com.datastax.driver.core.Row;
  * 
  * @author <a href="mailto:Vladimir.Hudec@gmail.com">Vladimir Hudec</a>
  */
-public class CassandraBigIntegerType extends SqlBigIntegerType implements CassandraSqlType {
+public class CassandraBigIntegerType extends CassandraDefaultType implements CassandraSqlType {
 
     /**
      * {@inheritDoc}
@@ -22,14 +19,6 @@ public class CassandraBigIntegerType extends SqlBigIntegerType implements Cassan
     @Override
     public Object getProviderSqlType() {
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Object getDatabaseSqlType() {
-        return Types.NUMERIC;
     }
 
     /**

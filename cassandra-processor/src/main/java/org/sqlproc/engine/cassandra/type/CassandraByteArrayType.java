@@ -2,9 +2,6 @@ package org.sqlproc.engine.cassandra.type;
 
 import java.nio.ByteBuffer;
 import java.sql.SQLException;
-import java.sql.Types;
-
-import org.sqlproc.engine.type.SqlByteArrayType;
 
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.Row;
@@ -14,7 +11,7 @@ import com.datastax.driver.core.Row;
  * 
  * @author <a href="mailto:Vladimir.Hudec@gmail.com">Vladimir Hudec</a>
  */
-public class CassandraByteArrayType extends SqlByteArrayType implements CassandraSqlType {
+public class CassandraByteArrayType extends CassandraDefaultType implements CassandraSqlType {
 
     /**
      * {@inheritDoc}
@@ -22,14 +19,6 @@ public class CassandraByteArrayType extends SqlByteArrayType implements Cassandr
     @Override
     public Object getProviderSqlType() {
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Object getDatabaseSqlType() {
-        return Types.VARBINARY;
     }
 
     @Override

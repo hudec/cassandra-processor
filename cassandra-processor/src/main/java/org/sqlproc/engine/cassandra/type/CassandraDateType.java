@@ -1,10 +1,7 @@
 package org.sqlproc.engine.cassandra.type;
 
 import java.sql.SQLException;
-import java.sql.Types;
 import java.time.LocalDate;
-
-import org.sqlproc.engine.type.SqlDateType;
 
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.Row;
@@ -14,7 +11,7 @@ import com.datastax.driver.core.Row;
  * 
  * @author <a href="mailto:Vladimir.Hudec@gmail.com">Vladimir Hudec</a>
  */
-public class CassandraDateType extends SqlDateType implements CassandraSqlType {
+public class CassandraDateType extends CassandraDefaultType implements CassandraSqlType {
 
     /**
      * {@inheritDoc}
@@ -22,14 +19,6 @@ public class CassandraDateType extends SqlDateType implements CassandraSqlType {
     @Override
     public Object getProviderSqlType() {
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public Object getDatabaseSqlType() {
-        return Types.DATE;
     }
 
     /**

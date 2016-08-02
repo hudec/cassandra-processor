@@ -156,7 +156,6 @@ public class CassandraTypeFactory implements SqlTypeFactory {
         CLASS_TO_TYPE_MAP.put(boolean.class, BOOLEAN);
         CLASS_TO_TYPE_MAP.put(Boolean.class, BOOLEAN);
         CLASS_TO_TYPE_MAP.put(byte[].class, BYTE_ARRAY);
-        // CLASS_TO_TYPE_MAP.put(Byte[].class, BYTE_ARRAY_WRAPPER);
         CLASS_TO_TYPE_MAP.put(byte.class, BYTE);
         CLASS_TO_TYPE_MAP.put(Byte.class, BYTE);
         CLASS_TO_TYPE_MAP.put(char.class, CHAR);
@@ -176,12 +175,29 @@ public class CassandraTypeFactory implements SqlTypeFactory {
         CLASS_TO_TYPE_MAP.put(Instant.class, TIMESTAMP);
         CLASS_TO_TYPE_MAP.put(LocalTime.class, TIME);
 
-        for (SqlMetaType type : TYPES) {
-            // for (Class<?> classType : ((SqlMetaType) type).getClassTypes())
-            // CLASS_TO_TYPE_MAP.put(classType, type);
-            for (String metaType : ((SqlMetaType) type).getMetaTypes())
-                META_TO_TYPE_MAP.put(metaType.toUpperCase(), type);
-        }
+        META_TO_TYPE_MAP.put("BIGDEC", BIG_DECIMAL);
+        META_TO_TYPE_MAP.put("BIGDECIMAL", BIG_DECIMAL);
+        META_TO_TYPE_MAP.put("BIGINT", BIG_INTEGER);
+        META_TO_TYPE_MAP.put("BIGINTEGER", BIG_INTEGER);
+        META_TO_TYPE_MAP.put("BOOLEAN", BOOLEAN);
+        META_TO_TYPE_MAP.put("BOOL", BOOLEAN);
+        META_TO_TYPE_MAP.put("BYTES", BYTE_ARRAY);
+        META_TO_TYPE_MAP.put("BYTE", BYTE);
+        META_TO_TYPE_MAP.put("CHARACTER", CHAR);
+        META_TO_TYPE_MAP.put("CHAR", CHAR);
+        META_TO_TYPE_MAP.put("DATE", DATE);
+        META_TO_TYPE_MAP.put("DOUBLE", DOUBLE);
+        META_TO_TYPE_MAP.put("FLOAT", FLOAT);
+        META_TO_TYPE_MAP.put("INT", INTEGER);
+        META_TO_TYPE_MAP.put("INTEGER", INTEGER);
+        META_TO_TYPE_MAP.put("LONG", LONG);
+        META_TO_TYPE_MAP.put("SHORT", SHORT);
+        META_TO_TYPE_MAP.put("STRING", STRING);
+        META_TO_TYPE_MAP.put("STR", STRING);
+        META_TO_TYPE_MAP.put("TIMESTAMP", TIMESTAMP);
+        META_TO_TYPE_MAP.put("STAMP", TIMESTAMP);
+        META_TO_TYPE_MAP.put("TIME", TIME);
+
         CLASS_TO_TYPE_MAP = Collections.unmodifiableMap(CLASS_TO_TYPE_MAP);
         META_TO_TYPE_MAP = Collections.unmodifiableMap(META_TO_TYPE_MAP);
     }
