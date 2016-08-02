@@ -1,7 +1,5 @@
 package org.sqlproc.engine.cassandra.type;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
@@ -87,25 +85,12 @@ public class CassandraDefaultType implements SqlMetaType {
                     + ((resultValue != null) ? resultValue.getClass() : null));
         }
 
-        if (getClassTypes() != null && getClassTypes().length >= 0) {
-            if (runtimeCtx.simpleSetAttribute(resultInstance, attributeName, resultValue, getClassTypes()))
-                return;
-            error(ingoreError,
-                    "There's no getter for " + attributeName + " in " + resultInstance + ", META type is " + this);
-            return;
-        }
-
         Class<?> attributeType = runtimeCtx.getAttributeType(resultInstance.getClass(), attributeName);
         if (attributeType == null) {
             error(ingoreError, "There's problem with attribute type for '" + attributeName + "' in " + resultInstance
                     + ", META type is " + this);
             return;
         }
-
-        if (resultValue != null && resultValue instanceof BigDecimal && attributeType != BigDecimal.class)
-            resultValue = (Integer) ((BigDecimal) resultValue).intValue();
-        else if (resultValue != null && resultValue instanceof BigInteger && attributeType != BigInteger.class)
-            resultValue = (Integer) ((BigInteger) resultValue).intValue();
 
         if (attributeType.isEnum()) {
             Object enumInstance = runtimeCtx.getValueToEnum(attributeType, resultValue);
@@ -140,7 +125,7 @@ public class CassandraDefaultType implements SqlMetaType {
 
         if (getProviderSqlType() != null) {
             if (inputValue == null) {
-                query.setParameter(paramName, inputValue, getDatabaseSqlType());
+                query.setParameter(paramName, inputValue, getProviderSqlType());
             } else if (inputValue instanceof Collection) {
                 query.setParameterList(paramName, ((Collection) inputValue).toArray(), getProviderSqlType());
             } else {
