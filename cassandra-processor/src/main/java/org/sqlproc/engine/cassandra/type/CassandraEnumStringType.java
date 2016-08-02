@@ -27,7 +27,7 @@ public class CassandraEnumStringType extends SqlEnumStringType implements Cassan
      * {@inheritDoc}
      */
     @Override
-    public Object getProviderSqlNullType() {
+    public Object getDatabaseSqlType() {
         return Types.VARCHAR;
     }
 

@@ -28,7 +28,7 @@ public class CassandraTimeType extends SqlTimeType implements CassandraSqlType {
      * {@inheritDoc}
      */
     @Override
-    public Object getProviderSqlNullType() {
+    public Object getDatabaseSqlType() {
         return Types.TIME;
     }
 

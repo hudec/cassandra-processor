@@ -27,7 +27,7 @@ public class CassandraByteType extends SqlByteType implements CassandraSqlType {
      * {@inheritDoc}
      */
     @Override
-    public Object getProviderSqlNullType() {
+    public Object getDatabaseSqlType() {
         return Types.TINYINT;
     }
 

@@ -27,7 +27,7 @@ public class CassandraDoubleType extends SqlDoubleType implements CassandraSqlTy
      * {@inheritDoc}
      */
     @Override
-    public Object getProviderSqlNullType() {
+    public Object getDatabaseSqlType() {
         return Types.DOUBLE;
     }
 

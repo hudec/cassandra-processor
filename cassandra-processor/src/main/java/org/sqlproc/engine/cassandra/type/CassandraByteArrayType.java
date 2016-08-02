@@ -28,7 +28,7 @@ public class CassandraByteArrayType extends SqlByteArrayType implements Cassandr
      * {@inheritDoc}
      */
     @Override
-    public Object getProviderSqlNullType() {
+    public Object getDatabaseSqlType() {
         return Types.VARBINARY;
     }
 

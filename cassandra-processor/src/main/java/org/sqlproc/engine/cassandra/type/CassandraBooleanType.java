@@ -27,7 +27,7 @@ public class CassandraBooleanType extends SqlBooleanType implements CassandraSql
      * {@inheritDoc}
      */
     @Override
-    public Object getProviderSqlNullType() {
+    public Object getDatabaseSqlType() {
         return Types.BIT;
     }
 

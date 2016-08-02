@@ -27,7 +27,7 @@ public class CassandraEnumIntegerType extends SqlEnumIntegerType implements Cass
      * {@inheritDoc}
      */
     @Override
-    public Object getProviderSqlNullType() {
+    public Object getDatabaseSqlType() {
         return Types.INTEGER;
     }
 

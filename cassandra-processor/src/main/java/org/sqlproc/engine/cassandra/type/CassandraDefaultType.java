@@ -16,7 +16,7 @@ public class CassandraDefaultType extends SqlDefaultType {
     }
 
     @Override
-    public Object getProviderSqlNullType() {
+    public Object getDatabaseSqlType() {
         return null;
     }
 }

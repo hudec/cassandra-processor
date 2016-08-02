@@ -27,7 +27,7 @@ public class CassandraShortType extends SqlShortType implements CassandraSqlType
      * {@inheritDoc}
      */
     @Override
-    public Object getProviderSqlNullType() {
+    public Object getDatabaseSqlType() {
         return Types.SMALLINT;
     }
 

@@ -28,7 +28,7 @@ public class CassandraBigDecimalType extends SqlBigDecimalType implements Cassan
      * {@inheritDoc}
      */
     @Override
-    public Object getProviderSqlNullType() {
+    public Object getDatabaseSqlType() {
         return Types.NUMERIC;
     }
 

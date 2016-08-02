@@ -124,7 +124,7 @@ public class CassandraTypeFactory implements SqlTypeFactory {
         }
 
         @Override
-        public Object getProviderSqlNullType() {
+        public Object getDatabaseSqlType() {
             return null;
         }
     };

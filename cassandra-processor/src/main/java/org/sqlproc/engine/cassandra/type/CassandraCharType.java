@@ -27,7 +27,7 @@ public class CassandraCharType extends SqlCharType implements CassandraSqlType {
      * {@inheritDoc}
      */
     @Override
-    public Object getProviderSqlNullType() {
+    public Object getDatabaseSqlType() {
         return Types.CHAR;
     }
 

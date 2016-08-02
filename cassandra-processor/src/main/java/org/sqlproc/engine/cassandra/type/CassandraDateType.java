@@ -28,7 +28,7 @@ public class CassandraDateType extends SqlDateType implements CassandraSqlType {
      * {@inheritDoc}
      */
     @Override
-    public Object getProviderSqlNullType() {
+    public Object getDatabaseSqlType() {
         return Types.DATE;
     }
 

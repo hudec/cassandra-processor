@@ -789,7 +789,7 @@ public class CassandraQuery implements SqlQuery {
                 CallableStatement cs = (CallableStatement) bs;
                 if (type != null) {
                     if (type instanceof SqlMetaType) {
-                        cs.registerOutParameter(ix + i, (Integer) ((SqlMetaType) type).getProviderSqlNullType());
+                        cs.registerOutParameter(ix + i, (Integer) ((SqlMetaType) type).getDatabaseSqlType());
                     } else {
                         cs.registerOutParameter(ix + i, (Integer) type);
                     }

@@ -27,7 +27,7 @@ public class CassandraLongType extends SqlLongType implements CassandraSqlType {
      * {@inheritDoc}
      */
     @Override
-    public Object getProviderSqlNullType() {
+    public Object getDatabaseSqlType() {
         return Types.BIGINT;
     }
 

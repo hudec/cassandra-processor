@@ -27,7 +27,7 @@ public class CassandraIntegerType extends SqlIntegerType implements CassandraSql
      * {@inheritDoc}
      */
     @Override
-    public Object getProviderSqlNullType() {
+    public Object getDatabaseSqlType() {
         return Types.INTEGER;
     }
 
