@@ -1,7 +1,5 @@
 package org.sqlproc.engine.cassandra.type;
 
-import java.sql.SQLException;
-
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.Row;
 
@@ -24,7 +22,7 @@ public class CassandraBooleanType extends CassandraDefaultType implements Cassan
      * {@inheritDoc}
      */
     @Override
-    public Object get(Row row, String columnLabel) throws SQLException {
+    public Object get(Row row, String columnLabel) {
         if (Character.isDigit(columnLabel.charAt(0)))
             return row.getBool(Integer.parseInt(columnLabel)) ? Boolean.TRUE : Boolean.FALSE;
         else
@@ -35,7 +33,7 @@ public class CassandraBooleanType extends CassandraDefaultType implements Cassan
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, int index, Object value) throws SQLException {
+    public void set(BoundStatement st, int index, Object value) {
         st.setBool(index, ((Boolean) value).booleanValue());
     }
 }

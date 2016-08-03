@@ -1,7 +1,5 @@
 package org.sqlproc.engine.cassandra.type;
 
-import java.sql.SQLException;
-
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.Row;
 
@@ -21,7 +19,7 @@ public class CassandraCharType extends CassandraDefaultType implements Cassandra
     }
 
     @Override
-    public Object get(Row row, String columnLabel) throws SQLException {
+    public Object get(Row row, String columnLabel) {
         String str;
         if (Character.isDigit(columnLabel.charAt(0)))
             str = row.getString(Integer.parseInt(columnLabel));
@@ -35,7 +33,7 @@ public class CassandraCharType extends CassandraDefaultType implements Cassandra
     }
 
     @Override
-    public void set(BoundStatement st, int index, Object value) throws SQLException {
+    public void set(BoundStatement st, int index, Object value) {
         st.setString(index, (value).toString());
     }
 }

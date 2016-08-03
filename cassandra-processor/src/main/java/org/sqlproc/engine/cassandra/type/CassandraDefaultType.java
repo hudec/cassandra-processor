@@ -45,7 +45,7 @@ public class CassandraDefaultType implements SqlMetaType {
             if (type != null)
                 query.addScalar(dbName, type);
             else
-                throw new RuntimeException("BBAADD");
+                throw new IllegalArgumentException();
         }
     }
 

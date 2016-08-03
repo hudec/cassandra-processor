@@ -1,8 +1,5 @@
 package org.sqlproc.engine.cassandra;
 
-import java.sql.CallableStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -57,7 +54,7 @@ public class CassandraQuery implements SqlQuery {
     /**
      * The collection of all scalars types.
      */
-    Map<String, Object> scalarTypes = new HashMap<String, Object>();
+    Map<String, CassandraSqlType> scalarTypes = new HashMap<String, CassandraSqlType>();
     /**
      * The collection of all parameters (input value declarations).
      */
@@ -69,11 +66,11 @@ public class CassandraQuery implements SqlQuery {
     /**
      * The collection of all parameters types.
      */
-    Map<String, Object> parameterTypes = new HashMap<String, Object>();
+    Map<String, CassandraSqlType> parameterTypes = new HashMap<String, CassandraSqlType>();
     /**
      * The collection of all parameters types for output values.
      */
-    Map<String, Object> parameterOutValueTypes = new HashMap<String, Object>();
+    Map<String, CassandraSqlType> parameterOutValueTypes = new HashMap<String, CassandraSqlType>();
     /**
      * The collection of all parameters output value setters.
      */
@@ -93,7 +90,7 @@ public class CassandraQuery implements SqlQuery {
     /**
      * The collection of all identities types.
      */
-    Map<String, Object> identityTypes = new HashMap<String, Object>();
+    Map<String, CassandraSqlType> identityTypes = new HashMap<String, CassandraSqlType>();
     /**
      * A timeout for the underlying query.
      */
@@ -231,7 +228,7 @@ public class CassandraQuery implements SqlQuery {
                 logger.debug("list, number of returned rows=" + ((list != null) ? list.size() : "null"));
             }
             return list;
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             throw newSqlProcessorException(ex, query);
         }
     }
@@ -301,7 +298,7 @@ public class CassandraQuery implements SqlQuery {
                 logger.debug("list, number of returned rows=" + rownum);
             }
             return rownum;
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             throw newSqlProcessorException(ex, query);
         }
     }
@@ -362,104 +359,6 @@ public class CassandraQuery implements SqlQuery {
         return false;
     }
 
-    /**
-     * Retrieves the value of auto-generated identity from executed prepared statement.
-     * 
-     * @param identityName
-     *            the identity name from the META SQL statement
-     * @param statement
-     *            statement to retrieve auto-generated keys from
-     */
-    protected void getGeneratedKeys(String identityName, Statement statement) {
-        // IdentitySetter identitySetter = identitySetters.get(identityName);
-        // Object identityType = identityTypes.get(identityName);
-        // if (identityType == null) {
-        // identityType = parameterTypes.get(identityName);
-        // }
-        // if (logger.isDebugEnabled()) {
-        // logger.debug("identity, name=" + identityName + ", getGeneratedKeys(), identityType=" + identityType);
-        // }
-        //
-        // ResultSet rs = null;
-        // Object identityValue = null;
-        // try {
-        // rs = statement.getGeneratedKeys();
-        // while (rs.next()) {
-        // if (identityType != null && identityType instanceof JdbcSqlType) {
-        // identityValue = ((JdbcSqlType) identityType).get(rs, identityName);
-        // } else {
-        // identityValue = rs.getObject(1);
-        // }
-        // if (rs.wasNull())
-        // identityValue = null;
-        // }
-        // identitySetter.setIdentity(identityValue);
-        // if (logger.isDebugEnabled()) {
-        // logger.debug("identity, result=" + identityValue);
-        // }
-        // } catch (SQLException ex) {
-        // throw new SqlProcessorException("Statement.getGeneratedKeys() failed.", ex);
-        // } finally {
-        // if (rs != null) {
-        // try {
-        // rs.close();
-        // } catch (SQLException ignore) {
-        // }
-        // }
-        // }
-    }
-
-    /**
-     * Runs the select to obtain the value of auto-generated identity.
-     * 
-     * @param identityName
-     *            the identity name from the META SQL statement
-     */
-    protected void doIdentitySelect(String identityName) {
-        // IdentitySetter identitySetter = identitySetters.get(identityName);
-        // Object identityType = identityTypes.get(identityName);
-        // if (logger.isDebugEnabled()) {
-        // logger.debug("identity, name=" + identityName + ", select=" + identitySetter.getIdentitySelect()
-        // + ", identityType=" + identityType);
-        // }
-        //
-        // PreparedStatement ps = null;
-        // ResultSet rs = null;
-        // Object identityValue = null;
-        // try {
-        // ps = connection.prepareStatement(identitySetter.getIdentitySelect());
-        // rs = ps.executeQuery();
-        // while (rs.next()) {
-        // if (identityType != null && identityType instanceof JdbcSqlType) {
-        // identityValue = ((JdbcSqlType) identityType).get(rs, identityName);
-        // } else {
-        // identityValue = rs.getObject(1);
-        // }
-        // if (rs.wasNull())
-        // identityValue = null;
-        // }
-        // identitySetter.setIdentity(identityValue);
-        // if (logger.isDebugEnabled()) {
-        // logger.debug("identity, result=" + identityValue);
-        // }
-        // } catch (SQLException ex) {
-        // throw new SqlProcessorException("Identity select failed.", ex);
-        // } finally {
-        // if (rs != null) {
-        // try {
-        // rs.close();
-        // } catch (SQLException ignore) {
-        // }
-        // }
-        // if (ps != null) {
-        // try {
-        // ps.close();
-        // } catch (SQLException ignore) {
-        // }
-        // }
-        // }
-    }
-
     static final Pattern CALL = Pattern.compile("\\s*\\{?\\s*(\\?)?\\s*=?\\s*call\\s*(.*?)\\s*}?\\s*");
 
     /**
@@ -467,61 +366,7 @@ public class CassandraQuery implements SqlQuery {
      */
     @Override
     public List callList(final SqlRuntimeContext runtimeCtx) throws SqlProcessorException {
-        // if (logger.isDebugEnabled()) {
-        // logger.debug("callList, query=" + queryString);
-        // }
-        // CallableStatement cs = null;
-        // ResultSet rs = null;
-        // List list = null;
-        // boolean hasResultSet = false;
-        // String query = null;
-        //
-        // try {
-        // Matcher matcher = CALL.matcher(queryString);
-        // if (!matcher.matches())
-        // throw new SqlProcessorException("'" + queryString + "' isn't the correct call statement");
-        // query = (matcher.group(1) != null) ? "{? = call " + matcher.group(2) + "}"
-        // : "{ call " + matcher.group(2) + "}";
-        // cs = connection.prepareCall(query);
-        // if (timeout != null)
-        // cs.setQueryTimeout(timeout);
-        // if (fetchSize != null)
-        // cs.setFetchSize(fetchSize);
-        // setParameters(cs, null, 1);
-        // hasResultSet = cs.execute();
-        // if (hasResultSet || cs.getMoreResults()) {
-        // rs = cs.getResultSet();
-        // if (fetchSize != null)
-        // rs.setFetchSize(fetchSize);
-        // list = getResults(rs);
-        // getParameters(cs, false);
-        // } else {
-        // rs = (ResultSet) getParameters(cs, true);
-        // if (fetchSize != null)
-        // rs.setFetchSize(fetchSize);
-        // list = getResults(rs);
-        // }
-        // if (logger.isDebugEnabled()) {
-        // logger.debug("list, number of returned rows=" + ((list != null) ? list.size() : "null"));
-        // }
-        // return list;
-        // } catch (SQLException ex) {
-        // throw newSqlProcessorException(ex, query);
-        // } finally {
-        // if (rs != null) {
-        // try {
-        // rs.close();
-        // } catch (SQLException ignore) {
-        // }
-        // }
-        // if (cs != null) {
-        // try {
-        // cs.close();
-        // } catch (SQLException ignore) {
-        // }
-        // }
-        // }
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -548,47 +393,7 @@ public class CassandraQuery implements SqlQuery {
      */
     @Override
     public int callUpdate(final SqlRuntimeContext runtimeCtx) throws SqlProcessorException {
-        // if (logger.isDebugEnabled()) {
-        // logger.debug("callUpdate, query=" + queryString);
-        // }
-        // CallableStatement cs = null;
-        // ResultSet rs = null;
-        // String query = null;
-        //
-        // try {
-        // Matcher matcher = CALL.matcher(queryString);
-        // if (!matcher.matches())
-        // throw new SqlProcessorException("'" + queryString + "' isn't the correct call statement");
-        // query = (matcher.group(1) != null) ? "{? = call " + matcher.group(2) + "}"
-        // : "{ call " + matcher.group(2) + "}";
-        // cs = connection.prepareCall(query);
-        // if (timeout != null)
-        // cs.setQueryTimeout(timeout);
-        // setParameters(cs, null, 1);
-        // cs.execute();
-        // int updated = cs.getUpdateCount();
-        // if (logger.isDebugEnabled()) {
-        // logger.debug("callUpdate, number of updated rows=" + updated);
-        // }
-        // getParameters(cs, false);
-        // return updated;
-        // } catch (SQLException ex) {
-        // throw newSqlProcessorException(ex, query);
-        // } finally {
-        // if (rs != null) {
-        // try {
-        // rs.close();
-        // } catch (SQLException ignore) {
-        // }
-        // }
-        // if (cs != null) {
-        // try {
-        // cs.close();
-        // } catch (SQLException ignore) {
-        // }
-        // }
-        // }
-        return 0;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -596,61 +401,7 @@ public class CassandraQuery implements SqlQuery {
      */
     @Override
     public Object callFunction() throws SqlProcessorException {
-        // if (logger.isDebugEnabled()) {
-        // logger.debug("callFunction, query=" + queryString);
-        // }
-        // CallableStatement cs = null;
-        // ResultSet rs = null;
-        // List list = null;
-        // Object result = null;
-        // boolean hasResultSet = false;
-        // String query = null;
-        //
-        // try {
-        // Matcher matcher = CALL.matcher(queryString);
-        // if (!matcher.matches())
-        // throw new SqlProcessorException("'" + queryString + "' isn't the correct call statement");
-        // query = (matcher.group(1) != null) ? "{? = call " + matcher.group(2) + "}"
-        // : "{call " + matcher.group(2) + "}";
-        // cs = connection.prepareCall(query);
-        // if (timeout != null)
-        // cs.setQueryTimeout(timeout);
-        // if (fetchSize != null)
-        // cs.setFetchSize(fetchSize);
-        // setParameters(cs, null, 1);
-        // hasResultSet = cs.execute();
-        // if (hasResultSet) {
-        // rs = cs.getResultSet();
-        // if (fetchSize != null)
-        // rs.setFetchSize(fetchSize);
-        // list = getResults(rs);
-        // if (list != null && !list.isEmpty())
-        // result = list.get(0);
-        // getParameters(cs, false);
-        // } else {
-        // result = getParameters(cs, true);
-        // }
-        // if (logger.isDebugEnabled()) {
-        // logger.debug("callFunction, result=" + result);
-        // }
-        // return result;
-        // } catch (SQLException ex) {
-        // throw newSqlProcessorException(ex, query);
-        // } finally {
-        // if (rs != null) {
-        // try {
-        // rs.close();
-        // } catch (SQLException ignore) {
-        // }
-        // }
-        // if (cs != null) {
-        // try {
-        // cs.close();
-        // } catch (SQLException ignore) {
-        // }
-        // }
-        // }
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -667,8 +418,11 @@ public class CassandraQuery implements SqlQuery {
      */
     @Override
     public SqlQuery addScalar(String columnAlias, Object type) {
+        // TODO, right now just a workaround
+        if (type == null || !(type instanceof CassandraSqlType))
+            throw new IllegalArgumentException();
         scalars.add(columnAlias);
-        scalarTypes.put(columnAlias, type);
+        scalarTypes.put(columnAlias, (CassandraSqlType) type);
         return this;
     }
 
@@ -687,21 +441,24 @@ public class CassandraQuery implements SqlQuery {
      */
     @Override
     public SqlQuery setParameter(String name, Object val, Object type) throws SqlProcessorException {
+        // TODO, right now just a workaround
+        if (type == null || !(type instanceof CassandraSqlType))
+            throw new IllegalArgumentException();
         if (val != null && val instanceof IdentitySetter) {
             identities.add(name);
             identitySetters.put(name, (IdentitySetter) val);
-            identityTypes.put(name, type);
+            identityTypes.put(name, (CassandraSqlType) type);
         } else if (val != null && val instanceof OutValueSetter) {
             if (!parameterTypes.containsKey(name)) {
                 parameters.add(name);
-                parameterTypes.put(name, type);
+                parameterTypes.put(name, (CassandraSqlType) type);
             }
-            parameterOutValueTypes.put(name, type);
+            parameterOutValueTypes.put(name, (CassandraSqlType) type);
             parameterOutValueSetters.put(name, (OutValueSetter) val);
         } else {
             parameters.add(name);
             parameterValues.put(name, val);
-            parameterTypes.put(name, type);
+            parameterTypes.put(name, (CassandraSqlType) type);
         }
         return this;
     }
@@ -731,48 +488,37 @@ public class CassandraQuery implements SqlQuery {
      *            the limit type to restrict the number of rows in the result set
      * @param start
      *            the index of the first parameter to bind to prepared statement
-     * @throws SQLException
-     *             if a database access error occurs or this method is called on a closed <code>PreparedStatement</code>
      */
     protected void setParameters(BoundStatement bs, SqlFromToPlugin.LimitType limitType, int start)
-            throws SQLException, SqlProcessorException {
+            throws SqlProcessorException {
         int ix = start;
         ix = setLimits(bs, limitType, ix, false);
         for (int i = 0, n = parameters.size(); i < n; i++) {
             String name = parameters.get(i);
-            Object type = parameterTypes.get(name);
+            CassandraSqlType type = parameterTypes.get(name);
             if (parameterValues.containsKey(name)) {
                 Object value = parameterValues.get(name);
                 if (type != null) {
-                    if (type instanceof CassandraSqlType) {
-                        CassandraSqlType sqlType = (CassandraSqlType) type;
-                        try {
+                    CassandraSqlType sqlType = (CassandraSqlType) type;
+                    try {
+                        if (value == null) {
+                            if (logger.isTraceEnabled()) {
+                                logger.trace("setNull, ix=" + (ix + i) + ", type=" + type);
+                            }
+                            bs.setToNull(ix + i);
+                        } else {
                             if (logger.isTraceEnabled()) {
                                 logger.trace("setParameters, ix=" + (ix + i) + ", value=" + value);
                             }
                             sqlType.set(bs, ix + i, value);
-                        } catch (ClassCastException cce) {
-                            StringBuilder sb = new StringBuilder("Not compatible input value of type ")
-                                    .append((value != null) ? value.getClass() : "null");
-                            sb.append(". The JDBC type for ").append(name).append(" is ")
-                                    .append((sqlType != null) ? sqlType.getClass() : "null");
-                            sb.append(".");
-                            throw new SqlProcessorException(sb.toString(), cce);
                         }
-                    } else if (value == null) {
-                        if (logger.isTraceEnabled()) {
-                            logger.trace("setNull, ix=" + (ix + i) + ", type=" + type);
-                        }
-                        bs.setToNull(ix + i);
-                    } else {
-                        if (logger.isTraceEnabled()) {
-                            logger.trace("setNull, ix=" + (ix + i) + ", type=" + type);
-                        }
-                        // TODO
-                        StringBuilder sb = new StringBuilder("Not supported input value of type ")
-                                .append((value != null) ? value.getClass() : "null").append(". Type is " + type)
-                                .append(".");
-                        throw new SqlProcessorException(sb.toString());
+                    } catch (ClassCastException cce) {
+                        StringBuilder sb = new StringBuilder("Not compatible input value of type ")
+                                .append((value != null) ? value.getClass() : "null");
+                        sb.append(". The JDBC type for ").append(name).append(" is ")
+                                .append((sqlType != null) ? sqlType.getClass() : "null");
+                        sb.append(".");
+                        throw new SqlProcessorException(sb.toString(), cce);
                     }
                 } else {
                     if (logger.isTraceEnabled()) {
@@ -785,18 +531,18 @@ public class CassandraQuery implements SqlQuery {
                 }
             }
             if (parameterOutValueSetters.containsKey(name)) {
-                CallableStatement cs = (CallableStatement) bs;
-                if (type != null) {
-                    // TODO
-                    // if (type instanceof SqlMetaType) {
-                    // cs.registerOutParameter(ix + i, (Integer) ((SqlMetaType) type).getDatabaseSqlType());
-                    // } else {
-                    // cs.registerOutParameter(ix + i, (Integer) type);
-                    // }
-                } else {
-                    throw new SqlProcessorException("OUT parameter type for callable statement is null");
-                }
-                parameterOutValuesToPickup.put(i, ix + i);
+                // CallableStatement cs = (CallableStatement) bs;
+                // if (type != null) {
+                // TODO
+                // if (type instanceof SqlMetaType) {
+                // cs.registerOutParameter(ix + i, (Integer) ((SqlMetaType) type).getDatabaseSqlType());
+                // } else {
+                // cs.registerOutParameter(ix + i, (Integer) type);
+                // }
+                // } else {
+                // throw new SqlProcessorException("OUT parameter type for callable statement is null");
+                // }
+                // parameterOutValuesToPickup.put(i, ix + i);
             }
         }
         ix = setLimits(bs, limitType, ix + parameters.size(), true);
@@ -814,11 +560,8 @@ public class CassandraQuery implements SqlQuery {
      * @param afterSql
      *            an indicator it's done after the main SQL statement execution
      * @return the updated column index
-     * @throws SQLException
-     *             if a database access error occurs or this method is called on a closed <code>PreparedStatement</code>
      */
-    protected int setLimits(BoundStatement bs, SqlFromToPlugin.LimitType limitType, int ix, boolean afterSql)
-            throws SQLException {
+    protected int setLimits(BoundStatement bs, SqlFromToPlugin.LimitType limitType, int ix, boolean afterSql) {
         if (limitType == null)
             return ix;
         if (afterSql && !limitType.afterSql)
@@ -847,53 +590,13 @@ public class CassandraQuery implements SqlQuery {
     }
 
     /**
-     * Gets the value of the designated OUT parameters.
-     * 
-     * @param cs
-     *            an instance of CallableStatement
-     * @throws SQLException
-     *             if a database access error occurs or this method is called on a closed <code>CallableStatement</code>
-     */
-    protected Object getParameters(CallableStatement cs, boolean isFunction) throws SQLException {
-
-        Object result = null;
-        // boolean resultInited = false;
-        //
-        // for (Iterator<Integer> iter = parameterOutValuesToPickup.keySet().iterator(); iter.hasNext();) {
-        // int i = iter.next();
-        // int ix = parameterOutValuesToPickup.get(i);
-        // String name = parameters.get(i);
-        // Object type = parameterOutValueTypes.get(name);
-        // if (type == null)
-        // type = parameterTypes.get(name);
-        // OutValueSetter outValueSetter = parameterOutValueSetters.get(name);
-        // Object outValue = null;
-        //
-        // if (type != null && type instanceof CassandraSqlType) {
-        // outValue = ((CassandraSqlType) type).get(cs, ix);
-        // } else {
-        // outValue = cs.getObject(ix);
-        // }
-        // outValueSetter.setOutValue(outValue);
-        // if (!resultInited) {
-        // result = outValue;
-        // resultInited = true;
-        // }
-        // }
-
-        return result;
-    }
-
-    /**
      * Gets the value of the designated columns as the objects in the Java programming language.
      * 
      * @param rs
      *            an instance of ResultSet
      * @return the result list
-     * @throws SQLException
-     *             if a database access error occurs or this method is called on a closed <code>ResultSet</code>
      */
-    protected List getResults(ResultSet rs) throws SQLException {
+    protected List getResults(ResultSet rs) {
         List result = new ArrayList();
         if (rs == null)
             return result;
@@ -908,10 +611,8 @@ public class CassandraQuery implements SqlQuery {
      * @param rs
      *            an instance of ResultSet
      * @return the result object for one row
-     * @throws SQLException
-     *             if a database access error occurs or this method is called on a closed <code>ResultSet</code>
      */
-    protected Object getOneResult(ResultSet rs) throws SQLException {
+    protected Object getOneResult(ResultSet rs) {
         if (rs == null)
             return NO_MORE_DATA;
         if (!rs.isExhausted()) {
@@ -944,42 +645,10 @@ public class CassandraQuery implements SqlQuery {
      */
     @Override
     public int[] executeBatch(String[] statements) throws SqlProcessorException {
-
-        // if (statements == null)
-        // return null;
-        //
-        // Statement stmt = null;
-        //
-        // try {
-        // stmt = connection.createStatement();
-        // for (String statement : statements) {
-        // if (statement == null)
-        // continue;
-        // if (logger.isDebugEnabled()) {
-        // logger.debug("executeBatch, add " + statement);
-        // }
-        // stmt.addBatch(statement);
-        // }
-        // int[] result = stmt.executeBatch();
-        // if (logger.isDebugEnabled()) {
-        // logger.debug("executeBatch, result " + SqlUtils.asList(result));
-        // }
-        // return result;
-        //
-        // } catch (SQLException ex) {
-        // throw new SqlProcessorException(ex);
-        // } finally {
-        // if (stmt != null) {
-        // try {
-        // stmt.close();
-        // } catch (SQLException ignore) {
-        // }
-        // }
-        // }
-        return null;
+        throw new UnsupportedOperationException();
     }
 
-    protected SqlProcessorException newSqlProcessorException(SQLException ex, String query) {
+    protected SqlProcessorException newSqlProcessorException(Exception ex, String query) {
         if (logError) {
             logger.error("Failed SQL command '" + query + "': " + ex.getMessage());
             return new SqlProcessorException(ex);

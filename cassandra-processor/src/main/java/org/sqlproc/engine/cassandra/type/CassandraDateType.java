@@ -1,6 +1,5 @@
 package org.sqlproc.engine.cassandra.type;
 
-import java.sql.SQLException;
 import java.time.LocalDate;
 
 import com.datastax.driver.core.BoundStatement;
@@ -25,7 +24,7 @@ public class CassandraDateType extends CassandraDefaultType implements Cassandra
      * {@inheritDoc}
      */
     @Override
-    public Object get(Row row, String columnLabel) throws SQLException {
+    public Object get(Row row, String columnLabel) {
         if (Character.isDigit(columnLabel.charAt(0)))
             return row.get(Integer.parseInt(columnLabel), LocalDate.class);
         else
@@ -36,7 +35,7 @@ public class CassandraDateType extends CassandraDefaultType implements Cassandra
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, int index, Object value) throws SQLException {
+    public void set(BoundStatement st, int index, Object value) {
         // if (value instanceof java.sql.Date) {
         // st.setDate(index, LocalDate.fromMillisSinceEpoch(((java.sql.Date) value).getTime()));
         // } else if (value instanceof Date) {

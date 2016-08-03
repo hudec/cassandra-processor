@@ -1,7 +1,6 @@
 package org.sqlproc.engine.cassandra.type;
 
 import java.math.BigDecimal;
-import java.sql.SQLException;
 
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.Row;
@@ -25,7 +24,7 @@ public class CassandraBigDecimalType extends CassandraDefaultType implements Cas
      * {@inheritDoc}
      */
     @Override
-    public Object get(Row row, String columnLabel) throws SQLException {
+    public Object get(Row row, String columnLabel) {
         if (Character.isDigit(columnLabel.charAt(0)))
             return row.getDecimal(Integer.parseInt(columnLabel));
         else
@@ -36,7 +35,7 @@ public class CassandraBigDecimalType extends CassandraDefaultType implements Cas
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, int index, Object value) throws SQLException {
+    public void set(BoundStatement st, int index, Object value) {
         st.setDecimal(index, (BigDecimal) value);
     }
 }

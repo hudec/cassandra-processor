@@ -1,7 +1,6 @@
 package org.sqlproc.engine.cassandra.type;
 
 import java.nio.ByteBuffer;
-import java.sql.SQLException;
 
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.Row;
@@ -22,7 +21,7 @@ public class CassandraByteArrayType extends CassandraDefaultType implements Cass
     }
 
     @Override
-    public Object get(Row row, String columnLabel) throws SQLException {
+    public Object get(Row row, String columnLabel) {
         if (Character.isDigit(columnLabel.charAt(0)))
             return row.getBytes(Integer.parseInt(columnLabel));
         else
@@ -30,7 +29,7 @@ public class CassandraByteArrayType extends CassandraDefaultType implements Cass
     }
 
     @Override
-    public void set(BoundStatement st, int index, Object value) throws SQLException {
+    public void set(BoundStatement st, int index, Object value) {
         if (value instanceof byte[]) {
             ByteBuffer bf = ByteBuffer.wrap((byte[]) value);
             st.setBytes(index, bf);
