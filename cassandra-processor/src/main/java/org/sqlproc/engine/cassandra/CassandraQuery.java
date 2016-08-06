@@ -499,24 +499,23 @@ public class CassandraQuery implements SqlQuery {
             if (parameterValues.containsKey(name)) {
                 Object value = parameterValues.get(name);
                 if (type != null) {
-                    CassandraSqlType sqlType = (CassandraSqlType) type;
                     try {
                         if (value == null) {
                             if (logger.isTraceEnabled()) {
                                 logger.trace("setNull, ix=" + (ix + i) + ", type=" + type);
                             }
-                            bs.setToNull(ix + i);
+                            bs.setToNull(name);
                         } else {
                             if (logger.isTraceEnabled()) {
                                 logger.trace("setParameters, ix=" + (ix + i) + ", value=" + value);
                             }
-                            sqlType.set(bs, ix + i, value);
+                            type.set(bs, name, value);
                         }
                     } catch (ClassCastException cce) {
                         StringBuilder sb = new StringBuilder("Not compatible input value of type ")
                                 .append((value != null) ? value.getClass() : "null");
                         sb.append(". The JDBC type for ").append(name).append(" is ")
-                                .append((sqlType != null) ? sqlType.getClass() : "null");
+                                .append((type != null) ? type.getClass() : "null");
                         sb.append(".");
                         throw new SqlProcessorException(sb.toString(), cce);
                     }

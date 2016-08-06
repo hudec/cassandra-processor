@@ -31,7 +31,7 @@ public class CassandraTimeType extends CassandraDefaultType implements Cassandra
     }
 
     @Override
-    public void set(BoundStatement st, int index, Object value) {
+    public void set(BoundStatement st, String columnLabel, Object value) {
         // Long time;
         // if (value instanceof Time) {
         // time = ((Time) value).getTime();
@@ -41,6 +41,6 @@ public class CassandraTimeType extends CassandraDefaultType implements Cassandra
         // time = ((Date) value).getTime();
         // }
         // st.setTime(index, time);
-        st.set(index, (LocalTime) value, LocalTime.class);
+        st.set(columnLabel, (LocalTime) value, LocalTime.class);
     }
 }

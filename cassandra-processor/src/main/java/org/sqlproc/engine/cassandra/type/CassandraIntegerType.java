@@ -34,7 +34,7 @@ public class CassandraIntegerType extends CassandraDefaultType implements Cassan
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, int index, Object value) {
-        st.setInt(index, ((Integer) value).intValue());
+    public void set(BoundStatement st, String columnLabel, Object value) {
+        st.setInt(columnLabel, ((Integer) value).intValue());
     }
 }

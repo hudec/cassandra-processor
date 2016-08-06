@@ -42,5 +42,5 @@ public interface CassandraSqlType {
      *             if parameterIndex does not correspond to a parameter marker in the SQL statement; if a database
      *             access error occurs or this method is called on a closed <code>PreparedStatement</code>
      */
-    public abstract void set(BoundStatement st, int index, Object value);
+    public abstract void set(BoundStatement st, String columnLabel, Object value);
 }

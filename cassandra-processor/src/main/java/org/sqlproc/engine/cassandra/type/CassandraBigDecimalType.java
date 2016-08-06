@@ -35,7 +35,7 @@ public class CassandraBigDecimalType extends CassandraDefaultType implements Cas
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, int index, Object value) {
-        st.setDecimal(index, (BigDecimal) value);
+    public void set(BoundStatement st, String columnLabel, Object value) {
+        st.setDecimal(columnLabel, (BigDecimal) value);
     }
 }

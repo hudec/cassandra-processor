@@ -34,7 +34,7 @@ public class CassandraLongType extends CassandraDefaultType implements Cassandra
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, int index, Object value) {
-        st.setLong(index, ((Long) value).longValue());
+    public void set(BoundStatement st, String columnLabel, Object value) {
+        st.setLong(columnLabel, ((Long) value).longValue());
     }
 }

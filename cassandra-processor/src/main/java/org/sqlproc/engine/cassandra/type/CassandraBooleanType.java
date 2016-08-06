@@ -33,7 +33,7 @@ public class CassandraBooleanType extends CassandraDefaultType implements Cassan
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, int index, Object value) {
-        st.setBool(index, ((Boolean) value).booleanValue());
+    public void set(BoundStatement st, String columnLabel, Object value) {
+        st.setBool(columnLabel, ((Boolean) value).booleanValue());
     }
 }

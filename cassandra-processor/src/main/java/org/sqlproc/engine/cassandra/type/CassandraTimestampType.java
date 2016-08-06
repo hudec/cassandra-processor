@@ -35,7 +35,7 @@ public class CassandraTimestampType extends CassandraDefaultType implements Cass
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, int index, Object value) {
+    public void set(BoundStatement st, String columnLabel, Object value) {
         // Date date;
         // if (value instanceof Timestamp) {
         // date = new Date(((Timestamp) value).getTime());
@@ -45,7 +45,7 @@ public class CassandraTimestampType extends CassandraDefaultType implements Cass
         // date = (Date) value;
         // }
         // st.setTimestamp(index, date);
-        st.set(index, (Instant) value, Instant.class);
+        st.set(columnLabel, (Instant) value, Instant.class);
 
     }
 }

@@ -64,3 +64,10 @@ id
 ,'varchar'
 ,9
 );
+
+
+INSERT INTO types(
+id
+) values(
+2
+);

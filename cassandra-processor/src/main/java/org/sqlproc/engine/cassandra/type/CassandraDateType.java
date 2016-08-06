@@ -35,7 +35,7 @@ public class CassandraDateType extends CassandraDefaultType implements Cassandra
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, int index, Object value) {
+    public void set(BoundStatement st, String columnLabel, Object value) {
         // if (value instanceof java.sql.Date) {
         // st.setDate(index, LocalDate.fromMillisSinceEpoch(((java.sql.Date) value).getTime()));
         // } else if (value instanceof Date) {
@@ -43,6 +43,6 @@ public class CassandraDateType extends CassandraDefaultType implements Cassandra
         // } else {
         // st.setDate(index, (LocalDate) value);
         // }
-        st.set(index, (LocalDate) value, LocalDate.class);
+        st.set(columnLabel, (LocalDate) value, LocalDate.class);
     }
 }

@@ -33,7 +33,7 @@ public class CassandraShortType extends CassandraDefaultType implements Cassandr
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, int index, Object value) {
-        st.setShort(index, ((Short) value).shortValue());
+    public void set(BoundStatement st, String columnLabel, Object value) {
+        st.setShort(columnLabel, ((Short) value).shortValue());
     }
 }

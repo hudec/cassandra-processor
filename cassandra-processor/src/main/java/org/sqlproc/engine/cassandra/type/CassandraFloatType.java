@@ -33,7 +33,7 @@ public class CassandraFloatType extends CassandraDefaultType implements Cassandr
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, int index, Object value) {
-        st.setFloat(index, ((Float) value).floatValue());
+    public void set(BoundStatement st, String columnLabel, Object value) {
+        st.setFloat(columnLabel, ((Float) value).floatValue());
     }
 }

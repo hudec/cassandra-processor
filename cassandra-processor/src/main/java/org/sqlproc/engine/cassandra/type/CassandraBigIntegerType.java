@@ -35,7 +35,7 @@ public class CassandraBigIntegerType extends CassandraDefaultType implements Cas
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, int index, Object value) {
-        st.setVarint(index, (BigInteger) value);
+    public void set(BoundStatement st, String columnLabel, Object value) {
+        st.setVarint(columnLabel, (BigInteger) value);
     }
 }

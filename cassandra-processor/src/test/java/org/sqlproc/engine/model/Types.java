@@ -26,6 +26,13 @@ public class Types {
     private String t_varchar;
     private BigInteger t_varint;
 
+    public Types() {
+    }
+
+    public Types(Integer id) {
+        this.id = id;
+    }
+
     public Integer getId() {
         return id;
     }

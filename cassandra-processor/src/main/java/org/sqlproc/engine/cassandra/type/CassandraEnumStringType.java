@@ -33,7 +33,7 @@ public class CassandraEnumStringType extends CassandraDefaultType implements Cas
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, int index, Object value) {
-        st.setString(index, (String) value);
+    public void set(BoundStatement st, String columnLabel, Object value) {
+        st.setString(columnLabel, (String) value);
     }
 }
