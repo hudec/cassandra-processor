@@ -1,11 +1,15 @@
 package org.sqlproc.engine.impl;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.cassandraunit.CassandraCQLUnit;
@@ -45,18 +49,20 @@ public class TestBasic extends TestDatabase {
         System.out.println(list);
         assertThat(list.size(), is(1));
         assertThat(list.get(0), notNullValue());
+        assertThat(list.get(0).getId(), is(1));
         assertThat(list.get(0).getT_ascii(), is("ascii"));
         assertThat(list.get(0).getT_bigint(), is(2L));
         assertThat(list.get(0).getT_boolean(), is(true));
-        assertThat(list.get(0).getT_date().toString(), is("2016-07-26"));
+        assertThat(list.get(0).getT_date(), is(LocalDate.of(2016, 7, 26)));
         assertThat(list.get(0).getT_decimal(), is(BigDecimal.valueOf(3)));
         assertThat(list.get(0).getT_double(), is(4.0));
         assertThat(list.get(0).getT_float(), is(5.0F));
         assertThat(list.get(0).getT_int(), is(6));
         assertThat(list.get(0).getT_smallint(), is((short) 7));
         assertThat(list.get(0).getT_text(), is("text"));
-        assertThat(list.get(0).getT_time().toString(), is("10:11:12"));
-        assertThat(list.get(0).getT_timestamp().toString(), is("2016-07-26T08:11:12Z"));
+        assertThat(list.get(0).getT_time(), is(LocalTime.of(10, 11, 12)));
+        // TODO zone?
+        assertThat(list.get(0).getT_timestamp(), is(Instant.parse("2016-07-26T08:11:12Z")));
         assertThat(list.get(0).getT_tinyint(), is((byte) 8));
         assertThat(list.get(0).getT_varchar(), is("varchar"));
         assertThat(list.get(0).getT_varint(), is(BigInteger.valueOf(9)));
@@ -73,5 +79,23 @@ public class TestBasic extends TestDatabase {
         System.out.println(sql);
         List<Types> list = sqlEngine.query(session, Types.class, types);
         System.out.println(list);
+        assertThat(list.size(), is(1));
+        assertThat(list.get(0), notNullValue());
+        assertThat(list.get(0).getId(), is(2));
+        assertThat(list.get(0).getT_ascii(), nullValue());
+        assertThat(list.get(0).getT_bigint(), is(0L));
+        assertThat(list.get(0).getT_boolean(), is(false));
+        assertThat(list.get(0).getT_date(), nullValue());
+        assertThat(list.get(0).getT_decimal(), nullValue());
+        assertThat(list.get(0).getT_double(), is(0.0));
+        assertThat(list.get(0).getT_float(), is(0.0F));
+        assertThat(list.get(0).getT_int(), is(0));
+        assertThat(list.get(0).getT_smallint(), is((short) 0));
+        assertThat(list.get(0).getT_text(), nullValue());
+        assertThat(list.get(0).getT_time(), nullValue());
+        assertThat(list.get(0).getT_timestamp(), nullValue());
+        assertThat(list.get(0).getT_tinyint(), is((byte) 0));
+        assertThat(list.get(0).getT_varchar(), nullValue());
+        assertThat(list.get(0).getT_varint(), nullValue());
     }
 }
