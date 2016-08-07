@@ -3,6 +3,7 @@ package org.sqlproc.engine.impl;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 import java.math.BigDecimal;
@@ -47,7 +48,7 @@ public class TestBasic extends TestDatabase {
         System.out.println(sql);
         List<Types> list = sqlEngine.query(session, Types.class, types);
         System.out.println(list);
-        assertThat(list.size(), is(1));
+        assertThat(list, hasSize(1));
         assertThat(list.get(0), notNullValue());
         assertThat(list.get(0).getId(), is(1));
         assertThat(list.get(0).getT_ascii(), is("ascii"));
@@ -79,7 +80,7 @@ public class TestBasic extends TestDatabase {
         System.out.println(sql);
         List<Types> list = sqlEngine.query(session, Types.class, types);
         System.out.println(list);
-        assertThat(list.size(), is(1));
+        assertThat(list, hasSize(1));
         assertThat(list.get(0), notNullValue());
         assertThat(list.get(0).getId(), is(2));
         assertThat(list.get(0).getT_ascii(), nullValue());

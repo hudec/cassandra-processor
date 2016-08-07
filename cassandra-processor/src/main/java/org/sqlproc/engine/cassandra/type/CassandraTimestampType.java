@@ -46,6 +46,5 @@ public class CassandraTimestampType extends CassandraDefaultType implements Cass
         // }
         // st.setTimestamp(index, date);
         st.set(columnLabel, (Instant) value, Instant.class);
-
     }
 }

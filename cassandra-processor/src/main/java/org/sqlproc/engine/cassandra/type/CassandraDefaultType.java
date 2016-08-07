@@ -13,6 +13,9 @@ import org.sqlproc.engine.SqlRuntimeException;
 import org.sqlproc.engine.type.SqlMetaType;
 import org.sqlproc.engine.type.SqlTypeFactory;
 
+import com.datastax.driver.core.BoundStatement;
+import com.datastax.driver.core.Row;
+
 /**
  * The default META type for the JDBC stack. It's used in the case there's no explicit META type declaration in the META
  * SQL statements.
@@ -45,7 +48,7 @@ public class CassandraDefaultType implements SqlMetaType {
             if (type != null)
                 query.addScalar(dbName, type);
             else
-                throw new IllegalArgumentException();
+                query.addScalar(dbName, new CassandraClassType(attributeType));
         }
     }
 
@@ -112,7 +115,7 @@ public class CassandraDefaultType implements SqlMetaType {
 
         if (!(inputValue instanceof Collection)) {
             if (inputType.isEnum()) {
-                Class clazz = runtimeCtx.getEnumToClass(inputType);
+                Class<?> clazz = runtimeCtx.getEnumToClass(inputType);
                 if (clazz == String.class) {
                     runtimeCtx.getTypeFactory().getEnumStringType().setParameter(runtimeCtx, query, paramName,
                             inputValue, inputType, ingoreError);
@@ -120,18 +123,14 @@ public class CassandraDefaultType implements SqlMetaType {
                     runtimeCtx.getTypeFactory().getEnumIntegerType().setParameter(runtimeCtx, query, paramName,
                             inputValue, inputType, ingoreError);
                 } else {
-                    error(ingoreError, "Incorrect type based enum " + inputValue + " for " + paramName
-                            + ", META type is DEFAULT" + this);
-                    return;
+                    error(ingoreError, "Incorrect class enum type for " + paramName + ": " + clazz);
                 }
             } else {
                 SqlMetaType type = runtimeCtx.getTypeFactory().getMetaType(inputType);
                 if (type != null) {
                     type.setParameter(runtimeCtx, query, paramName, inputValue, inputType, ingoreError);
                 } else {
-                    error(ingoreError, "Incorrect default type " + inputValue + " for " + paramName
-                            + ", META type is DEFAULT" + this);
-                    return;
+                    query.setParameter(paramName, inputValue, new CassandraClassType(inputType));
                 }
             }
         } else {
@@ -147,15 +146,14 @@ public class CassandraDefaultType implements SqlMetaType {
                 if (o != null) {
                     vals.add(o);
                 } else {
-                    error(ingoreError, "Incorrect type based enum item value " + o + " for " + paramName
-                            + ", META type is DEFAULT" + this);
+                    error(ingoreError, "Null enum value for " + paramName + ": " + vals);
                     return;
                 }
             }
             if (isEnum) {
-                query.setParameterList(paramName, vals.toArray());
+                query.setParameter(paramName, vals, new CassandraClassType(inputType));
             } else {
-                query.setParameterList(paramName, ((Collection) inputValue).toArray());
+                query.setParameter(paramName, inputValue, new CassandraClassType(inputType));
             }
         }
     }
@@ -165,6 +163,26 @@ public class CassandraDefaultType implements SqlMetaType {
             logger.error(msg);
         } else {
             throw new SqlRuntimeException(msg);
+        }
+    }
+
+    public static class CassandraClassType<V> implements CassandraSqlType {
+
+        Class<V> inputType;
+
+        public CassandraClassType(Class<V> inputType) {
+            super();
+            this.inputType = inputType;
+        }
+
+        @Override
+        public Object get(Row row, String columnLabel) {
+            return row.get(columnLabel, inputType);
+        }
+
+        @Override
+        public void set(BoundStatement st, String columnLabel, Object value) {
+            st.set(columnLabel, (V) value, inputType);
         }
     }
 }

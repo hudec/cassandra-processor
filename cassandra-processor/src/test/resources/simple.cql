@@ -8,6 +8,7 @@ t_decimal decimal,
 t_double double, 
 t_float float, 
 t_int int, 
+t_list_text list<text>,
 t_smallint smallint, 
 t_text text, 
 t_time time, 
@@ -39,6 +40,7 @@ id
 ,t_double
 ,t_float
 ,t_int
+,t_list_text
 ,t_smallint
 ,t_text
 ,t_time
@@ -56,6 +58,7 @@ id
 ,4
 ,5
 ,6
+,['list1','list2']
 ,7
 ,'text'
 ,'10:11:12'

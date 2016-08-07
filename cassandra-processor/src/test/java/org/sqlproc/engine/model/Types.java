@@ -5,6 +5,7 @@ import java.math.BigInteger;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 
 public class Types {
 
@@ -18,6 +19,7 @@ public class Types {
     private Double t_double;
     private Float t_float;
     private Integer t_int;
+    private List<String> t_list_text;
     private Short t_smallint;
     private String t_text;
     private LocalTime t_time;
@@ -105,6 +107,14 @@ public class Types {
         this.t_int = t_int;
     }
 
+    public List<String> getT_list_text() {
+        return t_list_text;
+    }
+
+    public void setT_list_text(List<String> t_list_text) {
+        this.t_list_text = t_list_text;
+    }
+
     public Short getT_smallint() {
         return t_smallint;
     }
@@ -165,8 +175,8 @@ public class Types {
     public String toString() {
         return "Types [id=" + id + ", t_ascii=" + t_ascii + ", t_bigint=" + t_bigint + ", t_boolean=" + t_boolean
                 + ", t_date=" + t_date + ", t_decimal=" + t_decimal + ", t_double=" + t_double + ", t_float=" + t_float
-                + ", t_int=" + t_int + ", t_smallint=" + t_smallint + ", t_text=" + t_text + ", t_time=" + t_time
-                + ", t_timestamp=" + t_timestamp + ", t_tinyint=" + t_tinyint + ", t_varchar=" + t_varchar
-                + ", t_varint=" + t_varint + "]";
+                + ", t_int=" + t_int + ", t_list_text=" + t_list_text + ", t_smallint=" + t_smallint + ", t_text="
+                + t_text + ", t_time=" + t_time + ", t_timestamp=" + t_timestamp + ", t_tinyint=" + t_tinyint
+                + ", t_varchar=" + t_varchar + ", t_varint=" + t_varint + "]";
     }
 }
