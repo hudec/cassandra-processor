@@ -22,7 +22,7 @@ public class CassandraLongType extends CassandraDefaultType implements Cassandra
      * {@inheritDoc}
      */
     @Override
-    public Object get(Row row, String columnLabel) {
+    public Object get(Row row, String columnLabel, Class<?>... moreTypes) {
         if (Character.isDigit(columnLabel.charAt(0))) {
             return new Long(row.getLong(Integer.parseInt(columnLabel)));
         } else {
@@ -34,7 +34,7 @@ public class CassandraLongType extends CassandraDefaultType implements Cassandra
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value) {
+    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
         st.setLong(columnLabel, ((Long) value).longValue());
     }
 }

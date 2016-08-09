@@ -22,7 +22,7 @@ public class CassandraEnumStringType extends CassandraDefaultType implements Cas
      * {@inheritDoc}
      */
     @Override
-    public Object get(Row row, String columnLabel) {
+    public Object get(Row row, String columnLabel, Class<?>... moreTypes) {
         if (Character.isDigit(columnLabel.charAt(0)))
             return row.getString(Integer.parseInt(columnLabel));
         else
@@ -33,7 +33,7 @@ public class CassandraEnumStringType extends CassandraDefaultType implements Cas
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value) {
+    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
         st.setString(columnLabel, (String) value);
     }
 }

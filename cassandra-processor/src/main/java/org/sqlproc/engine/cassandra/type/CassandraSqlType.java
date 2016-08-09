@@ -26,7 +26,7 @@ public interface CassandraSqlType {
      *                if the columnLabel is not valid; if a database access error occurs or this method is called on a
      *                closed result set
      */
-    public abstract Object get(Row row, String columnLabel);
+    public abstract Object get(Row row, String columnLabel, Class<?>... moreTypes);
 
     /**
      * Sets the designated parameter to the given Java value. The JDBC driver converts this to the appropriate SQL type
@@ -42,5 +42,5 @@ public interface CassandraSqlType {
      *             if parameterIndex does not correspond to a parameter marker in the SQL statement; if a database
      *             access error occurs or this method is called on a closed <code>PreparedStatement</code>
      */
-    public abstract void set(BoundStatement st, String columnLabel, Object value);
+    public abstract void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes);
 }

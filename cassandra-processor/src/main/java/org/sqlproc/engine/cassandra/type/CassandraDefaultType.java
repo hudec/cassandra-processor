@@ -40,15 +40,15 @@ public class CassandraDefaultType implements SqlMetaType {
     /**
      * {@inheritDoc}
      */
-    public void addScalar(SqlTypeFactory typeFactory, SqlQuery query, String dbName, Class<?> attributeType) {
+    public void addScalar(SqlTypeFactory typeFactory, SqlQuery query, String dbName, Class<?>... attributeTypes) {
         if (getProviderSqlType() != null) {
             query.addScalar(dbName, getProviderSqlType());
         } else {
-            Object type = typeFactory.getMetaType(attributeType);
+            Object type = (attributeTypes.length > 0) ? typeFactory.getMetaType(attributeTypes[0]) : null;
             if (type != null)
                 query.addScalar(dbName, type);
             else
-                query.addScalar(dbName, new CassandraClassType(attributeType));
+                query.addScalar(dbName, new CassandraClassType(attributeTypes));
         }
     }
 
@@ -168,21 +168,21 @@ public class CassandraDefaultType implements SqlMetaType {
 
     public static class CassandraClassType<V> implements CassandraSqlType {
 
-        Class<V> inputType;
+        Class<V>[] inputTypes;
 
-        public CassandraClassType(Class<V> inputType) {
+        public CassandraClassType(Class<V>... inputTypes) {
             super();
-            this.inputType = inputType;
+            this.inputTypes = inputTypes;
         }
 
         @Override
-        public Object get(Row row, String columnLabel) {
-            return row.get(columnLabel, inputType);
+        public Object get(Row row, String columnLabel, Class<?>... moreTypes) {
+            return row.get(columnLabel, inputTypes[0]);
         }
 
         @Override
-        public void set(BoundStatement st, String columnLabel, Object value) {
-            st.set(columnLabel, (V) value, inputType);
+        public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
+            st.set(columnLabel, (V) value, inputTypes[0]);
         }
     }
 }

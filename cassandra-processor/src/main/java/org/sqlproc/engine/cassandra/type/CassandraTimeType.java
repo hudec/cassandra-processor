@@ -21,7 +21,7 @@ public class CassandraTimeType extends CassandraDefaultType implements Cassandra
     }
 
     @Override
-    public Object get(Row row, String columnLabel) {
+    public Object get(Row row, String columnLabel, Class<?>... moreTypes) {
         if (Character.isDigit(columnLabel.charAt(0)))
             return row.get(Integer.parseInt(columnLabel), LocalTime.class);
         else {
@@ -31,7 +31,7 @@ public class CassandraTimeType extends CassandraDefaultType implements Cassandra
     }
 
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value) {
+    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
         // Long time;
         // if (value instanceof Time) {
         // time = ((Time) value).getTime();

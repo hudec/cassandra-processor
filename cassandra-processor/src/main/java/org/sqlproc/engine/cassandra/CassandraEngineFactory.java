@@ -1,9 +1,10 @@
 package org.sqlproc.engine.cassandra;
 
+import org.sqlproc.engine.SqlDefaultFactory;
 import org.sqlproc.engine.SqlEngineFactory;
+import org.sqlproc.engine.SqlFeature;
 import org.sqlproc.engine.SqlProcessorLoader;
 import org.sqlproc.engine.cassandra.type.CassandraTypeFactory;
-import org.sqlproc.engine.SqlDefaultFactory;
 
 /**
  * The implementation of the {@link SqlEngineFactory} optimized for the JDBC stack.
@@ -60,6 +61,7 @@ public class CassandraEngineFactory extends SqlDefaultFactory {
     public CassandraEngineFactory(boolean lazyInit) {
         super(lazyInit);
         setJdbc(true);
+        setFilter(SqlFeature.CASSANDRA);
         setTypeFactory(CassandraTypeFactory.getInstance());
     }
 

@@ -24,7 +24,7 @@ public class CassandraDateType extends CassandraDefaultType implements Cassandra
      * {@inheritDoc}
      */
     @Override
-    public Object get(Row row, String columnLabel) {
+    public Object get(Row row, String columnLabel, Class<?>... moreTypes) {
         if (Character.isDigit(columnLabel.charAt(0)))
             return row.get(Integer.parseInt(columnLabel), LocalDate.class);
         else
@@ -35,7 +35,7 @@ public class CassandraDateType extends CassandraDefaultType implements Cassandra
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value) {
+    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
         // if (value instanceof java.sql.Date) {
         // st.setDate(index, LocalDate.fromMillisSinceEpoch(((java.sql.Date) value).getTime()));
         // } else if (value instanceof Date) {

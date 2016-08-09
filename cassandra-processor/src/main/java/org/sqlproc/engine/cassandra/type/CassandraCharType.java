@@ -19,7 +19,7 @@ public class CassandraCharType extends CassandraDefaultType implements Cassandra
     }
 
     @Override
-    public Object get(Row row, String columnLabel) {
+    public Object get(Row row, String columnLabel, Class<?>... moreTypes) {
         String str;
         if (Character.isDigit(columnLabel.charAt(0)))
             str = row.getString(Integer.parseInt(columnLabel));
@@ -33,7 +33,7 @@ public class CassandraCharType extends CassandraDefaultType implements Cassandra
     }
 
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value) {
+    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
         st.setString(columnLabel, (value).toString());
     }
 }

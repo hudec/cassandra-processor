@@ -22,7 +22,7 @@ public class CassandraIntegerType extends CassandraDefaultType implements Cassan
      * {@inheritDoc}
      */
     @Override
-    public Object get(Row row, String columnLabel) {
+    public Object get(Row row, String columnLabel, Class<?>... moreTypes) {
         if (Character.isDigit(columnLabel.charAt(0))) {
             return new Integer(row.getInt(Integer.parseInt(columnLabel)));
         } else {
@@ -34,7 +34,7 @@ public class CassandraIntegerType extends CassandraDefaultType implements Cassan
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value) {
+    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
         st.setInt(columnLabel, ((Integer) value).intValue());
     }
 }

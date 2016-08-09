@@ -21,7 +21,7 @@ public class CassandraByteArrayType extends CassandraDefaultType implements Cass
     }
 
     @Override
-    public Object get(Row row, String columnLabel) {
+    public Object get(Row row, String columnLabel, Class<?>... moreTypes) {
         if (Character.isDigit(columnLabel.charAt(0)))
             return row.getBytes(Integer.parseInt(columnLabel));
         else
@@ -29,7 +29,7 @@ public class CassandraByteArrayType extends CassandraDefaultType implements Cass
     }
 
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value) {
+    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
         if (value instanceof byte[]) {
             ByteBuffer bf = ByteBuffer.wrap((byte[]) value);
             st.setBytes(columnLabel, bf);

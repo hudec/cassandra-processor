@@ -22,7 +22,7 @@ public class CassandraBooleanType extends CassandraDefaultType implements Cassan
      * {@inheritDoc}
      */
     @Override
-    public Object get(Row row, String columnLabel) {
+    public Object get(Row row, String columnLabel, Class<?>... moreTypes) {
         if (Character.isDigit(columnLabel.charAt(0)))
             return row.getBool(Integer.parseInt(columnLabel)) ? Boolean.TRUE : Boolean.FALSE;
         else
@@ -33,7 +33,7 @@ public class CassandraBooleanType extends CassandraDefaultType implements Cassan
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value) {
+    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
         st.setBool(columnLabel, ((Boolean) value).booleanValue());
     }
 }

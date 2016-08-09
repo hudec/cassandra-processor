@@ -55,6 +55,7 @@ public class CassandraQuery implements SqlQuery {
      * The collection of all scalars types.
      */
     Map<String, CassandraSqlType> scalarTypes = new HashMap<String, CassandraSqlType>();
+    Map<String, Class<?>[]> scalarMoreTypes = new HashMap<String, Class<?>[]>();
     /**
      * The collection of all parameters (input value declarations).
      */
@@ -417,12 +418,13 @@ public class CassandraQuery implements SqlQuery {
      * {@inheritDoc}
      */
     @Override
-    public SqlQuery addScalar(String columnAlias, Object type) {
+    public SqlQuery addScalar(String columnAlias, Object type, Class<?>... moreTypes) {
         // TODO, right now just a workaround
         if (type == null || !(type instanceof CassandraSqlType))
             throw new IllegalArgumentException();
         scalars.add(columnAlias);
         scalarTypes.put(columnAlias, (CassandraSqlType) type);
+        scalarMoreTypes.put(columnAlias, (moreTypes != null) ? moreTypes : new Class<?>[0]);
         return this;
     }
 
@@ -622,7 +624,7 @@ public class CassandraQuery implements SqlQuery {
                 Object type = scalarTypes.get(name);
                 Object value = null;
                 if (type != null && type instanceof CassandraSqlType) {
-                    value = ((CassandraSqlType) type).get(data, name);
+                    value = ((CassandraSqlType) type).get(data, name, scalarMoreTypes.get(name));
                 } else {
                     // TODO
                     StringBuilder sb = new StringBuilder("Not supported output value of type " + type).append(".");

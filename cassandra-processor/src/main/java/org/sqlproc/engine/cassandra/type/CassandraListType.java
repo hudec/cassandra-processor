@@ -4,11 +4,11 @@ import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.Row;
 
 /**
- * The JDBC META type BYTE.
+ * The JDBC META type TIMESTAMP.
  * 
  * @author <a href="mailto:Vladimir.Hudec@gmail.com">Vladimir Hudec</a>
  */
-public class CassandraByteType extends CassandraDefaultType implements CassandraSqlType {
+public class CassandraListType extends CassandraDefaultType implements CassandraSqlType {
 
     /**
      * {@inheritDoc}
@@ -23,10 +23,12 @@ public class CassandraByteType extends CassandraDefaultType implements Cassandra
      */
     @Override
     public Object get(Row row, String columnLabel, Class<?>... moreTypes) {
+        if (moreTypes == null || moreTypes.length == 0)
+            throw new IllegalArgumentException("Missing generic type for Cassandra list");
         if (Character.isDigit(columnLabel.charAt(0)))
-            return new Byte(row.getByte(Integer.parseInt(columnLabel)));
+            return row.getList(Integer.parseInt(columnLabel), moreTypes[0]);
         else
-            return new Byte(row.getByte(columnLabel));
+            return row.getList(columnLabel, moreTypes[0]);
     }
 
     /**
@@ -34,6 +36,8 @@ public class CassandraByteType extends CassandraDefaultType implements Cassandra
      */
     @Override
     public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
-        st.setByte(columnLabel, ((Byte) value).byteValue());
+        if (moreTypes == null || moreTypes.length == 0)
+            throw new IllegalArgumentException("Missing generic type for Cassandra list");
+        st.setList(columnLabel, (java.util.List) value, moreTypes[0]);
     }
 }

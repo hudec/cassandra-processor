@@ -97,6 +97,10 @@ public class CassandraTypeFactory implements SqlTypeFactory {
     /**
      * Singleton instance of String based enumeration type.
      */
+    static final SqlMetaType LIST = new CassandraListType();
+    /**
+     * Singleton instance of String based enumeration type.
+     */
     static final SqlMetaType LONG = new CassandraLongType();
     /**
      * Singleton instance of String based enumeration type.
@@ -136,7 +140,7 @@ public class CassandraTypeFactory implements SqlTypeFactory {
      * Singleton instances of generic types.
      */
     static final SqlMetaType[] TYPES = { BIG_DECIMAL, BIG_INTEGER, BOOLEAN, BYTE_ARRAY, BYTE, CHAR, DATE, DOUBLE,
-            ENUM_INT, ENUM_STRING, FLOAT, INTEGER, LONG, SHORT, STRING, TIMESTAMP, TIME };
+            ENUM_INT, ENUM_STRING, FLOAT, INTEGER, LIST, LONG, SHORT, STRING, TIMESTAMP, TIME };
 
     /**
      * The immutable map between the Java class types and the internal types.
@@ -167,6 +171,7 @@ public class CassandraTypeFactory implements SqlTypeFactory {
         CLASS_TO_TYPE_MAP.put(Float.class, FLOAT);
         CLASS_TO_TYPE_MAP.put(int.class, INTEGER);
         CLASS_TO_TYPE_MAP.put(Integer.class, INTEGER);
+        CLASS_TO_TYPE_MAP.put(java.util.List.class, LIST);
         CLASS_TO_TYPE_MAP.put(long.class, LONG);
         CLASS_TO_TYPE_MAP.put(Long.class, LONG);
         CLASS_TO_TYPE_MAP.put(short.class, SHORT);
@@ -190,6 +195,7 @@ public class CassandraTypeFactory implements SqlTypeFactory {
         META_TO_TYPE_MAP.put("FLOAT", FLOAT);
         META_TO_TYPE_MAP.put("INT", INTEGER);
         META_TO_TYPE_MAP.put("INTEGER", INTEGER);
+        META_TO_TYPE_MAP.put("LIST", LIST);
         META_TO_TYPE_MAP.put("LONG", LONG);
         META_TO_TYPE_MAP.put("SHORT", SHORT);
         META_TO_TYPE_MAP.put("STRING", STRING);
