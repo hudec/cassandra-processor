@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.cassandraunit.CassandraCQLUnit;
 import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
@@ -70,9 +71,11 @@ public class TestBasic extends TestDatabase {
         assertThat(list.get(0).getT_time(), is(LocalTime.of(10, 11, 12)));
         // TODO zone?
         assertThat(list.get(0).getT_timestamp(), is(Instant.parse("2016-07-26T08:11:12Z")));
+        assertThat(list.get(0).getT_timeuuid(), is(UUID.fromString("e12229de-5eda-11e6-a6a7-cc3d827302bc")));
         assertThat(list.get(0).getT_tinyint(), is((byte) 8));
         assertThat(list.get(0).getT_varchar(), is("varchar"));
         assertThat(list.get(0).getT_varint(), is(BigInteger.valueOf(9)));
+        assertThat(list.get(0).getT_uuid(), is(UUID.fromString("a9c9b8ae-4911-4bf4-a855-4b5f634d0664")));
     }
 
     @Test
@@ -106,8 +109,10 @@ public class TestBasic extends TestDatabase {
         assertThat(list.get(0).getT_text(), nullValue());
         assertThat(list.get(0).getT_time(), nullValue());
         assertThat(list.get(0).getT_timestamp(), nullValue());
+        assertThat(list.get(0).getT_timeuuid(), nullValue());
         assertThat(list.get(0).getT_tinyint(), is((byte) 0));
         assertThat(list.get(0).getT_varchar(), nullValue());
         assertThat(list.get(0).getT_varint(), nullValue());
+        assertThat(list.get(0).getT_uuid(), nullValue());
     }
 }

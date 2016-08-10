@@ -127,6 +127,10 @@ public class CassandraTypeFactory implements SqlTypeFactory {
      */
     static final SqlMetaType TIME = new CassandraTimeType();
     /**
+     * Singleton instance of String based enumeration type.
+     */
+    static final SqlMetaType UUID = new CassandraUUIDType();
+    /**
      * Singleton instance of auto-generated identity type.
      */
     static final SqlMetaType IDENTITY = new SqlIdentityType() {
@@ -148,7 +152,7 @@ public class CassandraTypeFactory implements SqlTypeFactory {
      * Singleton instances of generic types.
      */
     static final SqlMetaType[] TYPES = { BIG_DECIMAL, BIG_INTEGER, BOOLEAN, BYTE_ARRAY, BYTE, CHAR, DATE, DOUBLE,
-            ENUM_INT, ENUM_STRING, FLOAT, INTEGER, LIST, LONG, MAP, SET, SHORT, STRING, TIMESTAMP, TIME };
+            ENUM_INT, ENUM_STRING, FLOAT, INTEGER, LIST, LONG, MAP, SET, SHORT, STRING, TIMESTAMP, TIME, UUID };
 
     /**
      * The immutable map between the Java class types and the internal types.
@@ -189,6 +193,7 @@ public class CassandraTypeFactory implements SqlTypeFactory {
         CLASS_TO_TYPE_MAP.put(String.class, STRING);
         CLASS_TO_TYPE_MAP.put(Instant.class, TIMESTAMP);
         CLASS_TO_TYPE_MAP.put(LocalTime.class, TIME);
+        CLASS_TO_TYPE_MAP.put(java.util.UUID.class, UUID);
 
         META_TO_TYPE_MAP.put("BIGDEC", BIG_DECIMAL);
         META_TO_TYPE_MAP.put("BIGDECIMAL", BIG_DECIMAL);
@@ -215,6 +220,7 @@ public class CassandraTypeFactory implements SqlTypeFactory {
         META_TO_TYPE_MAP.put("TIMESTAMP", TIMESTAMP);
         META_TO_TYPE_MAP.put("STAMP", TIMESTAMP);
         META_TO_TYPE_MAP.put("TIME", TIME);
+        META_TO_TYPE_MAP.put("UUID", UUID);
 
         CLASS_TO_TYPE_MAP = Collections.unmodifiableMap(CLASS_TO_TYPE_MAP);
         META_TO_TYPE_MAP = Collections.unmodifiableMap(META_TO_TYPE_MAP);

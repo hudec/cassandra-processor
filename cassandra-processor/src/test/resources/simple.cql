@@ -17,18 +17,18 @@ t_smallint smallint,
 t_text text, 
 t_time time, 
 t_timestamp timestamp, 
+t_timeuuid timeuuid, 
 t_tinyint tinyint, 
 t_varchar varchar, 
 t_varint varint, 
+t_uuid uuid, 
 PRIMARY KEY(id));
 
 /*
 t_blob blob, 
 t_counter counter, 
 t_inet inet, 
-t_timeuuid timeuuid, 
 t_tuple tuple, 
-t_uuid uuid, 
 */
 
 INSERT INTO types(
@@ -50,9 +50,11 @@ id
 ,t_text
 ,t_time
 ,t_timestamp
+,t_timeuuid
 ,t_tinyint
 ,t_varchar
 ,t_varint 
+,t_uuid
 ) values(
 1
 ,'ascii'
@@ -72,9 +74,11 @@ id
 ,'text'
 ,'10:11:12'
 ,'2016-07-26 10:11:12'
+,e12229de-5eda-11e6-a6a7-cc3d827302bc
 ,8
 ,'varchar'
 ,9
+,a9c9b8ae-4911-4bf4-a855-4b5f634d0664
 );
 
 

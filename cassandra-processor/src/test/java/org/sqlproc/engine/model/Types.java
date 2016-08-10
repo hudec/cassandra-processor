@@ -8,6 +8,7 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 public class Types {
 
@@ -30,9 +31,11 @@ public class Types {
     private String t_text;
     private LocalTime t_time;
     private Instant t_timestamp;
+    private UUID t_timeuuid;
     private Byte t_tinyint;
     private String t_varchar;
     private BigInteger t_varint;
+    private UUID t_uuid;
 
     public Types() {
     }
@@ -185,12 +188,28 @@ public class Types {
         this.t_timestamp = t_timestamp;
     }
 
+    public UUID getT_timeuuid() {
+        return t_timeuuid;
+    }
+
+    public void setT_timeuuid(UUID t_timeuuid) {
+        this.t_timeuuid = t_timeuuid;
+    }
+
     public Byte getT_tinyint() {
         return t_tinyint;
     }
 
     public void setT_tinyint(Byte t_tinyint) {
         this.t_tinyint = t_tinyint;
+    }
+
+    public UUID getT_uuid() {
+        return t_uuid;
+    }
+
+    public void setT_uuid(UUID t_uuid) {
+        this.t_uuid = t_uuid;
     }
 
     public String getT_varchar() {
@@ -215,7 +234,8 @@ public class Types {
                 + ", t_date=" + t_date + ", t_decimal=" + t_decimal + ", t_double=" + t_double + ", t_float=" + t_float
                 + ", t_int=" + t_int + ", t_list_int=" + t_list_int + ", t_map=" + t_map + ", t_list_text="
                 + t_list_text + ", t_set_int=" + t_set_int + ", t_set_text=" + t_set_text + ", t_smallint=" + t_smallint
-                + ", t_text=" + t_text + ", t_time=" + t_time + ", t_timestamp=" + t_timestamp + ", t_tinyint="
-                + t_tinyint + ", t_varchar=" + t_varchar + ", t_varint=" + t_varint + "]";
+                + ", t_text=" + t_text + ", t_time=" + t_time + ", t_timestamp=" + t_timestamp + ", t_timeuuid="
+                + t_timeuuid + ", t_tinyint=" + t_tinyint + ", t_varchar=" + t_varchar + ", t_varint=" + t_varint
+                + ", t_uuid=" + t_uuid + "]";
     }
 }
