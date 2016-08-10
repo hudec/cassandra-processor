@@ -13,7 +13,10 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import org.cassandraunit.CassandraCQLUnit;
 import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
@@ -56,6 +59,12 @@ public class TestBasic extends TestDatabase {
         assertThat(list.get(0).getT_int(), is(6));
         assertThat(list.get(0).getT_list_int(), equalTo(Arrays.asList(101, 102)));
         assertThat(list.get(0).getT_list_text(), equalTo(Arrays.asList("list1", "list2")));
+        Map<Integer, String> map = new HashMap<>();
+        map.put(201, "map1");
+        map.put(202, "map2");
+        assertThat(list.get(0).getT_map(), equalTo(map));
+        assertThat(list.get(0).getT_set_int(), equalTo(new HashSet<>(Arrays.asList(301, 302))));
+        assertThat(list.get(0).getT_set_text(), equalTo(new HashSet<>(Arrays.asList("set1", "set2"))));
         assertThat(list.get(0).getT_smallint(), is((short) 7));
         assertThat(list.get(0).getT_text(), is("text"));
         assertThat(list.get(0).getT_time(), is(LocalTime.of(10, 11, 12)));
@@ -90,6 +99,9 @@ public class TestBasic extends TestDatabase {
         assertThat(list.get(0).getT_int(), is(0));
         assertThat(list.get(0).getT_list_int(), hasSize(0));
         assertThat(list.get(0).getT_list_text(), hasSize(0));
+        assertThat(list.get(0).getT_map().size(), is(0));
+        assertThat(list.get(0).getT_set_int(), hasSize(0));
+        assertThat(list.get(0).getT_set_text(), hasSize(0));
         assertThat(list.get(0).getT_smallint(), is((short) 0));
         assertThat(list.get(0).getT_text(), nullValue());
         assertThat(list.get(0).getT_time(), nullValue());

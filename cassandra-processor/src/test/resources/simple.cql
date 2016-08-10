@@ -10,6 +10,9 @@ t_float float,
 t_int int, 
 t_list_int list<int>,
 t_list_text list<text>,
+t_map map<int,text>, 
+t_set_int set<int>, 
+t_set_text set<text>, 
 t_smallint smallint, 
 t_text text, 
 t_time time, 
@@ -23,9 +26,6 @@ PRIMARY KEY(id));
 t_blob blob, 
 t_counter counter, 
 t_inet inet, 
-t_list list, 
-t_map map, 
-t_set set, 
 t_timeuuid timeuuid, 
 t_tuple tuple, 
 t_uuid uuid, 
@@ -43,6 +43,9 @@ id
 ,t_int
 ,t_list_int
 ,t_list_text
+,t_map
+,t_set_int
+,t_set_text
 ,t_smallint
 ,t_text
 ,t_time
@@ -61,7 +64,10 @@ id
 ,5
 ,6
 ,[101,102]
-,['list1','list2']
+,['list1', 'list2']
+,{201 : 'map1', 202 : 'map2'}
+,{301, 302}
+,{'set1', 'set2'}
 ,7
 ,'text'
 ,'10:11:12'
