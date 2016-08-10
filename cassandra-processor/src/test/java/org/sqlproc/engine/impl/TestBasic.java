@@ -54,6 +54,7 @@ public class TestBasic extends TestDatabase {
         assertThat(list.get(0).getT_double(), is(4.0));
         assertThat(list.get(0).getT_float(), is(5.0F));
         assertThat(list.get(0).getT_int(), is(6));
+        assertThat(list.get(0).getT_list_int(), equalTo(Arrays.asList(101, 102)));
         assertThat(list.get(0).getT_list_text(), equalTo(Arrays.asList("list1", "list2")));
         assertThat(list.get(0).getT_smallint(), is((short) 7));
         assertThat(list.get(0).getT_text(), is("text"));
@@ -87,6 +88,7 @@ public class TestBasic extends TestDatabase {
         assertThat(list.get(0).getT_double(), is(0.0));
         assertThat(list.get(0).getT_float(), is(0.0F));
         assertThat(list.get(0).getT_int(), is(0));
+        assertThat(list.get(0).getT_list_int(), hasSize(0));
         assertThat(list.get(0).getT_list_text(), hasSize(0));
         assertThat(list.get(0).getT_smallint(), is((short) 0));
         assertThat(list.get(0).getT_text(), nullValue());

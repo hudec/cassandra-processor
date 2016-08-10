@@ -8,6 +8,7 @@ t_decimal decimal,
 t_double double, 
 t_float float, 
 t_int int, 
+t_list_int list<int>,
 t_list_text list<text>,
 t_smallint smallint, 
 t_text text, 
@@ -40,6 +41,7 @@ id
 ,t_double
 ,t_float
 ,t_int
+,t_list_int
 ,t_list_text
 ,t_smallint
 ,t_text
@@ -58,6 +60,7 @@ id
 ,4
 ,5
 ,6
+,[101,102]
 ,['list1','list2']
 ,7
 ,'text'
