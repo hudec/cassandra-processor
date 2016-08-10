@@ -5,11 +5,9 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.sqlproc.engine.SqlFeature;
 import org.sqlproc.engine.SqlProcessorException;
 import org.sqlproc.engine.SqlQuery;
 import org.sqlproc.engine.SqlRuntimeContext;
@@ -350,18 +348,6 @@ public class CassandraQuery implements SqlQuery {
         return 0;
     }
 
-    private boolean isSetJDBCIdentity() {
-        for (String identityName : identities) {
-            IdentitySetter identitySetter = identitySetters.get(identityName);
-            if (identitySetter.getIdentitySelect().equals(SqlFeature.JDBC.name())) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    static final Pattern CALL = Pattern.compile("\\s*\\{?\\s*(\\?)?\\s*=?\\s*call\\s*(.*?)\\s*}?\\s*");
-
     /**
      * {@inheritDoc}
      */
@@ -375,18 +361,7 @@ public class CassandraQuery implements SqlQuery {
      */
     @Override
     public Object callUnique(final SqlRuntimeContext runtimeCtx) throws SqlProcessorException {
-        List list = callList(runtimeCtx);
-        int size = list.size();
-        if (size == 0)
-            return null;
-        Object first = list.get(0);
-        for (int i = 1; i < size; i++) {
-            if (list.get(i) != first) {
-                throw new SqlProcessorException(
-                        "There's no unique result, the number of returned rows is " + list.size());
-            }
-        }
-        return first;
+        throw new UnsupportedOperationException();
     }
 
     /**

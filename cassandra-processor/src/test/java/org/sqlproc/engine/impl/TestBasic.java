@@ -1,5 +1,6 @@
 package org.sqlproc.engine.impl;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -11,6 +12,7 @@ import java.math.BigInteger;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 
 import org.cassandraunit.CassandraCQLUnit;
@@ -21,7 +23,6 @@ import org.sqlproc.engine.SqlQueryEngine;
 import org.sqlproc.engine.cassandra.CassandraSimpleSession;
 import org.sqlproc.engine.model.Types;
 
-import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.extras.codecs.jdk8.InstantCodec;
 import com.datastax.driver.extras.codecs.jdk8.LocalDateCodec;
 import com.datastax.driver.extras.codecs.jdk8.LocalTimeCodec;
@@ -30,12 +31,6 @@ public class TestBasic extends TestDatabase {
 
     @Rule
     public CassandraCQLUnit basicCQLUnit = new CassandraCQLUnit(new ClassPathCQLDataSet("simple.cql", "basic"));
-
-    @Test
-    public void testCQL() {
-        ResultSet result = basicCQLUnit.session.execute("select * from types WHERE id=1");
-        assertThat(result.iterator().next().getString("t_ascii"), is("ascii"));
-    }
 
     @Test
     public void testBasic() {
@@ -59,6 +54,7 @@ public class TestBasic extends TestDatabase {
         assertThat(list.get(0).getT_double(), is(4.0));
         assertThat(list.get(0).getT_float(), is(5.0F));
         assertThat(list.get(0).getT_int(), is(6));
+        assertThat(list.get(0).getT_list_text(), equalTo(Arrays.asList("list1", "list2")));
         assertThat(list.get(0).getT_smallint(), is((short) 7));
         assertThat(list.get(0).getT_text(), is("text"));
         assertThat(list.get(0).getT_time(), is(LocalTime.of(10, 11, 12)));
@@ -91,6 +87,7 @@ public class TestBasic extends TestDatabase {
         assertThat(list.get(0).getT_double(), is(0.0));
         assertThat(list.get(0).getT_float(), is(0.0F));
         assertThat(list.get(0).getT_int(), is(0));
+        assertThat(list.get(0).getT_list_text(), hasSize(0));
         assertThat(list.get(0).getT_smallint(), is((short) 0));
         assertThat(list.get(0).getT_text(), nullValue());
         assertThat(list.get(0).getT_time(), nullValue());

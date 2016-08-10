@@ -46,7 +46,7 @@ public class CassandraDefaultType implements SqlMetaType {
         } else {
             Object type = (attributeTypes.length > 0) ? typeFactory.getMetaType(attributeTypes[0]) : null;
             if (type != null)
-                query.addScalar(dbName, type);
+                query.addScalar(dbName, type, attributeTypes);
             else
                 query.addScalar(dbName, new CassandraClassType(attributeTypes));
         }

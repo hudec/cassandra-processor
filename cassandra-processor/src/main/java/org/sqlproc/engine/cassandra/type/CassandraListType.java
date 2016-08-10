@@ -23,12 +23,12 @@ public class CassandraListType extends CassandraDefaultType implements Cassandra
      */
     @Override
     public Object get(Row row, String columnLabel, Class<?>... moreTypes) {
-        if (moreTypes == null || moreTypes.length == 0)
+        if (moreTypes == null || moreTypes.length < 1)
             throw new IllegalArgumentException("Missing generic type for Cassandra list");
         if (Character.isDigit(columnLabel.charAt(0)))
-            return row.getList(Integer.parseInt(columnLabel), moreTypes[0]);
+            return row.getList(Integer.parseInt(columnLabel), moreTypes[1]);
         else
-            return row.getList(columnLabel, moreTypes[0]);
+            return row.getList(columnLabel, moreTypes[1]);
     }
 
     /**
@@ -36,8 +36,8 @@ public class CassandraListType extends CassandraDefaultType implements Cassandra
      */
     @Override
     public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
-        if (moreTypes == null || moreTypes.length == 0)
+        if (moreTypes == null || moreTypes.length < 1)
             throw new IllegalArgumentException("Missing generic type for Cassandra list");
-        st.setList(columnLabel, (java.util.List) value, moreTypes[0]);
+        st.setList(columnLabel, (java.util.List) value, moreTypes[1]);
     }
 }
