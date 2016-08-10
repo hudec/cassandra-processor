@@ -9,6 +9,8 @@ import static org.hamcrest.Matchers.is;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -37,7 +39,7 @@ public class TestBasic extends TestDatabase {
     public CassandraCQLUnit basicCQLUnit = new CassandraCQLUnit(new ClassPathCQLDataSet("simple.cql", "basic"));
 
     @Test
-    public void testBasic() {
+    public void testBasic() throws UnknownHostException {
         basicCQLUnit.cluster.getConfiguration().getCodecRegistry().register(InstantCodec.instance,
                 LocalTimeCodec.instance, LocalDateCodec.instance);
         CassandraSimpleSession session = new CassandraSimpleSession(basicCQLUnit.session);
@@ -57,6 +59,7 @@ public class TestBasic extends TestDatabase {
         assertThat(list.get(0).getT_decimal(), is(BigDecimal.valueOf(3)));
         assertThat(list.get(0).getT_double(), is(4.0));
         assertThat(list.get(0).getT_float(), is(5.0F));
+        assertThat(list.get(0).getT_inet(), is(InetAddress.getByName("1.2.3.4")));
         assertThat(list.get(0).getT_int(), is(6));
         assertThat(list.get(0).getT_list_int(), equalTo(Arrays.asList(101, 102)));
         assertThat(list.get(0).getT_list_text(), equalTo(Arrays.asList("list1", "list2")));
@@ -99,6 +102,7 @@ public class TestBasic extends TestDatabase {
         assertThat(list.get(0).getT_decimal(), nullValue());
         assertThat(list.get(0).getT_double(), is(0.0));
         assertThat(list.get(0).getT_float(), is(0.0F));
+        assertThat(list.get(0).getT_inet(), nullValue());
         assertThat(list.get(0).getT_int(), is(0));
         assertThat(list.get(0).getT_list_int(), hasSize(0));
         assertThat(list.get(0).getT_list_text(), hasSize(0));

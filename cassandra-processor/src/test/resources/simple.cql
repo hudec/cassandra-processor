@@ -7,6 +7,7 @@ t_date date,
 t_decimal decimal, 
 t_double double, 
 t_float float, 
+t_inet inet, 
 t_int int, 
 t_list_int list<int>,
 t_list_text list<text>,
@@ -27,7 +28,6 @@ PRIMARY KEY(id));
 /*
 t_blob blob, 
 t_counter counter, 
-t_inet inet, 
 t_tuple tuple, 
 */
 
@@ -40,6 +40,7 @@ id
 ,t_decimal
 ,t_double
 ,t_float
+,t_inet
 ,t_int
 ,t_list_int
 ,t_list_text
@@ -64,6 +65,7 @@ id
 ,3
 ,4
 ,5
+,'1.2.3.4'
 ,6
 ,[101,102]
 ,['list1', 'list2']

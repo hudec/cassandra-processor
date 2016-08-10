@@ -2,6 +2,7 @@ package org.sqlproc.engine.model;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.InetAddress;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -21,6 +22,7 @@ public class Types {
     private BigDecimal t_decimal;
     private Double t_double;
     private Float t_float;
+    private InetAddress t_inet;
     private Integer t_int;
     private List<Integer> t_list_int;
     private Map<Integer, String> t_map;
@@ -106,6 +108,14 @@ public class Types {
 
     public void setT_float(Float t_float) {
         this.t_float = t_float;
+    }
+
+    public InetAddress getT_inet() {
+        return t_inet;
+    }
+
+    public void setT_inet(InetAddress t_inet) {
+        this.t_inet = t_inet;
     }
 
     public Integer getT_int() {
@@ -232,10 +242,10 @@ public class Types {
     public String toString() {
         return "Types [id=" + id + ", t_ascii=" + t_ascii + ", t_bigint=" + t_bigint + ", t_boolean=" + t_boolean
                 + ", t_date=" + t_date + ", t_decimal=" + t_decimal + ", t_double=" + t_double + ", t_float=" + t_float
-                + ", t_int=" + t_int + ", t_list_int=" + t_list_int + ", t_map=" + t_map + ", t_list_text="
-                + t_list_text + ", t_set_int=" + t_set_int + ", t_set_text=" + t_set_text + ", t_smallint=" + t_smallint
-                + ", t_text=" + t_text + ", t_time=" + t_time + ", t_timestamp=" + t_timestamp + ", t_timeuuid="
-                + t_timeuuid + ", t_tinyint=" + t_tinyint + ", t_varchar=" + t_varchar + ", t_varint=" + t_varint
-                + ", t_uuid=" + t_uuid + "]";
+                + ", t_inet=" + t_inet + ", t_int=" + t_int + ", t_list_int=" + t_list_int + ", t_map=" + t_map
+                + ", t_list_text=" + t_list_text + ", t_set_int=" + t_set_int + ", t_set_text=" + t_set_text
+                + ", t_smallint=" + t_smallint + ", t_text=" + t_text + ", t_time=" + t_time + ", t_timestamp="
+                + t_timestamp + ", t_timeuuid=" + t_timeuuid + ", t_tinyint=" + t_tinyint + ", t_varchar=" + t_varchar
+                + ", t_varint=" + t_varint + ", t_uuid=" + t_uuid + "]";
     }
 }

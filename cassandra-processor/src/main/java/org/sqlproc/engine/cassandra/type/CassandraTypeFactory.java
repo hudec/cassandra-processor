@@ -2,6 +2,7 @@ package org.sqlproc.engine.cassandra.type;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.net.InetAddress;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -97,6 +98,10 @@ public class CassandraTypeFactory implements SqlTypeFactory {
     /**
      * Singleton instance of String based enumeration type.
      */
+    static final SqlMetaType INET = new CassandraInetType();
+    /**
+     * Singleton instance of String based enumeration type.
+     */
     static final SqlMetaType LIST = new CassandraListType();
     /**
      * Singleton instance of String based enumeration type.
@@ -152,7 +157,7 @@ public class CassandraTypeFactory implements SqlTypeFactory {
      * Singleton instances of generic types.
      */
     static final SqlMetaType[] TYPES = { BIG_DECIMAL, BIG_INTEGER, BOOLEAN, BYTE_ARRAY, BYTE, CHAR, DATE, DOUBLE,
-            ENUM_INT, ENUM_STRING, FLOAT, INTEGER, LIST, LONG, MAP, SET, SHORT, STRING, TIMESTAMP, TIME, UUID };
+            ENUM_INT, ENUM_STRING, FLOAT, INET, INTEGER, LIST, LONG, MAP, SET, SHORT, STRING, TIMESTAMP, TIME, UUID };
 
     /**
      * The immutable map between the Java class types and the internal types.
@@ -181,6 +186,7 @@ public class CassandraTypeFactory implements SqlTypeFactory {
         CLASS_TO_TYPE_MAP.put(Double.class, DOUBLE);
         CLASS_TO_TYPE_MAP.put(float.class, FLOAT);
         CLASS_TO_TYPE_MAP.put(Float.class, FLOAT);
+        CLASS_TO_TYPE_MAP.put(InetAddress.class, INET);
         CLASS_TO_TYPE_MAP.put(int.class, INTEGER);
         CLASS_TO_TYPE_MAP.put(Integer.class, INTEGER);
         CLASS_TO_TYPE_MAP.put(java.util.List.class, LIST);
@@ -208,6 +214,7 @@ public class CassandraTypeFactory implements SqlTypeFactory {
         META_TO_TYPE_MAP.put("DATE", DATE);
         META_TO_TYPE_MAP.put("DOUBLE", DOUBLE);
         META_TO_TYPE_MAP.put("FLOAT", FLOAT);
+        META_TO_TYPE_MAP.put("INET", INET);
         META_TO_TYPE_MAP.put("INT", INTEGER);
         META_TO_TYPE_MAP.put("INTEGER", INTEGER);
         META_TO_TYPE_MAP.put("LIST", LIST);
