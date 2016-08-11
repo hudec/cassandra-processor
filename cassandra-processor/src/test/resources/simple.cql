@@ -21,6 +21,7 @@ t_time time,
 t_timestamp timestamp, 
 t_timeuuid timeuuid, 
 t_tinyint tinyint, 
+t_tuple tuple<int, text, float>,
 t_varchar varchar, 
 t_varint varint, 
 t_uuid uuid, 
@@ -54,6 +55,7 @@ id
 ,t_timestamp
 ,t_timeuuid
 ,t_tinyint
+,t_tuple
 ,t_varchar
 ,t_varint 
 ,t_uuid
@@ -80,6 +82,7 @@ id
 ,'2016-07-26 10:11:12'
 ,e12229de-5eda-11e6-a6a7-cc3d827302bc
 ,8
+,(401, 'tuple', 402)
 ,'varchar'
 ,9
 ,a9c9b8ae-4911-4bf4-a855-4b5f634d0664

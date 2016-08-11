@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 
+import com.datastax.driver.core.TupleValue;
+
 public class Types {
 
     private Integer id;
@@ -37,6 +39,7 @@ public class Types {
     private Instant t_timestamp;
     private UUID t_timeuuid;
     private Byte t_tinyint;
+    private TupleValue t_tuple;
     private String t_varchar;
     private BigInteger t_varint;
     private UUID t_uuid;
@@ -232,6 +235,14 @@ public class Types {
         this.t_uuid = t_uuid;
     }
 
+    public TupleValue getT_tuple() {
+        return t_tuple;
+    }
+
+    public void setT_tuple(TupleValue t_tuple) {
+        this.t_tuple = t_tuple;
+    }
+
     public String getT_varchar() {
         return t_varchar;
     }
@@ -256,6 +267,7 @@ public class Types {
                 + t_list_int + ", t_map=" + t_map + ", t_list_text=" + t_list_text + ", t_set_int=" + t_set_int
                 + ", t_set_text=" + t_set_text + ", t_smallint=" + t_smallint + ", t_text=" + t_text + ", t_time="
                 + t_time + ", t_timestamp=" + t_timestamp + ", t_timeuuid=" + t_timeuuid + ", t_tinyint=" + t_tinyint
-                + ", t_varchar=" + t_varchar + ", t_varint=" + t_varint + ", t_uuid=" + t_uuid + "]";
+                + ", t_tuple=" + t_tuple + ", t_varchar=" + t_varchar + ", t_varint=" + t_varint + ", t_uuid=" + t_uuid
+                + "]";
     }
 }

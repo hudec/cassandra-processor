@@ -29,6 +29,9 @@ import org.sqlproc.engine.SqlQueryEngine;
 import org.sqlproc.engine.cassandra.CassandraSimpleSession;
 import org.sqlproc.engine.model.Types;
 
+import com.datastax.driver.core.DataType;
+import com.datastax.driver.core.TupleType;
+import com.datastax.driver.core.TupleValue;
 import com.datastax.driver.extras.codecs.jdk8.InstantCodec;
 import com.datastax.driver.extras.codecs.jdk8.LocalDateCodec;
 import com.datastax.driver.extras.codecs.jdk8.LocalTimeCodec;
@@ -79,6 +82,13 @@ public class TestBasic extends TestDatabase {
         assertThat(list.get(0).getT_tinyint(), is((byte) 8));
         assertThat(list.get(0).getT_varchar(), is("varchar"));
         assertThat(list.get(0).getT_varint(), is(BigInteger.valueOf(9)));
+        TupleType tupleType = basicCQLUnit.cluster.getMetadata().newTupleType(DataType.cint(), DataType.text(),
+                DataType.cfloat());
+        TupleValue tuple = tupleType.newValue();
+        tuple.setInt(0, 401);
+        tuple.setString(1, "tuple");
+        tuple.setFloat(2, 402.0f);
+        assertThat(list.get(0).getT_tuple(), equalTo(tuple));
         assertThat(list.get(0).getT_uuid(), is(UUID.fromString("a9c9b8ae-4911-4bf4-a855-4b5f634d0664")));
     }
 
@@ -98,6 +108,7 @@ public class TestBasic extends TestDatabase {
         assertThat(list.get(0).getId(), is(2));
         assertThat(list.get(0).getT_ascii(), nullValue());
         assertThat(list.get(0).getT_bigint(), is(0L));
+        assertThat(list.get(0).getT_blob(), nullValue());
         assertThat(list.get(0).getT_boolean(), is(false));
         assertThat(list.get(0).getT_date(), nullValue());
         assertThat(list.get(0).getT_decimal(), nullValue());
@@ -118,6 +129,7 @@ public class TestBasic extends TestDatabase {
         assertThat(list.get(0).getT_tinyint(), is((byte) 0));
         assertThat(list.get(0).getT_varchar(), nullValue());
         assertThat(list.get(0).getT_varint(), nullValue());
+        assertThat(list.get(0).getT_tuple(), nullValue());
         assertThat(list.get(0).getT_uuid(), nullValue());
     }
 }
