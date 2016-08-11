@@ -27,11 +27,15 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.sqlproc.engine.SqlQueryEngine;
 import org.sqlproc.engine.cassandra.CassandraSimpleSession;
+import org.sqlproc.engine.model.Type1;
+import org.sqlproc.engine.model.Type1Codec;
 import org.sqlproc.engine.model.Types;
 
 import com.datastax.driver.core.DataType;
 import com.datastax.driver.core.TupleType;
 import com.datastax.driver.core.TupleValue;
+import com.datastax.driver.core.TypeCodec;
+import com.datastax.driver.core.UserType;
 import com.datastax.driver.extras.codecs.jdk8.InstantCodec;
 import com.datastax.driver.extras.codecs.jdk8.LocalDateCodec;
 import com.datastax.driver.extras.codecs.jdk8.LocalTimeCodec;
@@ -43,8 +47,11 @@ public class TestBasic extends TestDatabase {
 
     @Test
     public void testBasic() throws UnknownHostException {
+        UserType type1Type = basicCQLUnit.cluster.getMetadata().getKeyspace("basic").getUserType("type1");
+        Type1Codec type1Codec = new Type1Codec(TypeCodec.userType(type1Type), Type1.class);
         basicCQLUnit.cluster.getConfiguration().getCodecRegistry().register(InstantCodec.instance,
-                LocalTimeCodec.instance, LocalDateCodec.instance);
+                LocalTimeCodec.instance, LocalDateCodec.instance, type1Codec);
+
         CassandraSimpleSession session = new CassandraSimpleSession(basicCQLUnit.session);
         SqlQueryEngine sqlEngine = getQueryEngine("SIMPLE_TYPES");
         Types types = new Types(1);

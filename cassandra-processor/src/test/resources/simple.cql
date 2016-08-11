@@ -1,3 +1,8 @@
+CREATE TYPE type1 (
+t_varchar varchar,
+t_int int
+);
+
 CREATE TABLE types (
 id int, 
 t_ascii ascii, 
@@ -25,11 +30,11 @@ t_tuple tuple<int, text, float>,
 t_varchar varchar, 
 t_varint varint, 
 t_uuid uuid, 
+t_type1 frozen<type1>,
 PRIMARY KEY(id));
 
 /*
 t_counter counter, 
-t_tuple tuple, 
 */
 
 INSERT INTO types(
