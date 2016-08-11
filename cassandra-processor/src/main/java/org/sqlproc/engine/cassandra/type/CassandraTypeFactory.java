@@ -3,6 +3,7 @@ package org.sqlproc.engine.cassandra.type;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.InetAddress;
+import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -177,6 +178,8 @@ public class CassandraTypeFactory implements SqlTypeFactory {
         CLASS_TO_TYPE_MAP.put(boolean.class, BOOLEAN);
         CLASS_TO_TYPE_MAP.put(Boolean.class, BOOLEAN);
         CLASS_TO_TYPE_MAP.put(byte[].class, BYTE_ARRAY);
+        CLASS_TO_TYPE_MAP.put(Byte[].class, BYTE_ARRAY);
+        CLASS_TO_TYPE_MAP.put(ByteBuffer.class, BYTE_ARRAY);
         CLASS_TO_TYPE_MAP.put(byte.class, BYTE);
         CLASS_TO_TYPE_MAP.put(Byte.class, BYTE);
         CLASS_TO_TYPE_MAP.put(char.class, CHAR);

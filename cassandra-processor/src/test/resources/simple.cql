@@ -2,6 +2,7 @@ CREATE TABLE types (
 id int, 
 t_ascii ascii, 
 t_bigint bigint, 
+t_blob blob, 
 t_boolean boolean, 
 t_date date, 
 t_decimal decimal, 
@@ -26,7 +27,6 @@ t_uuid uuid,
 PRIMARY KEY(id));
 
 /*
-t_blob blob, 
 t_counter counter, 
 t_tuple tuple, 
 */
@@ -35,6 +35,7 @@ INSERT INTO types(
 id
 ,t_ascii 
 ,t_bigint 
+,t_blob 
 ,t_boolean
 ,t_date
 ,t_decimal
@@ -60,6 +61,7 @@ id
 1
 ,'ascii'
 ,2
+,textAsBlob('{"blob1": "blob2"}')
 ,true
 ,'2016-07-26'
 ,3

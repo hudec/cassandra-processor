@@ -3,6 +3,7 @@ package org.sqlproc.engine.model;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.InetAddress;
+import java.nio.ByteBuffer;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -17,6 +18,7 @@ public class Types {
 
     private String t_ascii;
     private Long t_bigint;
+    private ByteBuffer t_blob;
     private Boolean t_boolean;
     private LocalDate t_date;
     private BigDecimal t_decimal;
@@ -68,6 +70,14 @@ public class Types {
 
     public void setT_bigint(Long t_bigint) {
         this.t_bigint = t_bigint;
+    }
+
+    public ByteBuffer getT_blob() {
+        return t_blob;
+    }
+
+    public void setT_blob(ByteBuffer t_blob) {
+        this.t_blob = t_blob;
     }
 
     public Boolean getT_boolean() {
@@ -240,12 +250,12 @@ public class Types {
 
     @Override
     public String toString() {
-        return "Types [id=" + id + ", t_ascii=" + t_ascii + ", t_bigint=" + t_bigint + ", t_boolean=" + t_boolean
-                + ", t_date=" + t_date + ", t_decimal=" + t_decimal + ", t_double=" + t_double + ", t_float=" + t_float
-                + ", t_inet=" + t_inet + ", t_int=" + t_int + ", t_list_int=" + t_list_int + ", t_map=" + t_map
-                + ", t_list_text=" + t_list_text + ", t_set_int=" + t_set_int + ", t_set_text=" + t_set_text
-                + ", t_smallint=" + t_smallint + ", t_text=" + t_text + ", t_time=" + t_time + ", t_timestamp="
-                + t_timestamp + ", t_timeuuid=" + t_timeuuid + ", t_tinyint=" + t_tinyint + ", t_varchar=" + t_varchar
-                + ", t_varint=" + t_varint + ", t_uuid=" + t_uuid + "]";
+        return "Types [id=" + id + ", t_ascii=" + t_ascii + ", t_bigint=" + t_bigint + ", t_blob=" + t_blob
+                + ", t_boolean=" + t_boolean + ", t_date=" + t_date + ", t_decimal=" + t_decimal + ", t_double="
+                + t_double + ", t_float=" + t_float + ", t_inet=" + t_inet + ", t_int=" + t_int + ", t_list_int="
+                + t_list_int + ", t_map=" + t_map + ", t_list_text=" + t_list_text + ", t_set_int=" + t_set_int
+                + ", t_set_text=" + t_set_text + ", t_smallint=" + t_smallint + ", t_text=" + t_text + ", t_time="
+                + t_time + ", t_timestamp=" + t_timestamp + ", t_timeuuid=" + t_timeuuid + ", t_tinyint=" + t_tinyint
+                + ", t_varchar=" + t_varchar + ", t_varint=" + t_varint + ", t_uuid=" + t_uuid + "]";
     }
 }

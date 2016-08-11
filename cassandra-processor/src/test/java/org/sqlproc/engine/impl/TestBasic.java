@@ -54,6 +54,7 @@ public class TestBasic extends TestDatabase {
         assertThat(list.get(0).getId(), is(1));
         assertThat(list.get(0).getT_ascii(), is("ascii"));
         assertThat(list.get(0).getT_bigint(), is(2L));
+        assertThat(list.get(0).getT_blob().array(), equalTo("{\"blob1\": \"blob2\"}".getBytes()));
         assertThat(list.get(0).getT_boolean(), is(true));
         assertThat(list.get(0).getT_date(), is(LocalDate.of(2016, 7, 26)));
         assertThat(list.get(0).getT_decimal(), is(BigDecimal.valueOf(3)));
