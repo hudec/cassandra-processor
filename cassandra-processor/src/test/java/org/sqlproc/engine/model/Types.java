@@ -43,6 +43,7 @@ public class Types {
     private String t_varchar;
     private BigInteger t_varint;
     private UUID t_uuid;
+    private Type1 t_type1;
 
     public Types() {
     }
@@ -259,6 +260,14 @@ public class Types {
         this.t_varint = t_varint;
     }
 
+    public Type1 getT_type1() {
+        return t_type1;
+    }
+
+    public void setT_type1(Type1 t_type1) {
+        this.t_type1 = t_type1;
+    }
+
     @Override
     public String toString() {
         return "Types [id=" + id + ", t_ascii=" + t_ascii + ", t_bigint=" + t_bigint + ", t_blob=" + t_blob
@@ -268,6 +277,6 @@ public class Types {
                 + ", t_set_text=" + t_set_text + ", t_smallint=" + t_smallint + ", t_text=" + t_text + ", t_time="
                 + t_time + ", t_timestamp=" + t_timestamp + ", t_timeuuid=" + t_timeuuid + ", t_tinyint=" + t_tinyint
                 + ", t_tuple=" + t_tuple + ", t_varchar=" + t_varchar + ", t_varint=" + t_varint + ", t_uuid=" + t_uuid
-                + "]";
+                + ", t_type1=" + t_type1 + "]";
     }
 }

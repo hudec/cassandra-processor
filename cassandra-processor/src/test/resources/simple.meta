@@ -1,6 +1,6 @@
 SIMPLE_TYPES(QRY)=
   select id, t_ascii, t_bigint, t_blob, t_boolean, t_date, t_decimal, t_double, t_float, t_inet, t_int, t_list_int, t_list_text, t_map, t_set_int, t_set_text, 
-             t_smallint, t_text, t_time, t_timestamp, t_timeuuid, t_tinyint, t_tuple, t_varchar, t_varint, t_uuid
+             t_smallint, t_text, t_time, t_timestamp, t_timeuuid, t_tinyint, t_tuple, t_varchar, t_varint, t_uuid, t_type1
   from types
   {= where
     {& id = :id}
@@ -11,12 +11,13 @@ SIMPLE_TYPES(OUT)=
   id$id t_ascii$t_ascii t_bigint$t_bigint t_blob$t_blob t_boolean$t_boolean t_date$t_date t_decimal$t_decimal t_double$t_double t_float$t_float t_inet$t_inet 
   t_int$t_int t_list_int$t_list_int t_list_text$t_list_text t_map$t_map t_set_int$t_set_int t_set_text$t_set_text
   t_smallint$t_smallint t_text$t_text t_time$t_time t_timestamp$t_timestamp t_timeuuid$t_timeuuid t_tinyint$t_tinyint t_tuple$t_tuple t_varchar$t_varchar 
-  t_varint$t_varint t_uuid$t_uuid
+  t_varint$t_varint t_uuid$t_uuid t_type1$t_type1
 ;
 
-INSERT_TYPES(CRUD)=
-  insert into types (id, t_ascii, t_bigint, t_boolean, t_date, t_decimal, t_double, t_float, t_int, t_list_text, t_smallint, t_text, t_time, t_timestamp, t_tinyint, t_varchar, t_varint)
-  {= values (:id, :t_ascii, :t_bigint, :t_boolean, :t_date, :t_decimal, :t_double, :t_float, :t_int, :t_list_text, :t_smallint, :t_text, :t_time, :t_timestamp, :t_tinyint, :t_varchar, :t_varint) 
-  	
+SIMPLE_UDT(QRY)=
+  select id, t_type1
+  from types
+  {= where
+    {& id = :id}
   }
 ;

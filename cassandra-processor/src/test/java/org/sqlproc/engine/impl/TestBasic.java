@@ -97,12 +97,17 @@ public class TestBasic extends TestDatabase {
         tuple.setFloat(2, 402.0f);
         assertThat(list.get(0).getT_tuple(), equalTo(tuple));
         assertThat(list.get(0).getT_uuid(), is(UUID.fromString("a9c9b8ae-4911-4bf4-a855-4b5f634d0664")));
+        assertThat(list.get(0).getT_type1().getT_varchar(), is("varchar"));
+        assertThat(list.get(0).getT_type1().getT_int(), is(501));
     }
 
     @Test
     public void testBasicNull() {
+        UserType type1Type = basicCQLUnit.cluster.getMetadata().getKeyspace("basic").getUserType("type1");
+        Type1Codec type1Codec = new Type1Codec(TypeCodec.userType(type1Type), Type1.class);
         basicCQLUnit.cluster.getConfiguration().getCodecRegistry().register(InstantCodec.instance,
-                LocalTimeCodec.instance, LocalDateCodec.instance);
+                LocalTimeCodec.instance, LocalDateCodec.instance, type1Codec);
+
         CassandraSimpleSession session = new CassandraSimpleSession(basicCQLUnit.session);
         SqlQueryEngine sqlEngine = getQueryEngine("SIMPLE_TYPES");
         Types types = new Types(2);
@@ -138,5 +143,6 @@ public class TestBasic extends TestDatabase {
         assertThat(list.get(0).getT_varint(), nullValue());
         assertThat(list.get(0).getT_tuple(), nullValue());
         assertThat(list.get(0).getT_uuid(), nullValue());
+        assertThat(list.get(0).getT_type1(), nullValue());
     }
 }

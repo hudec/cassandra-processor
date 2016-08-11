@@ -64,6 +64,7 @@ id
 ,t_varchar
 ,t_varint 
 ,t_uuid
+,t_type1
 ) values(
 1
 ,'ascii'
@@ -78,7 +79,7 @@ id
 ,6
 ,[101,102]
 ,['list1', 'list2']
-,{201 : 'map1', 202 : 'map2'}
+,{201: 'map1', 202: 'map2'}
 ,{301, 302}
 ,{'set1', 'set2'}
 ,7
@@ -91,6 +92,7 @@ id
 ,'varchar'
 ,9
 ,a9c9b8ae-4911-4bf4-a855-4b5f634d0664
+,{t_varchar: 'varchar', t_int: 501}
 );
 
 
