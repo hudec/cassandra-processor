@@ -96,10 +96,10 @@ public class CassandraDefaultType implements SqlMetaType {
      */
     @Override
     public void setParameter(SqlRuntimeContext runtimeCtx, SqlQuery query, String paramName, Object inputValue,
-            Class<?> inputType, boolean ingoreError) throws SqlRuntimeException {
+            boolean ingoreError, Class<?>... inputTypes) throws SqlRuntimeException {
         if (logger.isTraceEnabled()) {
             logger.trace(">>> setParameter for META type " + this + ": paramName=" + paramName + ", inputValue="
-                    + inputValue + ", inputType=" + inputType);
+                    + inputValue + ", inputTypes=" + inputTypes);
         }
 
         if (getProviderSqlType() != null) {
@@ -114,23 +114,23 @@ public class CassandraDefaultType implements SqlMetaType {
         }
 
         if (!(inputValue instanceof Collection)) {
-            if (inputType.isEnum()) {
-                Class<?> clazz = runtimeCtx.getEnumToClass(inputType);
+            if (inputTypes[0].isEnum()) {
+                Class<?> clazz = runtimeCtx.getEnumToClass(inputTypes[0]);
                 if (clazz == String.class) {
                     runtimeCtx.getTypeFactory().getEnumStringType().setParameter(runtimeCtx, query, paramName,
-                            inputValue, inputType, ingoreError);
+                            inputValue, ingoreError, inputTypes);
                 } else if (clazz == Integer.class) {
                     runtimeCtx.getTypeFactory().getEnumIntegerType().setParameter(runtimeCtx, query, paramName,
-                            inputValue, inputType, ingoreError);
+                            inputValue, ingoreError, inputTypes);
                 } else {
                     error(ingoreError, "Incorrect class enum type for " + paramName + ": " + clazz);
                 }
             } else {
-                SqlMetaType type = runtimeCtx.getTypeFactory().getMetaType(inputType);
+                SqlMetaType type = runtimeCtx.getTypeFactory().getMetaType(inputTypes[0]);
                 if (type != null) {
-                    type.setParameter(runtimeCtx, query, paramName, inputValue, inputType, ingoreError);
+                    type.setParameter(runtimeCtx, query, paramName, inputValue, ingoreError, inputTypes);
                 } else {
-                    query.setParameter(paramName, inputValue, new CassandraClassType(inputType));
+                    query.setParameter(paramName, inputValue, new CassandraClassType(inputTypes));
                 }
             }
         } else {
@@ -151,9 +151,9 @@ public class CassandraDefaultType implements SqlMetaType {
                 }
             }
             if (isEnum) {
-                query.setParameter(paramName, vals, new CassandraClassType(inputType));
+                query.setParameter(paramName, vals, new CassandraClassType(inputTypes));
             } else {
-                query.setParameter(paramName, inputValue, new CassandraClassType(inputType));
+                query.setParameter(paramName, inputValue, new CassandraClassType(inputTypes));
             }
         }
     }

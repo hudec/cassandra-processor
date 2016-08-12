@@ -9,7 +9,9 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.cassandraunit.CassandraCQLUnit;
 import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
@@ -54,6 +56,10 @@ public class TestInsert extends TestDatabase {
         types.setT_float(Float.MAX_VALUE);
         types.setT_int(Integer.MAX_VALUE);
         types.setT_list_text(Arrays.asList("value1", "value2"));
+        Map<Integer, String> map = new HashMap<>();
+        map.put(201, "map1");
+        map.put(202, "map2");
+        types.setT_map(map);
         types.setT_smallint(Short.MAX_VALUE);
         types.setT_text("ěščřžýáíéúů");
         types.setT_time(LocalTime.now());
