@@ -307,45 +307,38 @@ public class CassandraQuery implements SqlQuery {
      */
     @Override
     public int update(final SqlRuntimeContext runtimeCtx) throws SqlProcessorException {
-        // if (logger.isDebugEnabled()) {
-        // logger.debug("update, query=" + queryString);
-        // }
-        // PreparedStatement ps = null;
-        // try {
-        // final boolean retrieveIdentityFromStatement = isSetJDBCIdentity();
-        //
-        // if (retrieveIdentityFromStatement) {
-        // ps = connection.prepareStatement(queryString, Statement.RETURN_GENERATED_KEYS);
-        // } else {
-        // ps = connection.prepareStatement(queryString);
-        // }
-        // if (timeout != null)
-        // ps.setQueryTimeout(timeout);
-        // setParameters(ps, null, 1);
-        // int updated = ps.executeUpdate();
-        // if (logger.isDebugEnabled()) {
-        // logger.debug("update, number of updated rows=" + updated);
-        // }
-        // if (!identities.isEmpty()) {
-        // String identityName = identities.get(0);
-        // if (retrieveIdentityFromStatement) {
-        // getGeneratedKeys(identityName, ps);
-        // } else {
-        // doIdentitySelect(identityName);
-        // }
-        // }
-        // return updated;
-        // } catch (SQLException ex) {
-        // throw newSqlProcessorException(ex, queryString);
-        // } finally {
-        // if (ps != null) {
-        // try {
-        // ps.close();
-        // } catch (SQLException ignore) {
-        // }
-        // }
-        // }
-        return 0;
+        if (logger.isDebugEnabled()) {
+            logger.debug("update, query=" + queryString);
+        }
+        PreparedStatement ps = null;
+        // TODO BatchStatement
+        BoundStatement bs = null;
+        ResultSet rs = null;
+        try {
+            ps = session.prepare(queryString);
+            // TODO setRoutingKey, set bs
+            // TODO setConsistencyLevel, also bs
+            // TODO setSerialConsistencyLevel, also bs
+            // TODO enableTracing, disableTracing, also bs
+            // TODO setRetryPolicy, also bs
+            // TODO setIdempotent, also bs
+            // TODO setOutgoingPayload, also bs
+            bs = ps.bind();
+            // TODO setPagingState
+            if (timeout != null)
+                bs.setReadTimeoutMillis(timeout);
+            if (fetchSize != null)
+                bs.setFetchSize(fetchSize);
+            setParameters(bs, null, 1);
+            rs = session.execute(bs);
+            int updated = rs.wasApplied() ? 1 : 0;
+            if (logger.isDebugEnabled()) {
+                logger.debug("update, number of updated rows=" + updated);
+            }
+            return updated;
+        } catch (Exception ex) {
+            throw newSqlProcessorException(ex, queryString);
+        }
     }
 
     /**

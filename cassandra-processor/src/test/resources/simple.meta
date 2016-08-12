@@ -14,10 +14,7 @@ SIMPLE_TYPES(OUT)=
   t_varint$t_varint t_uuid$t_uuid t_type1$t_type1
 ;
 
-SIMPLE_UDT(QRY)=
-  select id, t_type1
-  from types
-  {= where
-    {& id = :id}
-  }
-;
+INSERT_TYPES(CRUD)=
+  insert into types (id, t_ascii, t_bigint, t_boolean, t_date, t_decimal, t_double, t_float, t_int, t_smallint, t_text, t_time, t_timestamp, t_tinyint, t_varchar, t_varint)
+  {= values (:id, :t_ascii, :t_bigint, :t_boolean, :t_date, :t_decimal, :t_double, :t_float, :t_int, :t_smallint, :t_text, :t_time, :t_timestamp, :t_tinyint, :t_varchar, :t_varint) }
+;  	
