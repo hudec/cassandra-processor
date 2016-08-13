@@ -1,10 +1,5 @@
 package org.sqlproc.engine.cassandra.type;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sqlproc.engine.SqlQuery;
@@ -103,58 +98,13 @@ public class CassandraDefaultType implements SqlMetaType {
         }
 
         if (getProviderSqlType() != null) {
-            if (inputValue == null) {
-                query.setParameter(paramName, inputValue, getProviderSqlType());
-            } else if (inputValue instanceof Collection) {
-                query.setParameterList(paramName, ((Collection) inputValue).toArray(), getProviderSqlType());
-            } else {
-                query.setParameter(paramName, inputValue, getProviderSqlType());
-            }
-            return;
-        }
-
-        if (!(inputValue instanceof Collection)) {
-            if (inputTypes[0].isEnum()) {
-                Class<?> clazz = runtimeCtx.getEnumToClass(inputTypes[0]);
-                if (clazz == String.class) {
-                    runtimeCtx.getTypeFactory().getEnumStringType().setParameter(runtimeCtx, query, paramName,
-                            inputValue, ingoreError, inputTypes);
-                } else if (clazz == Integer.class) {
-                    runtimeCtx.getTypeFactory().getEnumIntegerType().setParameter(runtimeCtx, query, paramName,
-                            inputValue, ingoreError, inputTypes);
-                } else {
-                    error(ingoreError, "Incorrect class enum type for " + paramName + ": " + clazz);
-                }
-            } else {
-                SqlMetaType type = runtimeCtx.getTypeFactory().getMetaType(inputTypes[0]);
-                if (type != null) {
-                    type.setParameter(runtimeCtx, query, paramName, inputValue, ingoreError, inputTypes);
-                } else {
-                    query.setParameter(paramName, inputValue, new CassandraClassType(inputTypes));
-                }
-            }
+            query.setParameter(paramName, inputValue, getProviderSqlType(), inputTypes);
         } else {
-            List<Object> vals = new ArrayList<Object>();
-            boolean isEnum = false;
-            for (Iterator iter = ((Collection) inputValue).iterator(); iter.hasNext();) {
-                Object val = iter.next();
-                if (!val.getClass().isEnum())
-                    break;
-                else
-                    isEnum = true;
-                Object o = runtimeCtx.getEnumToValue(val);
-                if (o != null) {
-                    vals.add(o);
-                } else {
-                    error(ingoreError, "Null enum value for " + paramName + ": " + vals);
-                    return;
-                }
-            }
-            if (isEnum) {
-                query.setParameter(paramName, vals, new CassandraClassType(inputTypes));
-            } else {
+            Object type = (inputTypes.length > 0) ? runtimeCtx.getTypeFactory().getMetaType(inputTypes[0]) : null;
+            if (type != null)
+                query.setParameter(paramName, inputValue, type, inputTypes);
+            else
                 query.setParameter(paramName, inputValue, new CassandraClassType(inputTypes));
-            }
         }
     }
 

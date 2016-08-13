@@ -2,7 +2,6 @@ package org.sqlproc.engine.cassandra;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -12,9 +11,6 @@ import org.sqlproc.engine.SqlProcessorException;
 import org.sqlproc.engine.SqlQuery;
 import org.sqlproc.engine.SqlRuntimeContext;
 import org.sqlproc.engine.cassandra.type.CassandraSqlType;
-import org.sqlproc.engine.plugin.SqlFromToPlugin;
-import org.sqlproc.engine.type.IdentitySetter;
-import org.sqlproc.engine.type.OutValueSetter;
 
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.PreparedStatement;
@@ -53,6 +49,9 @@ public class CassandraQuery implements SqlQuery {
      * The collection of all scalars types.
      */
     Map<String, CassandraSqlType> scalarTypes = new HashMap<String, CassandraSqlType>();
+    /**
+     * Class types including parameterized types for output attributes.
+     */
     Map<String, Class<?>[]> scalarMoreTypes = new HashMap<String, Class<?>[]>();
     /**
      * The collection of all parameters (input value declarations).
@@ -67,37 +66,13 @@ public class CassandraQuery implements SqlQuery {
      */
     Map<String, CassandraSqlType> parameterTypes = new HashMap<String, CassandraSqlType>();
     /**
-     * The collection of all parameters types for output values.
+     * Class types including parameterized types for input attributes.
      */
-    Map<String, CassandraSqlType> parameterOutValueTypes = new HashMap<String, CassandraSqlType>();
-    /**
-     * The collection of all parameters output value setters.
-     */
-    Map<String, OutValueSetter> parameterOutValueSetters = new HashMap<String, OutValueSetter>();
-    /**
-     * The collection of all parameters, which have to be picked-up.
-     */
-    Map<Integer, Integer> parameterOutValuesToPickup = new LinkedHashMap<Integer, Integer>();
-    /**
-     * The collection of all (auto-generated) identities.
-     */
-    List<String> identities = new ArrayList<String>();
-    /**
-     * The collection of all identities setters.
-     */
-    Map<String, IdentitySetter> identitySetters = new HashMap<String, IdentitySetter>();
-    /**
-     * The collection of all identities types.
-     */
-    Map<String, CassandraSqlType> identityTypes = new HashMap<String, CassandraSqlType>();
+    Map<String, Class<?>[]> parameterMoreTypes = new HashMap<String, Class<?>[]>();
     /**
      * A timeout for the underlying query.
      */
     Integer timeout;
-    /**
-     * The first row to retrieve.
-     */
-    Integer firstResult;
     /**
      * The maximum number of rows to retrieve.
      */
@@ -156,8 +131,7 @@ public class CassandraQuery implements SqlQuery {
      */
     @Override
     public SqlQuery setFirstResult(int firstResult) {
-        this.firstResult = firstResult;
-        return this;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -192,11 +166,7 @@ public class CassandraQuery implements SqlQuery {
      */
     @Override
     public List list(final SqlRuntimeContext runtimeCtx) throws SqlProcessorException {
-        StringBuilder queryResult = (maxResults != null) ? new StringBuilder(queryString.length() + 100) : null;
-        final SqlFromToPlugin.LimitType limitType = (maxResults != null) ? runtimeCtx.getPluginFactory()
-                .getSqlFromToPlugin().limitQuery(runtimeCtx, queryString, queryResult, firstResult, maxResults, ordered)
-                : null;
-        final String query = limitType != null ? queryResult.toString() : queryString;
+        final String query = maxResults != null ? queryString + " limit " + maxResults : queryString;
         if (logger.isDebugEnabled()) {
             logger.debug("list, query=" + query);
         }
@@ -220,7 +190,7 @@ public class CassandraQuery implements SqlQuery {
                 bs.setReadTimeoutMillis(timeout);
             if (fetchSize != null)
                 bs.setFetchSize(fetchSize);
-            setParameters(bs, limitType, 1);
+            setParameters(bs);
             rs = session.execute(bs);
             List list = getResults(rs);
             if (logger.isDebugEnabled()) {
@@ -257,11 +227,7 @@ public class CassandraQuery implements SqlQuery {
     @Override
     public int query(final SqlRuntimeContext runtimeCtx, SqlQueryRowProcessor sqlQueryRowProcessor)
             throws SqlProcessorException {
-        StringBuilder queryResult = (maxResults != null) ? new StringBuilder(queryString.length() + 100) : null;
-        final SqlFromToPlugin.LimitType limitType = (maxResults != null) ? runtimeCtx.getPluginFactory()
-                .getSqlFromToPlugin().limitQuery(runtimeCtx, queryString, queryResult, firstResult, maxResults, ordered)
-                : null;
-        final String query = limitType != null ? queryResult.toString() : queryString;
+        final String query = maxResults != null ? queryString + " limit " + maxResults : queryString;
         if (logger.isDebugEnabled()) {
             logger.debug("list, query=" + query);
         }
@@ -286,7 +252,7 @@ public class CassandraQuery implements SqlQuery {
                 bs.setReadTimeoutMillis(timeout);
             if (fetchSize != null)
                 bs.setFetchSize(fetchSize);
-            setParameters(bs, limitType, 1);
+            setParameters(bs);
             rs = session.execute(bs);
             for (Object oo = getOneResult(rs); oo != NO_MORE_DATA; oo = getOneResult(rs)) {
                 ++rownum;
@@ -329,7 +295,7 @@ public class CassandraQuery implements SqlQuery {
                 bs.setReadTimeoutMillis(timeout);
             if (fetchSize != null)
                 bs.setFetchSize(fetchSize);
-            setParameters(bs, null, 1);
+            setParameters(bs);
             rs = session.execute(bs);
             int updated = rs.wasApplied() ? 1 : 0;
             if (logger.isDebugEnabled()) {
@@ -378,8 +344,7 @@ public class CassandraQuery implements SqlQuery {
      */
     @Override
     public SqlQuery addScalar(String columnAlias) {
-        scalars.add(columnAlias);
-        return this;
+        throw new UnsupportedOperationException();
     }
 
     /**
@@ -401,35 +366,22 @@ public class CassandraQuery implements SqlQuery {
      */
     @Override
     public SqlQuery setParameter(String name, Object val) throws SqlProcessorException {
-        parameters.add(name);
-        parameterValues.put(name, val);
-        return this;
+        throw new UnsupportedOperationException();
     }
 
     /**
      * {@inheritDoc}
      */
     @Override
-    public SqlQuery setParameter(String name, Object val, Object type) throws SqlProcessorException {
+    public SqlQuery setParameter(String name, Object val, Object type, Class<?>... moreTypes)
+            throws SqlProcessorException {
         // TODO, right now just a workaround
         if (type == null || !(type instanceof CassandraSqlType))
             throw new IllegalArgumentException();
-        if (val != null && val instanceof IdentitySetter) {
-            identities.add(name);
-            identitySetters.put(name, (IdentitySetter) val);
-            identityTypes.put(name, (CassandraSqlType) type);
-        } else if (val != null && val instanceof OutValueSetter) {
-            if (!parameterTypes.containsKey(name)) {
-                parameters.add(name);
-                parameterTypes.put(name, (CassandraSqlType) type);
-            }
-            parameterOutValueTypes.put(name, (CassandraSqlType) type);
-            parameterOutValueSetters.put(name, (OutValueSetter) val);
-        } else {
-            parameters.add(name);
-            parameterValues.put(name, val);
-            parameterTypes.put(name, (CassandraSqlType) type);
-        }
+        parameters.add(name);
+        parameterValues.put(name, val);
+        parameterTypes.put(name, (CassandraSqlType) type);
+        parameterMoreTypes.put(name, (moreTypes != null) ? moreTypes : new Class<?>[0]);
         return this;
     }
 
@@ -445,7 +397,8 @@ public class CassandraQuery implements SqlQuery {
      * {@inheritDoc}
      */
     @Override
-    public SqlQuery setParameterList(String name, Object[] vals, Object type) throws SqlProcessorException {
+    public SqlQuery setParameterList(String name, Object[] vals, Object type, Class<?>... moreTypes)
+            throws SqlProcessorException {
         throw new UnsupportedOperationException();
     }
 
@@ -459,10 +412,7 @@ public class CassandraQuery implements SqlQuery {
      * @param start
      *            the index of the first parameter to bind to prepared statement
      */
-    protected void setParameters(BoundStatement bs, SqlFromToPlugin.LimitType limitType, int start)
-            throws SqlProcessorException {
-        int ix = start;
-        ix = setLimits(bs, limitType, ix, false);
+    protected void setParameters(BoundStatement bs) throws SqlProcessorException {
         for (int i = 0, n = parameters.size(); i < n; i++) {
             String name = parameters.get(i);
             CassandraSqlType type = parameterTypes.get(name);
@@ -472,90 +422,28 @@ public class CassandraQuery implements SqlQuery {
                     try {
                         if (value == null) {
                             if (logger.isTraceEnabled()) {
-                                logger.trace("setNull, ix=" + (ix + i) + ", type=" + type);
+                                logger.trace("setNull, name=" + name + ", type=" + type);
                             }
                             bs.setToNull(name);
                         } else {
                             if (logger.isTraceEnabled()) {
-                                logger.trace("setParameters, ix=" + (ix + i) + ", value=" + value);
+                                logger.trace("setParameter, name=" + name + ", value=" + value);
                             }
-                            type.set(bs, name, value);
+                            type.set(bs, name, value, parameterMoreTypes.get(name));
                         }
                     } catch (ClassCastException cce) {
-                        StringBuilder sb = new StringBuilder("Not compatible input value of type ")
-                                .append((value != null) ? value.getClass() : "null");
-                        sb.append(". The JDBC type for ").append(name).append(" is ")
-                                .append((type != null) ? type.getClass() : "null");
+                        StringBuilder sb = new StringBuilder("Not compatible input value of type ").append(type)
+                                .append(": ").append((value != null) ? value.getClass() : "null").append(".");
                         sb.append(".");
                         throw new SqlProcessorException(sb.toString(), cce);
                     }
                 } else {
-                    if (logger.isTraceEnabled()) {
-                        logger.trace("setObject, ix=" + (ix + i) + ", type=" + type);
-                    }
-                    // TODO
-                    StringBuilder sb = new StringBuilder("Not supported input value of type ")
+                    StringBuilder sb = new StringBuilder("Not supported input value of null type: ")
                             .append((value != null) ? value.getClass() : "null").append(".");
                     throw new SqlProcessorException(sb.toString());
                 }
             }
-            if (parameterOutValueSetters.containsKey(name)) {
-                // CallableStatement cs = (CallableStatement) bs;
-                // if (type != null) {
-                // TODO
-                // if (type instanceof SqlMetaType) {
-                // cs.registerOutParameter(ix + i, (Integer) ((SqlMetaType) type).getDatabaseSqlType());
-                // } else {
-                // cs.registerOutParameter(ix + i, (Integer) type);
-                // }
-                // } else {
-                // throw new SqlProcessorException("OUT parameter type for callable statement is null");
-                // }
-                // parameterOutValuesToPickup.put(i, ix + i);
-            }
         }
-        ix = setLimits(bs, limitType, ix + parameters.size(), true);
-    }
-
-    /**
-     * Sets the limit related parameters.
-     * 
-     * @param bs
-     *            an instance of BoundStatement
-     * @param limitType
-     *            the limit type to restrict the number of rows in the result set
-     * @param ix
-     *            a column index
-     * @param afterSql
-     *            an indicator it's done after the main SQL statement execution
-     * @return the updated column index
-     */
-    protected int setLimits(BoundStatement bs, SqlFromToPlugin.LimitType limitType, int ix, boolean afterSql) {
-        if (limitType == null)
-            return ix;
-        if (afterSql && !limitType.afterSql)
-            return ix;
-        if (!afterSql && limitType.afterSql)
-            return ix;
-        if (limitType.maxBeforeFirst) {
-            if (limitType.rowidBasedMax && limitType.alsoFirst)
-                bs.setInt(ix++, firstResult + maxResults);
-            else
-                bs.setInt(ix++, maxResults);
-        }
-        if (limitType.alsoFirst) {
-            if (limitType.zeroBasedFirst)
-                bs.setInt(ix++, firstResult);
-            else
-                bs.setInt(ix++, firstResult);
-        }
-        if (!limitType.maxBeforeFirst) {
-            if (limitType.rowidBasedMax && limitType.alsoFirst)
-                bs.setInt(ix++, firstResult + maxResults);
-            else
-                bs.setInt(ix++, maxResults);
-        }
-        return ix;
     }
 
     /**
@@ -594,7 +482,6 @@ public class CassandraQuery implements SqlQuery {
                 if (type != null && type instanceof CassandraSqlType) {
                     value = ((CassandraSqlType) type).get(data, name, scalarMoreTypes.get(name));
                 } else {
-                    // TODO
                     StringBuilder sb = new StringBuilder("Not supported output value of type " + type).append(".");
                     throw new SqlProcessorException(sb.toString());
                 }
