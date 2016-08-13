@@ -40,13 +40,13 @@ import com.datastax.driver.extras.codecs.jdk8.InstantCodec;
 import com.datastax.driver.extras.codecs.jdk8.LocalDateCodec;
 import com.datastax.driver.extras.codecs.jdk8.LocalTimeCodec;
 
-public class TestBasic extends TestDatabase {
+public class TestList extends TestDatabase {
 
     @Rule
     public CassandraCQLUnit basicCQLUnit = new CassandraCQLUnit(new ClassPathCQLDataSet("simple.cql", "basic"));
 
     @Test
-    public void testBasic() throws UnknownHostException {
+    public void testListFull() throws UnknownHostException {
         UserType type1Type = basicCQLUnit.cluster.getMetadata().getKeyspace("basic").getUserType("type1");
         Type1Codec type1Codec = new Type1Codec(TypeCodec.userType(type1Type), Type1.class);
         basicCQLUnit.cluster.getConfiguration().getCodecRegistry().register(InstantCodec.instance,
@@ -102,7 +102,7 @@ public class TestBasic extends TestDatabase {
     }
 
     @Test
-    public void testBasicNull() {
+    public void testListNull() {
         UserType type1Type = basicCQLUnit.cluster.getMetadata().getKeyspace("basic").getUserType("type1");
         Type1Codec type1Codec = new Type1Codec(TypeCodec.userType(type1Type), Type1.class);
         basicCQLUnit.cluster.getConfiguration().getCodecRegistry().register(InstantCodec.instance,
