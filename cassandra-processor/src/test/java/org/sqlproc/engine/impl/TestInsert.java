@@ -103,7 +103,6 @@ public class TestInsert extends TestDatabase {
         List<Types> list = sqlQueryEngine.query(session, Types.class, new Types(types.getId()));
         assertThat(list.size(), is(1));
         assertThat(list.get(0), notNullValue());
-        assertTypes(list.get(0), types);
+        Types.assertTypes(list.get(0), types);
     }
-
 }
