@@ -55,7 +55,7 @@ public class TestInsert extends TestDatabase {
         CassandraSimpleSession session = new CassandraSimpleSession(basicCQLUnit.session);
         SqlCrudEngine sqlEngine = getCrudEngine("INSERT_TYPES");
         Types types = new Types();
-        types.setId(2);
+        types.setId(101);
         types.setT_ascii("ascii");
         types.setT_bigint(Long.MAX_VALUE);
         types.setT_blob(ByteBuffer.wrap("{\"blob1\": \"blob2\"}".getBytes()));
@@ -98,11 +98,36 @@ public class TestInsert extends TestDatabase {
         System.out.println(types);
         assertThat(count, is(1));
 
-        SqlQueryEngine sqlQueryEngine = getQueryEngine("SIMPLE_TYPES");
+        SqlQueryEngine sqlQueryEngine = getQueryEngine("LIST_TYPES");
 
         List<Types> list = sqlQueryEngine.query(session, Types.class, new Types(types.getId()));
         assertThat(list.size(), is(1));
         assertThat(list.get(0), notNullValue());
         Types.assertTypes(list.get(0), types);
+    }
+
+    @Test
+    public void testInsertNull() throws UnknownHostException {
+        UserType type1Type = basicCQLUnit.cluster.getMetadata().getKeyspace("basic").getUserType("type1");
+        Type1Codec type1Codec = new Type1Codec(TypeCodec.userType(type1Type), Type1.class);
+        basicCQLUnit.cluster.getConfiguration().getCodecRegistry().register(InstantCodec.instance,
+                LocalTimeCodec.instance, LocalDateCodec.instance, type1Codec);
+
+        CassandraSimpleSession session = new CassandraSimpleSession(basicCQLUnit.session);
+        SqlCrudEngine sqlEngine = getCrudEngine("INSERT_TYPES");
+        Types types = new Types();
+        types.setId(102);
+
+        String sql = sqlEngine.getSql(types, null, Type.CREATE);
+        System.out.println(sql);
+        int count = sqlEngine.insert(session, types);
+        System.out.println(types);
+        assertThat(count, is(1));
+
+        SqlQueryEngine sqlQueryEngine = getQueryEngine("LIST_TYPES");
+        List<Types> list = sqlQueryEngine.query(session, Types.class, new Types(types.getId()));
+        assertThat(list.size(), is(1));
+        assertThat(list.get(0), notNullValue());
+        Types.assertTypes(list.get(0), Types.getNullTypes(102));
     }
 }

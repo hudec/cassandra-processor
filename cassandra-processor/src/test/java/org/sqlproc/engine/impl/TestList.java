@@ -35,7 +35,7 @@ public class TestList extends TestDatabase {
                 LocalTimeCodec.instance, LocalDateCodec.instance, type1Codec);
 
         CassandraSimpleSession session = new CassandraSimpleSession(basicCQLUnit.session);
-        SqlQueryEngine sqlEngine = getQueryEngine("SIMPLE_TYPES");
+        SqlQueryEngine sqlEngine = getQueryEngine("LIST_TYPES");
         Types types = new Types(1);
         String sql = sqlEngine.getSql(types, null, SqlQueryEngine.NO_ORDER);
         System.out.println(sql);
@@ -54,7 +54,7 @@ public class TestList extends TestDatabase {
                 LocalTimeCodec.instance, LocalDateCodec.instance, type1Codec);
 
         CassandraSimpleSession session = new CassandraSimpleSession(basicCQLUnit.session);
-        SqlQueryEngine sqlEngine = getQueryEngine("SIMPLE_TYPES");
+        SqlQueryEngine sqlEngine = getQueryEngine("LIST_TYPES");
         Types types = new Types(2);
         String sql = sqlEngine.getSql(types, null, SqlQueryEngine.NO_ORDER);
         System.out.println(sql);
