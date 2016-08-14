@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sqlproc.engine.SqlControl;
 import org.sqlproc.engine.SqlProcessorException;
 import org.sqlproc.engine.SqlQuery;
 import org.sqlproc.engine.SqlRuntimeContext;
@@ -70,17 +71,9 @@ public class CassandraQuery implements SqlQuery {
      */
     Map<String, Class<?>[]> parameterMoreTypes = new HashMap<String, Class<?>[]>();
     /**
-     * A timeout for the underlying query.
+     * The compound parameters controlling the META SQL execution.
      */
-    Integer timeout;
-    /**
-     * The maximum number of rows to retrieve.
-     */
-    Integer maxResults;
-    /**
-     * The fetch size of rows to retrieve in one SQL.
-     */
-    Integer fetchSize;
+    SqlControl sqlControl;
     /**
      * The SQL output is sorted.
      */
@@ -121,35 +114,60 @@ public class CassandraQuery implements SqlQuery {
      * {@inheritDoc}
      */
     @Override
-    public SqlQuery setTimeout(int timeout) {
-        this.timeout = timeout;
+    public SqlQuery setSqlControl(SqlControl sqlControl) {
+        this.sqlControl = sqlControl;
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SqlQuery setFirstResult(int firstResult) {
-        throw new UnsupportedOperationException();
+    private Integer getTimeout() {
+        return sqlControl != null ? sqlControl.getMaxTimeout() : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SqlQuery setMaxResults(int maxResults) {
-        this.maxResults = maxResults;
-        return this;
+    private Integer getFetchSize() {
+        return sqlControl != null ? sqlControl.getFetchSize() : null;
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public SqlQuery setFetchSize(int fetchSize) {
-        this.fetchSize = fetchSize;
-        return this;
+    private Integer getMaxResults() {
+        return sqlControl != null ? sqlControl.getMaxResults() : null;
+    }
+
+    private void setConsistencyLevel(PreparedStatement ps) {
+        if (sqlControl != null && sqlControl instanceof CassandraStandardControl
+                && ((CassandraStandardControl) sqlControl).getConsistencyLevel() != null)
+            ps.setConsistencyLevel(((CassandraStandardControl) sqlControl).getConsistencyLevel());
+    }
+
+    private void setSerialConsistencyLevel(PreparedStatement ps) {
+        if (sqlControl != null && sqlControl instanceof CassandraStandardControl
+                && ((CassandraStandardControl) sqlControl).getSerialConsistencyLevel() != null)
+            ps.setSerialConsistencyLevel(((CassandraStandardControl) sqlControl).getSerialConsistencyLevel());
+    }
+
+    private void setTracing(PreparedStatement ps) {
+        if (sqlControl != null && sqlControl instanceof CassandraStandardControl
+                && ((CassandraStandardControl) sqlControl).getTracing() != null)
+            if (((CassandraStandardControl) sqlControl).getTracing())
+                ps.enableTracing();
+            else
+                ps.disableTracing();
+    }
+
+    private void setRetryPolicy(PreparedStatement ps) {
+        if (sqlControl != null && sqlControl instanceof CassandraStandardControl
+                && ((CassandraStandardControl) sqlControl).getRetryPolicy() != null)
+            ps.setRetryPolicy(((CassandraStandardControl) sqlControl).getRetryPolicy());
+    }
+
+    private void setIdempotent(PreparedStatement ps) {
+        if (sqlControl != null && sqlControl instanceof CassandraStandardControl
+                && ((CassandraStandardControl) sqlControl).getIdempotent() != null)
+            ps.setIdempotent(((CassandraStandardControl) sqlControl).getIdempotent());
+    }
+
+    private void setOutgoingPayload(PreparedStatement ps) {
+        if (sqlControl != null && sqlControl instanceof CassandraStandardControl
+                && ((CassandraStandardControl) sqlControl).getOutgoingPayload() != null)
+            ps.setOutgoingPayload(((CassandraStandardControl) sqlControl).getOutgoingPayload());
     }
 
     /**
@@ -166,7 +184,7 @@ public class CassandraQuery implements SqlQuery {
      */
     @Override
     public List list(final SqlRuntimeContext runtimeCtx) throws SqlProcessorException {
-        final String query = maxResults != null ? queryString + " limit " + maxResults : queryString;
+        final String query = getMaxResults() != null ? queryString + " limit " + getMaxResults() : queryString;
         if (logger.isDebugEnabled()) {
             logger.debug("list, query=" + query);
         }
@@ -178,18 +196,18 @@ public class CassandraQuery implements SqlQuery {
         try {
             ps = session.prepare(query);
             // TODO setRoutingKey, set bs
-            // TODO setConsistencyLevel, also bs
-            // TODO setSerialConsistencyLevel, also bs
-            // TODO enableTracing, disableTracing, also bs
-            // TODO setRetryPolicy, also bs
-            // TODO setIdempotent, also bs
-            // TODO setOutgoingPayload, also bs
+            setConsistencyLevel(ps);
+            setSerialConsistencyLevel(ps);
+            setTracing(ps);
+            setRetryPolicy(ps);
+            setIdempotent(ps);
+            setOutgoingPayload(ps);
             bs = ps.bind();
             // TODO setPagingState
-            if (timeout != null)
-                bs.setReadTimeoutMillis(timeout);
-            if (fetchSize != null)
-                bs.setFetchSize(fetchSize);
+            if (getTimeout() != null)
+                bs.setReadTimeoutMillis(getTimeout());
+            if (getFetchSize() != null)
+                bs.setFetchSize(getFetchSize());
             setParameters(bs);
             rs = session.execute(bs);
             List list = getResults(rs);
@@ -227,7 +245,7 @@ public class CassandraQuery implements SqlQuery {
     @Override
     public int query(final SqlRuntimeContext runtimeCtx, SqlQueryRowProcessor sqlQueryRowProcessor)
             throws SqlProcessorException {
-        final String query = maxResults != null ? queryString + " limit " + maxResults : queryString;
+        final String query = getMaxResults() != null ? queryString + " limit " + getMaxResults() : queryString;
         if (logger.isDebugEnabled()) {
             logger.debug("list, query=" + query);
         }
@@ -248,10 +266,10 @@ public class CassandraQuery implements SqlQuery {
             // TODO setOutgoingPayload, also bs
             bs = ps.bind();
             // TODO setPagingState
-            if (timeout != null)
-                bs.setReadTimeoutMillis(timeout);
-            if (fetchSize != null)
-                bs.setFetchSize(fetchSize);
+            if (getTimeout() != null)
+                bs.setReadTimeoutMillis(getTimeout());
+            if (getFetchSize() != null)
+                bs.setFetchSize(getFetchSize());
             setParameters(bs);
             rs = session.execute(bs);
             for (Object oo = getOneResult(rs); oo != NO_MORE_DATA; oo = getOneResult(rs)) {
@@ -291,10 +309,10 @@ public class CassandraQuery implements SqlQuery {
             // TODO setOutgoingPayload, also bs
             bs = ps.bind();
             // TODO setPagingState
-            if (timeout != null)
-                bs.setReadTimeoutMillis(timeout);
-            if (fetchSize != null)
-                bs.setFetchSize(fetchSize);
+            if (getTimeout() != null)
+                bs.setReadTimeoutMillis(getTimeout());
+            if (getFetchSize() != null)
+                bs.setFetchSize(getFetchSize());
             setParameters(bs);
             rs = session.execute(bs);
             int updated = rs.wasApplied() ? 1 : 0;
