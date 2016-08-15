@@ -19,9 +19,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.cassandraunit.CassandraCQLUnit;
-import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
-import org.junit.Rule;
 import org.junit.Test;
 import org.sqlproc.engine.SqlCrudEngine;
 import org.sqlproc.engine.SqlQueryEngine;
@@ -36,12 +33,8 @@ import com.datastax.driver.core.TupleValue;
 
 public class TestInsert extends TestDatabase {
 
-    @Rule
-    public CassandraCQLUnit basicCQLUnit = new CassandraCQLUnit(new ClassPathCQLDataSet("simple.cql", "basic"));
-
     @Test
     public void testInsertFull() throws UnknownHostException {
-        registerTypes(basicCQLUnit);
         SqlSession session = getSession(basicCQLUnit);
 
         SqlCrudEngine sqlEngine = getCrudEngine("INSERT_TYPES");
@@ -98,8 +91,7 @@ public class TestInsert extends TestDatabase {
     }
 
     @Test
-    public void testInsertNull() throws UnknownHostException {
-        registerTypes(basicCQLUnit);
+    public void testInsertNull() {
         SqlSession session = getSession(basicCQLUnit);
 
         SqlCrudEngine sqlEngine = getCrudEngine("INSERT_TYPES");

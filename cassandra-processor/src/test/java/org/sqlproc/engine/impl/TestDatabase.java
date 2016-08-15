@@ -1,6 +1,9 @@
 package org.sqlproc.engine.impl;
 
 import org.cassandraunit.CassandraCQLUnit;
+import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
+import org.junit.Before;
+import org.junit.Rule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sqlproc.engine.SqlCrudEngine;
@@ -21,6 +24,14 @@ public class TestDatabase {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
     protected CassandraEngineFactory factory;
+
+    @Rule
+    public CassandraCQLUnit basicCQLUnit = new CassandraCQLUnit(new ClassPathCQLDataSet("simple.cql", "basic"));
+
+    @Before
+    public void setup() {
+        registerTypes(basicCQLUnit);
+    }
 
     public TestDatabase() {
         StringBuilder metaStatements = SqlFilesLoader.getStatements(TestDatabase.class, "simple.meta");

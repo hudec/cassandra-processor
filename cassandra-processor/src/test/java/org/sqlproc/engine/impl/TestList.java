@@ -6,9 +6,6 @@ import static org.hamcrest.Matchers.hasSize;
 import java.net.UnknownHostException;
 import java.util.List;
 
-import org.cassandraunit.CassandraCQLUnit;
-import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
-import org.junit.Rule;
 import org.junit.Test;
 import org.sqlproc.engine.SqlQueryEngine;
 import org.sqlproc.engine.SqlSession;
@@ -16,12 +13,8 @@ import org.sqlproc.engine.model.Types;
 
 public class TestList extends TestDatabase {
 
-    @Rule
-    public CassandraCQLUnit basicCQLUnit = new CassandraCQLUnit(new ClassPathCQLDataSet("simple.cql", "basic"));
-
     @Test
     public void testListFull() throws UnknownHostException {
-        registerTypes(basicCQLUnit);
         SqlSession session = getSession(basicCQLUnit);
 
         SqlQueryEngine sqlEngine = getQueryEngine("LIST_TYPES");
@@ -37,7 +30,6 @@ public class TestList extends TestDatabase {
 
     @Test
     public void testListNull() {
-        registerTypes(basicCQLUnit);
         SqlSession session = getSession(basicCQLUnit);
 
         SqlQueryEngine sqlEngine = getQueryEngine("LIST_TYPES");
