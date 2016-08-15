@@ -408,15 +408,11 @@ public class CassandraQuery implements SqlQuery {
                             type.set(bs, name, value, parameterMoreTypes.get(name));
                         }
                     } catch (ClassCastException cce) {
-                        StringBuilder sb = new StringBuilder("Not compatible input value of type ").append(type)
-                                .append(": ").append((value != null) ? value.getClass() : "null").append(".");
-                        sb.append(".");
-                        throw new SqlProcessorException(sb.toString(), cce);
+                        throw new SqlProcessorException("Not compatible input value of type " + type + " for " + name,
+                                cce);
                     }
                 } else {
-                    StringBuilder sb = new StringBuilder("Not supported input value of null type: ")
-                            .append((value != null) ? value.getClass() : "null").append(".");
-                    throw new SqlProcessorException(sb.toString());
+                    throw new SqlProcessorException("Not supported input value of null type for " + name);
                 }
             }
         }
@@ -453,14 +449,12 @@ public class CassandraQuery implements SqlQuery {
             List<Object> row = new ArrayList<Object>();
             for (int i = 0, n = scalars.size(); i < n; i++) {
                 String name = scalars.get(i);
-                Object type = scalarTypes.get(name);
+                CassandraSqlType type = scalarTypes.get(name);
                 Object value = null;
-                if (type != null && type instanceof CassandraSqlType) {
+                if (type != null)
                     value = ((CassandraSqlType) type).get(data, name, scalarMoreTypes.get(name));
-                } else {
-                    StringBuilder sb = new StringBuilder("Not supported output value of type " + type).append(".");
-                    throw new SqlProcessorException(sb.toString());
-                }
+                else
+                    throw new SqlProcessorException("Not supported output value of null type for " + name);
                 row.add(value);
             }
             Object[] oo = row.toArray();
