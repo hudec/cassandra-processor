@@ -116,58 +116,46 @@ public class CassandraQuery implements SqlQuery {
     @Override
     public SqlQuery setSqlControl(SqlControl sqlControl) {
         this.sqlControl = sqlControl;
+        if (sqlControl != null) {
+
+        }
         return this;
-    }
-
-    private Integer getTimeout() {
-        return sqlControl != null ? sqlControl.getMaxTimeout() : null;
-    }
-
-    private Integer getFetchSize() {
-        return sqlControl != null ? sqlControl.getFetchSize() : null;
     }
 
     private Integer getMaxResults() {
         return sqlControl != null ? sqlControl.getMaxResults() : null;
     }
 
-    private void setConsistencyLevel(PreparedStatement ps) {
-        if (sqlControl != null && sqlControl instanceof CassandraStandardControl
-                && ((CassandraStandardControl) sqlControl).getConsistencyLevel() != null)
-            ps.setConsistencyLevel(((CassandraStandardControl) sqlControl).getConsistencyLevel());
+    private void controlStatement(BoundStatement st) {
+        // TODO setRoutingKey, set bs
+        // TODO setPagingState
+        if (sqlControl != null) {
+            if (sqlControl.getMaxTimeout() != null)
+                st.setReadTimeoutMillis(sqlControl.getMaxTimeout());
+            if (sqlControl.getFetchSize() != null)
+                st.setFetchSize(sqlControl.getFetchSize());
+        }
     }
 
-    private void setSerialConsistencyLevel(PreparedStatement ps) {
-        if (sqlControl != null && sqlControl instanceof CassandraStandardControl
-                && ((CassandraStandardControl) sqlControl).getSerialConsistencyLevel() != null)
-            ps.setSerialConsistencyLevel(((CassandraStandardControl) sqlControl).getSerialConsistencyLevel());
-    }
-
-    private void setTracing(PreparedStatement ps) {
-        if (sqlControl != null && sqlControl instanceof CassandraStandardControl
-                && ((CassandraStandardControl) sqlControl).getTracing() != null)
-            if (((CassandraStandardControl) sqlControl).getTracing())
-                ps.enableTracing();
-            else
-                ps.disableTracing();
-    }
-
-    private void setRetryPolicy(PreparedStatement ps) {
-        if (sqlControl != null && sqlControl instanceof CassandraStandardControl
-                && ((CassandraStandardControl) sqlControl).getRetryPolicy() != null)
-            ps.setRetryPolicy(((CassandraStandardControl) sqlControl).getRetryPolicy());
-    }
-
-    private void setIdempotent(PreparedStatement ps) {
-        if (sqlControl != null && sqlControl instanceof CassandraStandardControl
-                && ((CassandraStandardControl) sqlControl).getIdempotent() != null)
-            ps.setIdempotent(((CassandraStandardControl) sqlControl).getIdempotent());
-    }
-
-    private void setOutgoingPayload(PreparedStatement ps) {
-        if (sqlControl != null && sqlControl instanceof CassandraStandardControl
-                && ((CassandraStandardControl) sqlControl).getOutgoingPayload() != null)
-            ps.setOutgoingPayload(((CassandraStandardControl) sqlControl).getOutgoingPayload());
+    private void controlStatement(PreparedStatement st) {
+        if (sqlControl != null && sqlControl instanceof CassandraStandardControl) {
+            if (((CassandraStandardControl) sqlControl).getConsistencyLevel() != null)
+                st.setConsistencyLevel(((CassandraStandardControl) sqlControl).getConsistencyLevel());
+            if (((CassandraStandardControl) sqlControl).getSerialConsistencyLevel() != null)
+                st.setSerialConsistencyLevel(((CassandraStandardControl) sqlControl).getSerialConsistencyLevel());
+            if (((CassandraStandardControl) sqlControl).getTracing() != null) {
+                if (((CassandraStandardControl) sqlControl).getTracing())
+                    st.enableTracing();
+                else
+                    st.disableTracing();
+            }
+            if (((CassandraStandardControl) sqlControl).getRetryPolicy() != null)
+                st.setRetryPolicy(((CassandraStandardControl) sqlControl).getRetryPolicy());
+            if (((CassandraStandardControl) sqlControl).getIdempotent() != null)
+                st.setIdempotent(((CassandraStandardControl) sqlControl).getIdempotent());
+            if (((CassandraStandardControl) sqlControl).getOutgoingPayload() != null)
+                st.setOutgoingPayload(((CassandraStandardControl) sqlControl).getOutgoingPayload());
+        }
     }
 
     /**
@@ -195,19 +183,9 @@ public class CassandraQuery implements SqlQuery {
         ResultSet rs = null;
         try {
             ps = session.prepare(query);
-            // TODO setRoutingKey, set bs
-            setConsistencyLevel(ps);
-            setSerialConsistencyLevel(ps);
-            setTracing(ps);
-            setRetryPolicy(ps);
-            setIdempotent(ps);
-            setOutgoingPayload(ps);
+            controlStatement(ps);
             bs = ps.bind();
-            // TODO setPagingState
-            if (getTimeout() != null)
-                bs.setReadTimeoutMillis(getTimeout());
-            if (getFetchSize() != null)
-                bs.setFetchSize(getFetchSize());
+            controlStatement(bs);
             setParameters(bs);
             rs = session.execute(bs);
             List list = getResults(rs);
@@ -257,19 +235,9 @@ public class CassandraQuery implements SqlQuery {
         int rownum = 0;
         try {
             ps = session.prepare(query);
-            // TODO setRoutingKey, set bs
-            // TODO setConsistencyLevel, also bs
-            // TODO setSerialConsistencyLevel, also bs
-            // TODO enableTracing, disableTracing, also bs
-            // TODO setRetryPolicy, also bs
-            // TODO setIdempotent, also bs
-            // TODO setOutgoingPayload, also bs
+            controlStatement(ps);
             bs = ps.bind();
-            // TODO setPagingState
-            if (getTimeout() != null)
-                bs.setReadTimeoutMillis(getTimeout());
-            if (getFetchSize() != null)
-                bs.setFetchSize(getFetchSize());
+            controlStatement(bs);
             setParameters(bs);
             rs = session.execute(bs);
             for (Object oo = getOneResult(rs); oo != NO_MORE_DATA; oo = getOneResult(rs)) {
@@ -300,19 +268,9 @@ public class CassandraQuery implements SqlQuery {
         ResultSet rs = null;
         try {
             ps = session.prepare(queryString);
-            // TODO setRoutingKey, set bs
-            // TODO setConsistencyLevel, also bs
-            // TODO setSerialConsistencyLevel, also bs
-            // TODO enableTracing, disableTracing, also bs
-            // TODO setRetryPolicy, also bs
-            // TODO setIdempotent, also bs
-            // TODO setOutgoingPayload, also bs
+            controlStatement(ps);
             bs = ps.bind();
-            // TODO setPagingState
-            if (getTimeout() != null)
-                bs.setReadTimeoutMillis(getTimeout());
-            if (getFetchSize() != null)
-                bs.setFetchSize(getFetchSize());
+            controlStatement(bs);
             setParameters(bs);
             rs = session.execute(bs);
             int updated = rs.wasApplied() ? 1 : 0;
