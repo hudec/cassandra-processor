@@ -39,7 +39,7 @@ public class TestUpdate extends TestDatabase {
     }
 
     @Test
-    public void testNullUpdate() {
+    public void testUpdateNull() {
         SqlSession session = getSession(basicCQLUnit);
 
         SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES");
@@ -61,7 +61,7 @@ public class TestUpdate extends TestDatabase {
     }
 
     @Test
-    public void testMissedUpdate() throws UnknownHostException {
+    public void testUpdateNotExistingRow() throws UnknownHostException {
         SqlSession session = getSession(basicCQLUnit);
 
         SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES");
@@ -84,7 +84,7 @@ public class TestUpdate extends TestDatabase {
     }
 
     @Test
-    public void testConditionalUpdate() throws UnknownHostException {
+    public void testUpdateConditional() throws UnknownHostException {
         SqlSession session = getSession(basicCQLUnit);
 
         SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES_IF_EXISTS");
