@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.sqlproc.engine.SqlCrudEngine;
 import org.sqlproc.engine.SqlSession;
 import org.sqlproc.engine.impl.SqlMetaStatement.Type;
+import org.sqlproc.engine.model.ClusteringTypes;
 import org.sqlproc.engine.model.Types;
 
 public class TestGet extends TestDatabase {
@@ -37,5 +38,19 @@ public class TestGet extends TestDatabase {
         Types typesDb = sqlEngine.get(session, Types.class, types);
         System.out.println(typesDb);
         assertThat(typesDb, nullValue());
+    }
+
+    @Test
+    public void testGetFullWhere() throws UnknownHostException {
+        SqlSession session = getSession(basicCQLUnit);
+        SqlCrudEngine sqlEngine = getCrudEngine("GET_CLUSTERING_TYPES");
+
+        ClusteringTypes types = ClusteringTypes.getDefaultTypes(basicCQLUnit.cluster);
+        types.setId(null);
+        String sql = sqlEngine.getSql(types, null, Type.QUERY);
+        System.out.println(sql);
+        ClusteringTypes typesDb = sqlEngine.get(session, ClusteringTypes.class, types);
+        System.out.println(typesDb);
+        ClusteringTypes.assertClusteringTypes(typesDb, ClusteringTypes.getDefaultTypes(basicCQLUnit.cluster));
     }
 }
