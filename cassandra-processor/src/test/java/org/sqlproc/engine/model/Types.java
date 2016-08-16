@@ -370,6 +370,46 @@ public class Types {
         return t;
     }
 
+    public static Types getNewTypes(Cluster cluster) throws UnknownHostException {
+        Types t = new Types();
+        t.setId(101);
+        t.setT_ascii("ascii");
+        t.setT_bigint(Long.MAX_VALUE);
+        t.setT_blob(ByteBuffer.wrap("{\"blob1\": \"blob2\"}".getBytes()));
+        t.setT_boolean(true);
+        t.setT_date(LocalDate.now());
+        t.setT_decimal(BigDecimal.ONE);
+        t.setT_double(Double.MAX_VALUE);
+        t.setT_float(Float.MAX_VALUE);
+        t.setT_inet(InetAddress.getByName("1.2.3.4"));
+        t.setT_int(Integer.MAX_VALUE);
+        t.setT_list_int(Arrays.asList(101, 102));
+        t.setT_list_text(Arrays.asList("value1", "value2"));
+        Map<Integer, String> map = new HashMap<>();
+        map.put(201, "map1");
+        map.put(202, "map2");
+        t.setT_map(map);
+        t.setT_set_int(new HashSet<>(Arrays.asList(301, 302)));
+        t.setT_set_text(new HashSet<>(Arrays.asList("set1", "set2")));
+        t.setT_smallint(Short.MAX_VALUE);
+        t.setT_text("ěščřžýáíéúů");
+        t.setT_time(LocalTime.now());
+        t.setT_timestamp(Instant.now());
+        t.setT_timeuuid(UUID.fromString("e12229de-5eda-11e6-a6a7-cc3d827302bc"));
+        t.setT_tinyint(Byte.MAX_VALUE);
+        t.setT_varchar("ěščřžýáíéúů");
+        t.setT_varint(BigInteger.ONE);
+        TupleType tupleType = cluster.getMetadata().newTupleType(DataType.cint(), DataType.text(), DataType.cfloat());
+        TupleValue tuple = tupleType.newValue();
+        tuple.setInt(0, 401);
+        tuple.setString(1, "tuple");
+        tuple.setFloat(2, 402.0f);
+        t.setT_tuple(tuple);
+        t.setT_uuid(UUID.fromString("a9c9b8ae-4911-4bf4-a855-4b5f634d0664"));
+        t.setT_type1(new Type1("varchar", 501));
+        return t;
+    }
+
     public static Types getNullTypes(int id) {
         Types t = new Types();
         t.setId(id);
