@@ -61,18 +61,46 @@ public class TestUpdate extends TestDatabase {
     }
 
     @Test
-    public void testMissedUpdate() {
+    public void testMissedUpdate() throws UnknownHostException {
         SqlSession session = getSession(basicCQLUnit);
 
         SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES");
-        Types types = new Types();
-        types.setId(9999);
 
+        Types types = Types.getNewTypes(basicCQLUnit.cluster);
+        types.setId(9999);
         String sql = sqlEngine.getSql(types, null, Type.UPDATE);
         System.out.println(sql);
         int count = sqlEngine.update(session, types);
         System.out.println(types);
-        // TODO
         assertThat(count, is(1));
+
+        SqlQueryEngine sqlQueryEngine = getQueryEngine("LIST_TYPES");
+
+        List<Types> list = sqlQueryEngine.query(session, Types.class, new Types(9999));
+        System.out.println(list);
+        assertThat(list.size(), is(1));
+        assertThat(list.get(0), notNullValue());
+        Types.assertTypes(list.get(0), types);
+    }
+
+    @Test
+    public void testConditionalUpdate() throws UnknownHostException {
+        SqlSession session = getSession(basicCQLUnit);
+
+        SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES_IF_EXISTS");
+
+        Types types = Types.getNewTypes(basicCQLUnit.cluster);
+        types.setId(9999);
+        String sql = sqlEngine.getSql(types, null, Type.UPDATE);
+        System.out.println(sql);
+        int count = sqlEngine.update(session, types);
+        System.out.println(types);
+        assertThat(count, is(0));
+
+        SqlQueryEngine sqlQueryEngine = getQueryEngine("LIST_TYPES");
+
+        List<Types> list = sqlQueryEngine.query(session, Types.class, new Types(9999));
+        System.out.println(list);
+        assertThat(list.size(), is(0));
     }
 }
