@@ -22,7 +22,7 @@ public class TestUpdate extends TestDatabase {
 
         SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES");
 
-        Types types = Types.getNewTypes(basicCQLUnit.cluster);
+        Types types = Types.getNewTypes(basicCQLUnit.cluster, 1);
         types.setId(1);
         String sql = sqlEngine.getSql(types, null, Type.UPDATE);
         System.out.println(sql);
@@ -66,8 +66,7 @@ public class TestUpdate extends TestDatabase {
 
         SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES");
 
-        Types types = Types.getNewTypes(basicCQLUnit.cluster);
-        types.setId(9999);
+        Types types = Types.getNewTypes(basicCQLUnit.cluster, 9999);
         String sql = sqlEngine.getSql(types, null, Type.UPDATE);
         System.out.println(sql);
         int count = sqlEngine.update(session, types);
@@ -89,8 +88,7 @@ public class TestUpdate extends TestDatabase {
 
         SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES_IF_EXISTS");
 
-        Types types = Types.getNewTypes(basicCQLUnit.cluster);
-        types.setId(9999);
+        Types types = Types.getNewTypes(basicCQLUnit.cluster, 9999);
         String sql = sqlEngine.getSql(types, null, Type.UPDATE);
         System.out.println(sql);
         int count = sqlEngine.update(session, types);

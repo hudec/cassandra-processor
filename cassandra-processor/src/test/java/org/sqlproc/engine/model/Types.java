@@ -370,9 +370,9 @@ public class Types {
         return t;
     }
 
-    public static Types getNewTypes(Cluster cluster) throws UnknownHostException {
+    public static Types getNewTypes(Cluster cluster, int id) throws UnknownHostException {
         Types t = new Types();
-        t.setId(101);
+        t.setId(id);
         t.setT_ascii("ascii");
         t.setT_bigint(Long.MAX_VALUE);
         t.setT_blob(ByteBuffer.wrap("{\"blob1\": \"blob2\"}".getBytes()));

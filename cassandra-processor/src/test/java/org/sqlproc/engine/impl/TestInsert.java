@@ -22,7 +22,7 @@ public class TestInsert extends TestDatabase {
 
         SqlCrudEngine sqlEngine = getCrudEngine("INSERT_TYPES");
 
-        Types types = Types.getNewTypes(basicCQLUnit.cluster);
+        Types types = Types.getNewTypes(basicCQLUnit.cluster, 101);
         String sql = sqlEngine.getSql(types, null, Type.CREATE);
         System.out.println(sql);
         int count = sqlEngine.insert(session, types);
@@ -64,8 +64,7 @@ public class TestInsert extends TestDatabase {
 
         SqlCrudEngine sqlEngine = getCrudEngine("INSERT_TYPES");
 
-        Types types = Types.getNewTypes(basicCQLUnit.cluster);
-        types.setId(2);
+        Types types = Types.getNewTypes(basicCQLUnit.cluster, 2);
         String sql = sqlEngine.getSql(types, null, Type.CREATE);
         System.out.println(sql);
         int count = sqlEngine.insert(session, types);
@@ -86,8 +85,7 @@ public class TestInsert extends TestDatabase {
 
         SqlCrudEngine sqlEngine = getCrudEngine("INSERT_TYPES_IF_NOT_EXISTS");
 
-        Types types = Types.getNewTypes(basicCQLUnit.cluster);
-        types.setId(1);
+        Types types = Types.getNewTypes(basicCQLUnit.cluster, 1);
         String sql = sqlEngine.getSql(types, null, Type.CREATE);
         System.out.println(sql);
         int count = sqlEngine.insert(session, types);
