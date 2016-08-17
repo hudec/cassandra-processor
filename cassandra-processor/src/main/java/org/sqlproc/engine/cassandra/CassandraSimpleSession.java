@@ -1,11 +1,13 @@
 package org.sqlproc.engine.cassandra;
 
+import org.sqlproc.engine.SqlControl;
 import org.sqlproc.engine.SqlCrudEngine;
 import org.sqlproc.engine.SqlProcessorException;
 import org.sqlproc.engine.SqlQuery;
 import org.sqlproc.engine.SqlQueryEngine;
 import org.sqlproc.engine.SqlSession;
 
+import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.Session;
 
 /**
@@ -71,7 +73,7 @@ public class CassandraSimpleSession implements SqlSession {
      * {@inheritDoc}
      */
     @Override
-    public SqlQuery createSqlQuery(String queryString) throws SqlProcessorException {
+    public CassandraQuery createSqlQuery(String queryString) throws SqlProcessorException {
         return new CassandraQuery(session, queryString);
     }
 
@@ -82,6 +84,11 @@ public class CassandraSimpleSession implements SqlSession {
     public int[] executeBatch(String[] statements) throws SqlProcessorException {
         SqlQuery sqlQuery = createSqlQuery(null);
         return sqlQuery.executeBatch(statements);
+    }
+
+    public int executeBatch(BatchStatement batchStatement, SqlControl sqlControl) throws SqlProcessorException {
+        CassandraQuery sqlQuery = createSqlQuery(null);
+        return sqlQuery.executeBatch(batchStatement, sqlControl);
     }
 
     /**

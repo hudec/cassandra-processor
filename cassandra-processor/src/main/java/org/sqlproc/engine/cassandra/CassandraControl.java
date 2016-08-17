@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.sqlproc.engine.SqlControl;
 
+import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.ConsistencyLevel;
+import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.policies.RetryPolicy;
 
 /**
@@ -117,4 +119,11 @@ public interface CassandraControl extends SqlControl {
      * @since 2.2
      */
     public Map<String, ByteBuffer> getOutgoingPayload();
+
+    /**
+     * Returns a statement that groups a number of {@link Statement} so they get executed as a batch.
+     * 
+     * @return a statement that groups a number of {@link Statement} so they get executed as a batch
+     */
+    public BatchStatement getBatchStatement();
 }

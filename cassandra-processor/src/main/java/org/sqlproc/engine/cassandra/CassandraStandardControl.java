@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.sqlproc.engine.impl.SqlStandardControl;
 
+import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.ConsistencyLevel;
 import com.datastax.driver.core.policies.RetryPolicy;
 
@@ -17,6 +18,7 @@ public class CassandraStandardControl extends SqlStandardControl implements Cass
     private Boolean idempotent;
     private Map<String, ByteBuffer> incomingPayload;
     private Map<String, ByteBuffer> outgoingPayload;
+    private BatchStatement batchStatement;
 
     /**
      * {@inheritDoc}
@@ -107,5 +109,25 @@ public class CassandraStandardControl extends SqlStandardControl implements Cass
     public CassandraStandardControl setOutgoingPayload(Map<String, ByteBuffer> outgoingPayload) {
         this.outgoingPayload = outgoingPayload;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BatchStatement getBatchStatement() {
+        return batchStatement;
+    }
+
+    public void setBatchStatement(BatchStatement batchStatement) {
+        this.batchStatement = batchStatement;
+    }
+
+    @Override
+    public String toString() {
+        return "CassandraStandardControl [consistencyLevel=" + consistencyLevel + ", serialConsistencyLevel="
+                + serialConsistencyLevel + ", tracing=" + tracing + ", retryPolicy=" + retryPolicy + ", idempotent="
+                + idempotent + ", incomingPayload=" + incomingPayload + ", outgoingPayload=" + outgoingPayload
+                + ", batchStatement=" + batchStatement + ", super=" + super.toString() + "]";
     }
 }

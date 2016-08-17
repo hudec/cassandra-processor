@@ -13,6 +13,7 @@ import org.sqlproc.engine.SqlQuery;
 import org.sqlproc.engine.SqlRuntimeContext;
 import org.sqlproc.engine.cassandra.type.CassandraSqlType;
 
+import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.ResultSet;
@@ -122,11 +123,11 @@ public class CassandraQuery implements SqlQuery {
         return this;
     }
 
-    private Integer getMaxResults() {
-        return sqlControl != null ? sqlControl.getMaxResults() : null;
+    private String getMaxResults() {
+        return sqlControl != null ? " limit " + sqlControl.getMaxResults() : "";
     }
 
-    private void controlStatement(BoundStatement st) {
+    private void controlStatement(BoundStatement st, SqlControl sqlControl) {
         // TODO setRoutingKey, set bs
         // TODO setPagingState
         if (sqlControl != null) {
@@ -137,7 +138,7 @@ public class CassandraQuery implements SqlQuery {
         }
     }
 
-    private void controlStatement(PreparedStatement st) {
+    private void controlStatement(PreparedStatement st, SqlControl sqlControl) {
         if (sqlControl != null && sqlControl instanceof CassandraStandardControl) {
             if (((CassandraStandardControl) sqlControl).getConsistencyLevel() != null)
                 st.setConsistencyLevel(((CassandraStandardControl) sqlControl).getConsistencyLevel());
@@ -158,6 +159,38 @@ public class CassandraQuery implements SqlQuery {
         }
     }
 
+    private void controlStatement(BatchStatement st, SqlControl sqlControl) {
+        if (sqlControl != null) {
+            if (sqlControl.getMaxTimeout() != null)
+                st.setReadTimeoutMillis(sqlControl.getMaxTimeout());
+            if (sqlControl.getFetchSize() != null)
+                st.setFetchSize(sqlControl.getFetchSize());
+        }
+        if (sqlControl != null && sqlControl instanceof CassandraStandardControl) {
+            if (((CassandraStandardControl) sqlControl).getConsistencyLevel() != null)
+                st.setConsistencyLevel(((CassandraStandardControl) sqlControl).getConsistencyLevel());
+            if (((CassandraStandardControl) sqlControl).getSerialConsistencyLevel() != null)
+                st.setSerialConsistencyLevel(((CassandraStandardControl) sqlControl).getSerialConsistencyLevel());
+            if (((CassandraStandardControl) sqlControl).getTracing() != null) {
+                if (((CassandraStandardControl) sqlControl).getTracing())
+                    st.enableTracing();
+                else
+                    st.disableTracing();
+            }
+            if (((CassandraStandardControl) sqlControl).getRetryPolicy() != null)
+                st.setRetryPolicy(((CassandraStandardControl) sqlControl).getRetryPolicy());
+            if (((CassandraStandardControl) sqlControl).getIdempotent() != null)
+                st.setIdempotent(((CassandraStandardControl) sqlControl).getIdempotent());
+            if (((CassandraStandardControl) sqlControl).getOutgoingPayload() != null)
+                st.setOutgoingPayload(((CassandraStandardControl) sqlControl).getOutgoingPayload());
+        }
+    }
+
+    private BatchStatement getBatchStatement() {
+        return sqlControl != null && sqlControl instanceof CassandraStandardControl
+                ? ((CassandraStandardControl) sqlControl).getBatchStatement() : null;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -172,7 +205,7 @@ public class CassandraQuery implements SqlQuery {
      */
     @Override
     public List list(final SqlRuntimeContext runtimeCtx) throws SqlProcessorException {
-        final String query = getMaxResults() != null ? queryString + " limit " + getMaxResults() : queryString;
+        final String query = queryString + getMaxResults();
         if (logger.isDebugEnabled()) {
             logger.debug("list, query=" + query);
         }
@@ -183,9 +216,9 @@ public class CassandraQuery implements SqlQuery {
         ResultSet rs = null;
         try {
             ps = session.prepare(query);
-            controlStatement(ps);
+            controlStatement(ps, sqlControl);
             bs = ps.bind();
-            controlStatement(bs);
+            controlStatement(bs, sqlControl);
             setParameters(bs);
             rs = session.execute(bs);
             List list = getResults(rs);
@@ -223,7 +256,7 @@ public class CassandraQuery implements SqlQuery {
     @Override
     public int query(final SqlRuntimeContext runtimeCtx, SqlQueryRowProcessor sqlQueryRowProcessor)
             throws SqlProcessorException {
-        final String query = getMaxResults() != null ? queryString + " limit " + getMaxResults() : queryString;
+        final String query = queryString + getMaxResults();
         if (logger.isDebugEnabled()) {
             logger.debug("list, query=" + query);
         }
@@ -235,9 +268,9 @@ public class CassandraQuery implements SqlQuery {
         int rownum = 0;
         try {
             ps = session.prepare(query);
-            controlStatement(ps);
+            controlStatement(ps, sqlControl);
             bs = ps.bind();
-            controlStatement(bs);
+            controlStatement(bs, sqlControl);
             setParameters(bs);
             rs = session.execute(bs);
             for (Object oo = getOneResult(rs); oo != NO_MORE_DATA; oo = getOneResult(rs)) {
@@ -265,15 +298,22 @@ public class CassandraQuery implements SqlQuery {
         PreparedStatement ps = null;
         // TODO BatchStatement
         BoundStatement bs = null;
+        BatchStatement batch = getBatchStatement();
         ResultSet rs = null;
         try {
             ps = session.prepare(queryString);
-            controlStatement(ps);
+            controlStatement(ps, sqlControl);
             bs = ps.bind();
-            controlStatement(bs);
+            controlStatement(bs, sqlControl);
             setParameters(bs);
-            rs = session.execute(bs);
-            int updated = rs.wasApplied() ? 1 : 0;
+            int updated;
+            if (batch != null) {
+                batch.add(bs);
+                updated = 0;
+            } else {
+                rs = session.execute(bs);
+                updated = rs.wasApplied() ? 1 : 0;
+            }
             if (logger.isDebugEnabled()) {
                 logger.debug("update, number of updated rows=" + updated);
             }
@@ -472,6 +512,21 @@ public class CassandraQuery implements SqlQuery {
     @Override
     public int[] executeBatch(String[] statements) throws SqlProcessorException {
         throw new UnsupportedOperationException();
+    }
+
+    public int executeBatch(BatchStatement batch, SqlControl sqlControl) throws SqlProcessorException {
+        controlStatement(batch, sqlControl);
+        ResultSet rs = null;
+        try {
+            rs = session.execute(batch);
+            int updated = rs.wasApplied() ? 1 : 0;
+            if (logger.isDebugEnabled()) {
+                logger.debug("update, number of updated rows=" + updated);
+            }
+            return updated;
+        } catch (Exception ex) {
+            throw newSqlProcessorException(ex, "batch");
+        }
     }
 
     protected SqlProcessorException newSqlProcessorException(Exception ex, String query) {

@@ -5,11 +5,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import org.sqlproc.engine.SqlControl;
 import org.sqlproc.engine.SqlCrudEngine;
 import org.sqlproc.engine.SqlQuery;
 import org.sqlproc.engine.SqlQueryEngine;
 import org.sqlproc.engine.SqlSession;
 
+import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.Session;
 
 /**
@@ -83,9 +85,16 @@ public class CassandraSession implements InvocationHandler {
         }
 
         if ("executeBatch".equals(method.getName())) {
-            String[] statements = (String[]) args[0];
-            CassandraQuery jdbcQuery = new CassandraQuery(session, null);
-            return jdbcQuery.executeBatch(statements);
+            if (args[0] instanceof String) {
+                String[] statements = (String[]) args[0];
+                CassandraQuery jdbcQuery = new CassandraQuery(session, null);
+                return jdbcQuery.executeBatch(statements);
+            } else {
+                BatchStatement batchSatement = (BatchStatement) args[0];
+                SqlControl sqlControl = (SqlControl) args[0];
+                CassandraQuery jdbcQuery = new CassandraQuery(session, null);
+                return jdbcQuery.executeBatch(batchSatement, sqlControl);
+            }
         }
 
         if ("getName".equals(method.getName())) {
