@@ -19,6 +19,7 @@ import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.SimpleStatement;
 
 /**
  * The JDBC stack implementation of the SQL Engine query contract. In fact it's an adapter the internal JDBC stuff.
@@ -529,7 +530,21 @@ public class CassandraQuery implements SqlQuery {
      */
     @Override
     public int[] executeBatch(String[] statements) throws SqlProcessorException {
-        throw new UnsupportedOperationException();
+        BatchStatement batch = new BatchStatement();
+        for (String query : statements)
+            batch.add(new SimpleStatement(query));
+        controlStatement(batch, sqlControl);
+        ResultSet rs = null;
+        try {
+            rs = session.execute(batch);
+            int updated = rs.wasApplied() ? 1 : 0;
+            if (logger.isDebugEnabled()) {
+                logger.debug("update, number of updated rows=" + updated);
+            }
+            return new int[] { updated };
+        } catch (Exception ex) {
+            throw newSqlProcessorException(ex, "batch");
+        }
     }
 
     public int executeBatch(BatchStatement batch, SqlControl sqlControl) throws SqlProcessorException {

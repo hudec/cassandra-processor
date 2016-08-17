@@ -19,7 +19,7 @@ import com.datastax.driver.core.BatchStatement;
 public class TestBatch extends TestDatabase {
 
     @Test
-    public void testInsertFull() throws UnknownHostException {
+    public void testInsertDynamic() throws UnknownHostException {
         CassandraSimpleSession session = getSession(basicCQLUnit);
 
         SqlQueryEngine sqlQueryEngine = getQueryEngine("LIST_TYPES");
@@ -44,5 +44,24 @@ public class TestBatch extends TestDatabase {
 
         List<Types> list2 = sqlQueryEngine.query(session, Types.class);
         assertThat(list2.size(), is(list.size() + 3));
+    }
+
+    @Test
+    public void testDeleteStatic() throws UnknownHostException {
+        CassandraSimpleSession session = getSession(basicCQLUnit);
+
+        int[] rc = session.executeBatch("delete from types where id = 1", "delete from types where id = 2");
+        System.out.println(rc[0]);
+        assertThat(rc[0], is(1));
+    }
+
+    @Test
+    public void testDeleteStaticNotExistingRow() throws UnknownHostException {
+        CassandraSimpleSession session = getSession(basicCQLUnit);
+
+        // this is correct, if exists can't be used in batch
+        int[] rc = session.executeBatch("delete from types where id = 3");
+        System.out.println(rc[0]);
+        assertThat(rc[0], is(1));
     }
 }

@@ -81,7 +81,7 @@ public class CassandraSimpleSession implements SqlSession {
      * {@inheritDoc}
      */
     @Override
-    public int[] executeBatch(String[] statements) throws SqlProcessorException {
+    public int[] executeBatch(String... statements) throws SqlProcessorException {
         SqlQuery sqlQuery = createSqlQuery(null);
         return sqlQuery.executeBatch(statements);
     }
