@@ -5,6 +5,7 @@ import static org.hamcrest.Matchers.is;
 
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.junit.Test;
 import org.sqlproc.engine.SqlCrudEngine;
@@ -27,6 +28,7 @@ public class TestBatch extends TestDatabase {
         SqlCrudEngine sqlEngine = getCrudEngine("INSERT_TYPES");
         CassandraStandardControl csc = new CassandraStandardControl();
         csc.setBatchStatement(new BatchStatement());
+        csc.setPreparedStatements(new ConcurrentHashMap<>());
 
         Types types101 = Types.getNewTypes(basicCQLUnit.cluster, 101);
         int count = sqlEngine.insert(session, types101, csc);
