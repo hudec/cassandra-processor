@@ -2,11 +2,13 @@ package org.sqlproc.engine.cassandra;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.sqlproc.engine.impl.SqlStandardControl;
 
 import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.ConsistencyLevel;
+import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.policies.RetryPolicy;
 
 public class CassandraStandardControl extends SqlStandardControl implements CassandraControl {
@@ -19,6 +21,7 @@ public class CassandraStandardControl extends SqlStandardControl implements Cass
     private Map<String, ByteBuffer> incomingPayload;
     private Map<String, ByteBuffer> outgoingPayload;
     private BatchStatement batchStatement;
+    private ConcurrentHashMap<String, PreparedStatement> preparedStatements;
 
     /**
      * {@inheritDoc}
@@ -121,6 +124,18 @@ public class CassandraStandardControl extends SqlStandardControl implements Cass
 
     public void setBatchStatement(BatchStatement batchStatement) {
         this.batchStatement = batchStatement;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public ConcurrentHashMap<String, PreparedStatement> getPreparedStatements() {
+        return preparedStatements;
+    }
+
+    public void setPreparedStatements(ConcurrentHashMap<String, PreparedStatement> preparedStatements) {
+        this.preparedStatements = preparedStatements;
     }
 
     @Override

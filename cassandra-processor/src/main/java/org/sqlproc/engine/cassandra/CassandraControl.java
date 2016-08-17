@@ -2,11 +2,13 @@ package org.sqlproc.engine.cassandra;
 
 import java.nio.ByteBuffer;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.sqlproc.engine.SqlControl;
 
 import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.ConsistencyLevel;
+import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.Statement;
 import com.datastax.driver.core.policies.RetryPolicy;
 
@@ -126,4 +128,11 @@ public interface CassandraControl extends SqlControl {
      * @return a statement that groups a number of {@link Statement} so they get executed as a batch
      */
     public BatchStatement getBatchStatement();
+
+    /**
+     * Returns the PreparedStatement cache for their re-usage.
+     * 
+     * @return the PreparedStatement cache for their re-usag
+     */
+    public ConcurrentHashMap<String, PreparedStatement> getPreparedStatements();
 }

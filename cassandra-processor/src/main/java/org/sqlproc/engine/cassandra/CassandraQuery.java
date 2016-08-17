@@ -191,6 +191,18 @@ public class CassandraQuery implements SqlQuery {
                 ? ((CassandraStandardControl) sqlControl).getBatchStatement() : null;
     }
 
+    private PreparedStatement getPreparedStatement(String query) {
+        return sqlControl != null && sqlControl instanceof CassandraStandardControl
+                && ((CassandraStandardControl) sqlControl).getPreparedStatements() != null
+                        ? ((CassandraStandardControl) sqlControl).getPreparedStatements().get(query) : null;
+    }
+
+    private PreparedStatement setPreparedStatement(String query, PreparedStatement ps) {
+        return sqlControl != null && sqlControl instanceof CassandraStandardControl
+                && ((CassandraStandardControl) sqlControl).getPreparedStatements() != null
+                        ? ((CassandraStandardControl) sqlControl).getPreparedStatements().put(query, ps) : null;
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -210,12 +222,14 @@ public class CassandraQuery implements SqlQuery {
             logger.debug("list, query=" + query);
         }
 
-        PreparedStatement ps = null;
-        // TODO BatchStatement
+        PreparedStatement ps = getPreparedStatement(query);
         BoundStatement bs = null;
         ResultSet rs = null;
         try {
-            ps = session.prepare(query);
+            if (ps == null) {
+                ps = session.prepare(query);
+                setPreparedStatement(query, ps);
+            }
             controlStatement(ps, sqlControl);
             bs = ps.bind();
             controlStatement(bs, sqlControl);
@@ -261,13 +275,15 @@ public class CassandraQuery implements SqlQuery {
             logger.debug("list, query=" + query);
         }
 
-        PreparedStatement ps = null;
-        // TODO BatchStatement
+        PreparedStatement ps = getPreparedStatement(query);
         BoundStatement bs = null;
         ResultSet rs = null;
         int rownum = 0;
         try {
-            ps = session.prepare(query);
+            if (ps == null) {
+                ps = session.prepare(query);
+                setPreparedStatement(query, ps);
+            }
             controlStatement(ps, sqlControl);
             bs = ps.bind();
             controlStatement(bs, sqlControl);
@@ -295,13 +311,15 @@ public class CassandraQuery implements SqlQuery {
         if (logger.isDebugEnabled()) {
             logger.debug("update, query=" + queryString);
         }
-        PreparedStatement ps = null;
-        // TODO BatchStatement
+        PreparedStatement ps = getPreparedStatement(queryString);
         BoundStatement bs = null;
         BatchStatement batch = getBatchStatement();
         ResultSet rs = null;
         try {
-            ps = session.prepare(queryString);
+            if (ps == null) {
+                ps = session.prepare(queryString);
+                setPreparedStatement(queryString, ps);
+            }
             controlStatement(ps, sqlControl);
             bs = ps.bind();
             controlStatement(bs, sqlControl);
