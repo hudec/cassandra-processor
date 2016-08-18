@@ -21,9 +21,9 @@ public class TestCount extends TestDatabase {
         String sql = sqlEngine.getSql(types, null, SqlQueryEngine.NO_ORDER);
         System.out.println(sql);
 
-        long count = sqlEngine.queryCount(session, types);
+        int count = sqlEngine.queryCount(session, types);
         System.out.println(count);
-        assertThat(count, is(1L));
+        assertThat(count, is(1));
     }
 
     @Test
@@ -31,9 +31,9 @@ public class TestCount extends TestDatabase {
         SqlSession session = getSession(basicCQLUnit);
 
         SqlQueryEngine sqlEngine = getQueryEngine("LIST_TYPES");
-        long count = sqlEngine.queryCount(session);
+        int count = sqlEngine.queryCount(session);
         System.out.println(count);
-        assertThat(count, is(2L));
+        assertThat(count, is(2));
     }
 
     @Test
@@ -41,8 +41,8 @@ public class TestCount extends TestDatabase {
         SqlSession session = getSession(basicCQLUnit);
 
         SqlQueryEngine sqlEngine = getQueryEngine("LIST_TYPES");
-        long count = sqlEngine.queryCount(session, new Types(99999));
+        int count = sqlEngine.queryCount(session, new Types(99999));
         System.out.println(count);
-        assertThat(count, is(0L));
+        assertThat(count, is(0));
     }
 }

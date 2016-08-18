@@ -11,6 +11,7 @@ import org.sqlproc.engine.plugin.DefaultSqlPlugins;
 public class CassandraPlugins extends DefaultSqlPlugins {
 
     private static final String COUNT_COLNAME = "count";
+    private static final String COUNT_TYPE = "long";
 
     /**
      * {@inheritDoc}
@@ -28,6 +29,6 @@ public class CassandraPlugins extends DefaultSqlPlugins {
         sb.append(sql.substring(0, ixSELECT + L_SELECT));
         sb.append(" count (*) ");
         sb.append(sql.substring(ixFROM));
-        return new String[] { sb.toString(), COUNT_COLNAME };
+        return new String[] { sb.toString(), COUNT_COLNAME, COUNT_TYPE };
     }
 }
