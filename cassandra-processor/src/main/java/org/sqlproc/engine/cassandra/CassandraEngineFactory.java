@@ -3,6 +3,7 @@ package org.sqlproc.engine.cassandra;
 import org.sqlproc.engine.SqlDefaultFactory;
 import org.sqlproc.engine.SqlEngineFactory;
 import org.sqlproc.engine.SqlProcessorLoader;
+import org.sqlproc.engine.cassandra.plugin.CassandraPluginFactory;
 import org.sqlproc.engine.cassandra.type.CassandraTypeFactory;
 
 /**
@@ -61,8 +62,8 @@ public class CassandraEngineFactory extends SqlDefaultFactory {
         super(lazyInit);
         setJdbc(true);
         setCollectionsAreStandardTypes(true);
-        // setFilter(SqlFeature.CASSANDRA);
         setTypeFactory(CassandraTypeFactory.getInstance());
+        setPluginFactory(CassandraPluginFactory.getInstance());
     }
 
     /**
@@ -74,7 +75,9 @@ public class CassandraEngineFactory extends SqlDefaultFactory {
     public CassandraEngineFactory(int asyncInitThreads) {
         super(asyncInitThreads);
         setJdbc(true);
+        setCollectionsAreStandardTypes(true);
         setTypeFactory(CassandraTypeFactory.getInstance());
+        setPluginFactory(CassandraPluginFactory.getInstance());
     }
 
     /**
@@ -88,6 +91,8 @@ public class CassandraEngineFactory extends SqlDefaultFactory {
     public CassandraEngineFactory(boolean lazyInit, int asyncInitThreads) {
         super(lazyInit, asyncInitThreads);
         setJdbc(true);
+        setCollectionsAreStandardTypes(true);
         setTypeFactory(CassandraTypeFactory.getInstance());
+        setPluginFactory(CassandraPluginFactory.getInstance());
     }
 }
