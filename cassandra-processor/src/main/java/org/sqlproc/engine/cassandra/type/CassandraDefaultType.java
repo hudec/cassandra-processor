@@ -67,7 +67,14 @@ public class CassandraDefaultType implements SqlMetaType {
         }
 
         if (resultValue != null && attributeType.isEnum()) {
-            Object enumInstance = runtimeCtx.getValueToEnum(attributeType, resultValue);
+            Object enumInstance = null;
+            try {
+                enumInstance = runtimeCtx.getValueToEnum(attributeType, resultValue);
+            } catch (SqlRuntimeException e) {
+                // workaround - int the case of int - 0 = null
+                if (!(resultValue instanceof Integer) || ((Integer) resultValue).intValue() != 0)
+                    throw e;
+            }
             if (runtimeCtx.simpleSetAttribute(resultInstance, attributeName, enumInstance, attributeType))
                 return;
             else {
