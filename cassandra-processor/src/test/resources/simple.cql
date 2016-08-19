@@ -54,6 +54,12 @@ t_varint varint,
 t_uuid uuid, 
 PRIMARY KEY((id), t_ascii, t_bigint, t_boolean, t_date, t_decimal, t_double, t_float, t_int, t_smallint, t_text, t_time, t_timestamp, t_timeuuid, t_tinyint, t_varchar, t_varint, t_uuid));
 
+CREATE TABLE enum_types (
+id int, 
+t_int int, 
+t_varchar varchar, 
+PRIMARY KEY(id));
+
 /*
 t_counter counter, 
 */
@@ -161,4 +167,34 @@ id
 ,'varchar'
 ,9
 ,a9c9b8ae-4911-4bf4-a855-4b5f634d0664
+);
+
+INSERT INTO enum_types(
+id
+,t_int
+,t_varchar
+) values(
+1
+,1
+,'e1'
+);
+
+INSERT INTO enum_types(
+id
+,t_int
+,t_varchar
+) values(
+2
+,2
+,'e2'
+);
+
+INSERT INTO enum_types(
+id
+,t_int
+,t_varchar
+) values(
+3
+,3
+,'e3'
 );

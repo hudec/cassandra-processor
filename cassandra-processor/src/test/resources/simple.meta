@@ -103,3 +103,15 @@ GET_CLUSTERING_TYPES(OUT)=
   t_int$t_int t_smallint$t_smallint t_text$t_text t_time$t_time t_timestamp$t_timestamp t_timeuuid$t_timeuuid t_tinyint$t_tinyint t_varchar$t_varchar 
   t_varint$t_varint t_uuid$t_uuid
 ;
+
+LIST_ENUM_TYPES(QRY)=
+  select id, t_int, t_varchar
+  from types
+  {= where
+    {& id = :id}
+  }
+;
+
+LIST_ENUM_TYPES(OUT)=
+  id$id t_int$t_int(eint) t_varchar$t_varchar(estr) 
+;

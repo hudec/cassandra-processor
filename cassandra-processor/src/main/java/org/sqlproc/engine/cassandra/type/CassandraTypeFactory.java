@@ -222,6 +222,10 @@ public class CassandraTypeFactory implements SqlTypeFactory {
         META_TO_TYPE_MAP.put("CHAR", CHAR);
         META_TO_TYPE_MAP.put("DATE", DATE);
         META_TO_TYPE_MAP.put("DOUBLE", DOUBLE);
+        META_TO_TYPE_MAP.put("EINT", ENUM_INT);
+        META_TO_TYPE_MAP.put("EINTEGER", ENUM_INT);
+        META_TO_TYPE_MAP.put("ESTRING", ENUM_STRING);
+        META_TO_TYPE_MAP.put("ESTR", ENUM_STRING);
         META_TO_TYPE_MAP.put("FLOAT", FLOAT);
         META_TO_TYPE_MAP.put("INET", INET);
         META_TO_TYPE_MAP.put("INT", INTEGER);
