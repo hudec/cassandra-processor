@@ -66,7 +66,7 @@ public class CassandraDefaultType implements SqlMetaType {
             return;
         }
 
-        if (attributeType.isEnum()) {
+        if (resultValue != null && attributeType.isEnum()) {
             Object enumInstance = runtimeCtx.getValueToEnum(attributeType, resultValue);
             if (runtimeCtx.simpleSetAttribute(resultInstance, attributeName, enumInstance, attributeType))
                 return;
@@ -96,6 +96,9 @@ public class CassandraDefaultType implements SqlMetaType {
             logger.trace(">>> setParameter for META type " + this + ": paramName=" + paramName + ", inputValue="
                     + inputValue + ", inputTypes=" + inputTypes);
         }
+
+        if (inputValue != null && inputTypes[0].isEnum())
+            inputValue = runtimeCtx.getEnumToValue(inputValue);
 
         if (getProviderSqlType() != null) {
             query.setParameter(paramName, inputValue, getProviderSqlType(), inputTypes);

@@ -27,7 +27,7 @@ public enum EnumVarchar implements Serializable {
         EnumVarchar result = identifierMap.get(value);
 
         if (result == null) {
-            throw new IllegalArgumentException("No Gender for value: " + value);
+            throw new IllegalArgumentException("No EnumVarchar for value: " + value);
         }
 
         return result;

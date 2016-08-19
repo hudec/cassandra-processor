@@ -24,7 +24,7 @@ public enum EnumInt implements Serializable {
     public static EnumInt fromValue(Integer value) {
         EnumInt result = identifierMap.get(value);
         if (result == null) {
-            throw new IllegalArgumentException("No Gender for value: " + value);
+            throw new IllegalArgumentException("No EnumInt for value: " + value);
         }
         return result;
     }

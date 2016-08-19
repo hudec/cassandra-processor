@@ -106,12 +106,17 @@ GET_CLUSTERING_TYPES(OUT)=
 
 LIST_ENUM_TYPES(QRY)=
   select id, t_int, t_varchar
-  from types
+  from enum_types
   {= where
     {& id = :id}
   }
 ;
 
 LIST_ENUM_TYPES(OUT)=
-  id$id t_int$t_int(eint) t_varchar$t_varchar(estr) 
+  id$id t_int$t_int(type=eint) t_varchar$t_varchar(type=estr) 
+;
+
+INSERT_ENUM_TYPES(CRUD)=
+  insert into enum_types (id, t_int, t_varchar)
+  {= values (:id, :t_int(type=eint), :t_varchar(type=estr)) }
 ;
