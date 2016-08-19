@@ -10,6 +10,8 @@ import org.sqlproc.engine.SqlCrudEngine;
 import org.sqlproc.engine.SqlSession;
 import org.sqlproc.engine.impl.SqlMetaStatement.Type;
 import org.sqlproc.engine.model.ClusteringTypes;
+import org.sqlproc.engine.model.NativeClusteringTypes;
+import org.sqlproc.engine.model.NativeTypes;
 import org.sqlproc.engine.model.Types;
 
 public class TestGet extends TestDatabase {
@@ -52,5 +54,46 @@ public class TestGet extends TestDatabase {
         ClusteringTypes typesDb = sqlEngine.get(session, ClusteringTypes.class, types);
         System.out.println(typesDb);
         ClusteringTypes.assertClusteringTypes(typesDb, ClusteringTypes.getDefaultTypes(basicCQLUnit.cluster));
+    }
+
+    @Test
+    public void testNativeGetFull() throws UnknownHostException {
+        SqlSession session = getSession(basicCQLUnit);
+        SqlCrudEngine sqlEngine = getCrudEngine("GET_TYPES");
+
+        NativeTypes types = new NativeTypes(1);
+        String sql = sqlEngine.getSql(types, null, Type.QUERY);
+        System.out.println(sql);
+        NativeTypes typesDb = sqlEngine.get(session, NativeTypes.class, types);
+        System.out.println(typesDb);
+        NativeTypes.assertTypes(typesDb, NativeTypes.getDefaultTypes(basicCQLUnit.cluster));
+    }
+
+    @Test
+    public void testNativeGetNotExisting() {
+        SqlSession session = getSession(basicCQLUnit);
+        SqlCrudEngine sqlEngine = getCrudEngine("GET_TYPES");
+
+        NativeTypes types = new NativeTypes(9999);
+        String sql = sqlEngine.getSql(types, null, Type.QUERY);
+        System.out.println(sql);
+        NativeTypes typesDb = sqlEngine.get(session, NativeTypes.class, types);
+        System.out.println(typesDb);
+        assertThat(typesDb, nullValue());
+    }
+
+    @Test
+    public void testNativeGetFullWhere() throws UnknownHostException {
+        SqlSession session = getSession(basicCQLUnit);
+        SqlCrudEngine sqlEngine = getCrudEngine("GET_CLUSTERING_TYPES");
+
+        NativeClusteringTypes types = NativeClusteringTypes.getDefaultTypes(basicCQLUnit.cluster);
+        types.setId(0);
+        String sql = sqlEngine.getSql(types, null, Type.QUERY);
+        System.out.println(sql);
+        NativeClusteringTypes typesDb = sqlEngine.get(session, NativeClusteringTypes.class, types);
+        System.out.println(typesDb);
+        NativeClusteringTypes.assertClusteringTypes(typesDb,
+                NativeClusteringTypes.getDefaultTypes(basicCQLUnit.cluster));
     }
 }

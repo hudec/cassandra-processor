@@ -26,49 +26,49 @@ import com.datastax.driver.core.DataType;
 import com.datastax.driver.core.TupleType;
 import com.datastax.driver.core.TupleValue;
 
-public class Types {
+public class NativeTypes {
 
-    private Integer id;
+    private int id;
 
     private String t_ascii;
-    private Long t_bigint;
+    private long t_bigint;
     private ByteBuffer t_blob;
-    private Boolean t_boolean;
+    private boolean t_boolean;
     private LocalDate t_date;
     private BigDecimal t_decimal;
-    private Double t_double;
-    private Float t_float;
+    private double t_double;
+    private float t_float;
     private InetAddress t_inet;
-    private Integer t_int;
+    private int t_int;
     private List<Integer> t_list_int;
     private Map<Integer, String> t_map;
     private List<String> t_list_text;
     private Set<Integer> t_set_int;
     private Set<String> t_set_text;
-    private Short t_smallint;
+    private short t_smallint;
     private String t_text;
     private LocalTime t_time;
     private Instant t_timestamp;
     private UUID t_timeuuid;
-    private Byte t_tinyint;
+    private byte t_tinyint;
     private TupleValue t_tuple;
     private String t_varchar;
     private BigInteger t_varint;
     private UUID t_uuid;
     private Type1 t_type1;
 
-    public Types() {
+    public NativeTypes() {
     }
 
-    public Types(Integer id) {
+    public NativeTypes(int id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -80,11 +80,11 @@ public class Types {
         this.t_ascii = t_ascii;
     }
 
-    public Long getT_bigint() {
+    public long getT_bigint() {
         return t_bigint;
     }
 
-    public void setT_bigint(Long t_bigint) {
+    public void setT_bigint(long t_bigint) {
         this.t_bigint = t_bigint;
     }
 
@@ -96,11 +96,11 @@ public class Types {
         this.t_blob = t_blob;
     }
 
-    public Boolean getT_boolean() {
+    public boolean getT_boolean() {
         return t_boolean;
     }
 
-    public void setT_boolean(Boolean t_boolean) {
+    public void setT_boolean(boolean t_boolean) {
         this.t_boolean = t_boolean;
     }
 
@@ -120,19 +120,19 @@ public class Types {
         this.t_decimal = t_decimal;
     }
 
-    public Double getT_double() {
+    public double getT_double() {
         return t_double;
     }
 
-    public void setT_double(Double t_double) {
+    public void setT_double(double t_double) {
         this.t_double = t_double;
     }
 
-    public Float getT_float() {
+    public float getT_float() {
         return t_float;
     }
 
-    public void setT_float(Float t_float) {
+    public void setT_float(float t_float) {
         this.t_float = t_float;
     }
 
@@ -144,11 +144,11 @@ public class Types {
         this.t_inet = t_inet;
     }
 
-    public Integer getT_int() {
+    public int getT_int() {
         return t_int;
     }
 
-    public void setT_int(Integer t_int) {
+    public void setT_int(int t_int) {
         this.t_int = t_int;
     }
 
@@ -192,11 +192,11 @@ public class Types {
         this.t_set_text = t_set_text;
     }
 
-    public Short getT_smallint() {
+    public short getT_smallint() {
         return t_smallint;
     }
 
-    public void setT_smallint(Short t_smallint) {
+    public void setT_smallint(short t_smallint) {
         this.t_smallint = t_smallint;
     }
 
@@ -232,11 +232,11 @@ public class Types {
         this.t_timeuuid = t_timeuuid;
     }
 
-    public Byte getT_tinyint() {
+    public byte getT_tinyint() {
         return t_tinyint;
     }
 
-    public void setT_tinyint(Byte t_tinyint) {
+    public void setT_tinyint(byte t_tinyint) {
         this.t_tinyint = t_tinyint;
     }
 
@@ -292,7 +292,7 @@ public class Types {
                 + ", t_type1=" + t_type1 + "]";
     }
 
-    public static void assertTypes(Types t1, Types t2) {
+    public static void assertTypes(NativeTypes t1, NativeTypes t2) {
         assertThat(t1, notNullValue());
         assertThat(t2, notNullValue());
         assertThat(t1.getId(), is(t2.getId()));
@@ -328,8 +328,8 @@ public class Types {
         }
     }
 
-    public static Types getDefaultTypes(Cluster cluster) throws UnknownHostException {
-        Types t = new Types();
+    public static NativeTypes getDefaultTypes(Cluster cluster) throws UnknownHostException {
+        NativeTypes t = new NativeTypes();
         t.setId(1);
         t.setT_ascii("ascii");
         t.setT_bigint(2L);
@@ -370,8 +370,8 @@ public class Types {
         return t;
     }
 
-    public static Types getNewTypes(Cluster cluster, int id) throws UnknownHostException {
-        Types t = new Types();
+    public static NativeTypes getNewTypes(Cluster cluster, int id) throws UnknownHostException {
+        NativeTypes t = new NativeTypes();
         t.setId(id);
         t.setT_ascii("ascii");
         t.setT_bigint(Long.MAX_VALUE);
@@ -410,8 +410,8 @@ public class Types {
         return t;
     }
 
-    // public static Types getNullTypes(int id) {
-    // Types t = new Types();
+    // public static NativeTypes getNullTypes(int id) {
+    // NativeTypes t = new NativeTypes();
     // t.setId(id);
     // t.setT_bigint(0L);
     // t.setT_boolean(false);
@@ -428,8 +428,8 @@ public class Types {
     // return t;
     // }
 
-    public static Types getNullTypes(int id) {
-        Types t = new Types();
+    public static NativeTypes getNullTypes(int id) {
+        NativeTypes t = new NativeTypes();
         t.setId(id);
         t.setT_list_int(Arrays.asList());
         t.setT_list_text(Arrays.asList());

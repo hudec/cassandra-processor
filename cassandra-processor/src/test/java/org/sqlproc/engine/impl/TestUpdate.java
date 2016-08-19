@@ -12,6 +12,7 @@ import org.sqlproc.engine.SqlCrudEngine;
 import org.sqlproc.engine.SqlQueryEngine;
 import org.sqlproc.engine.SqlSession;
 import org.sqlproc.engine.impl.SqlMetaStatement.Type;
+import org.sqlproc.engine.model.NativeTypes;
 import org.sqlproc.engine.model.Types;
 
 public class TestUpdate extends TestDatabase {
@@ -98,6 +99,91 @@ public class TestUpdate extends TestDatabase {
         SqlQueryEngine sqlQueryEngine = getQueryEngine("LIST_TYPES");
 
         List<Types> list = sqlQueryEngine.query(session, Types.class, new Types(9999));
+        System.out.println(list);
+        assertThat(list.size(), is(0));
+    }
+
+    @Test
+    public void testNativeUpdateFull() throws UnknownHostException {
+        SqlSession session = getSession(basicCQLUnit);
+
+        SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES");
+
+        NativeTypes types = NativeTypes.getNewTypes(basicCQLUnit.cluster, 1);
+        types.setId(1);
+        String sql = sqlEngine.getSql(types, null, Type.UPDATE);
+        System.out.println(sql);
+        int count = sqlEngine.update(session, types);
+        System.out.println(types);
+        assertThat(count, is(1));
+
+        SqlQueryEngine sqlQueryEngine = getQueryEngine("LIST_TYPES");
+
+        List<NativeTypes> list = sqlQueryEngine.query(session, NativeTypes.class, new NativeTypes(types.getId()));
+        assertThat(list.size(), is(1));
+        assertThat(list.get(0), notNullValue());
+        NativeTypes.assertTypes(list.get(0), types);
+    }
+
+    @Test
+    public void testNativeUpdateNull() {
+        SqlSession session = getSession(basicCQLUnit);
+
+        SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES");
+
+        NativeTypes types = new NativeTypes(1);
+        String sql = sqlEngine.getSql(types, null, Type.UPDATE);
+        System.out.println(sql);
+        int count = sqlEngine.update(session, types);
+        System.out.println(types);
+        assertThat(count, is(1));
+
+        SqlQueryEngine sqlQueryEngine = getQueryEngine("LIST_TYPES");
+
+        List<NativeTypes> list = sqlQueryEngine.query(session, NativeTypes.class, new NativeTypes(types.getId()));
+        assertThat(list.size(), is(1));
+        assertThat(list.get(0), notNullValue());
+        NativeTypes.assertTypes(list.get(0), NativeTypes.getNullTypes(1));
+    }
+
+    @Test
+    public void testNativeUpdateNotExistingRow() throws UnknownHostException {
+        SqlSession session = getSession(basicCQLUnit);
+
+        SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES");
+
+        NativeTypes types = NativeTypes.getNewTypes(basicCQLUnit.cluster, 9999);
+        String sql = sqlEngine.getSql(types, null, Type.UPDATE);
+        System.out.println(sql);
+        int count = sqlEngine.update(session, types);
+        System.out.println(types);
+        assertThat(count, is(1));
+
+        SqlQueryEngine sqlQueryEngine = getQueryEngine("LIST_TYPES");
+
+        List<NativeTypes> list = sqlQueryEngine.query(session, NativeTypes.class, new NativeTypes(9999));
+        System.out.println(list);
+        assertThat(list.size(), is(1));
+        assertThat(list.get(0), notNullValue());
+        NativeTypes.assertTypes(list.get(0), types);
+    }
+
+    @Test
+    public void testNativeUpdateConditional() throws UnknownHostException {
+        SqlSession session = getSession(basicCQLUnit);
+
+        SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES_IF_EXISTS");
+
+        NativeTypes types = NativeTypes.getNewTypes(basicCQLUnit.cluster, 9999);
+        String sql = sqlEngine.getSql(types, null, Type.UPDATE);
+        System.out.println(sql);
+        int count = sqlEngine.update(session, types);
+        System.out.println(types);
+        assertThat(count, is(0));
+
+        SqlQueryEngine sqlQueryEngine = getQueryEngine("LIST_TYPES");
+
+        List<NativeTypes> list = sqlQueryEngine.query(session, NativeTypes.class, new NativeTypes(9999));
         System.out.println(list);
         assertThat(list.size(), is(0));
     }

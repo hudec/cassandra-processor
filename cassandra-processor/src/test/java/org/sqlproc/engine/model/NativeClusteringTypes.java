@@ -14,36 +14,40 @@ import java.util.UUID;
 
 import com.datastax.driver.core.Cluster;
 
-public class ClusteringTypes {
+public class NativeClusteringTypes {
 
-    private Integer id;
+    private int id;
 
     private String t_ascii;
-    private Long t_bigint;
-    private Boolean t_boolean;
+    private long t_bigint;
+    private boolean t_boolean;
     private LocalDate t_date;
     private BigDecimal t_decimal;
-    private Double t_double;
-    private Float t_float;
-    private Integer t_int;
-    private Short t_smallint;
+    private double t_double;
+    private float t_float;
+    private int t_int;
+    private short t_smallint;
     private String t_text;
     private LocalTime t_time;
     private Instant t_timestamp;
     private UUID t_timeuuid;
-    private Byte t_tinyint;
+    private byte t_tinyint;
     private String t_varchar;
     private BigInteger t_varint;
     private UUID t_uuid;
 
-    public ClusteringTypes() {
+    public NativeClusteringTypes() {
     }
 
-    public Integer getId() {
+    public NativeClusteringTypes(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -55,19 +59,19 @@ public class ClusteringTypes {
         this.t_ascii = t_ascii;
     }
 
-    public Long getT_bigint() {
+    public long getT_bigint() {
         return t_bigint;
     }
 
-    public void setT_bigint(Long t_bigint) {
+    public void setT_bigint(long t_bigint) {
         this.t_bigint = t_bigint;
     }
 
-    public Boolean getT_boolean() {
+    public boolean getT_boolean() {
         return t_boolean;
     }
 
-    public void setT_boolean(Boolean t_boolean) {
+    public void setT_boolean(boolean t_boolean) {
         this.t_boolean = t_boolean;
     }
 
@@ -87,35 +91,35 @@ public class ClusteringTypes {
         this.t_decimal = t_decimal;
     }
 
-    public Double getT_double() {
+    public double getT_double() {
         return t_double;
     }
 
-    public void setT_double(Double t_double) {
+    public void setT_double(double t_double) {
         this.t_double = t_double;
     }
 
-    public Float getT_float() {
+    public float getT_float() {
         return t_float;
     }
 
-    public void setT_float(Float t_float) {
+    public void setT_float(float t_float) {
         this.t_float = t_float;
     }
 
-    public Integer getT_int() {
+    public int getT_int() {
         return t_int;
     }
 
-    public void setT_int(Integer t_int) {
+    public void setT_int(int t_int) {
         this.t_int = t_int;
     }
 
-    public Short getT_smallint() {
+    public short getT_smallint() {
         return t_smallint;
     }
 
-    public void setT_smallint(Short t_smallint) {
+    public void setT_smallint(short t_smallint) {
         this.t_smallint = t_smallint;
     }
 
@@ -151,11 +155,11 @@ public class ClusteringTypes {
         this.t_timeuuid = t_timeuuid;
     }
 
-    public Byte getT_tinyint() {
+    public byte getT_tinyint() {
         return t_tinyint;
     }
 
-    public void setT_tinyint(Byte t_tinyint) {
+    public void setT_tinyint(byte t_tinyint) {
         this.t_tinyint = t_tinyint;
     }
 
@@ -192,7 +196,7 @@ public class ClusteringTypes {
                 + t_tinyint + ", t_varchar=" + t_varchar + ", t_varint=" + t_varint + ", t_uuid=" + t_uuid + "]";
     }
 
-    public static void assertClusteringTypes(ClusteringTypes t1, ClusteringTypes t2) {
+    public static void assertClusteringTypes(NativeClusteringTypes t1, NativeClusteringTypes t2) {
         assertThat(t1, notNullValue());
         assertThat(t2, notNullValue());
         assertThat(t1.getId(), is(t2.getId()));
@@ -215,8 +219,8 @@ public class ClusteringTypes {
         assertThat(t1.getT_uuid(), is(t2.getT_uuid()));
     }
 
-    public static ClusteringTypes getDefaultTypes(Cluster cluster) throws UnknownHostException {
-        ClusteringTypes t = new ClusteringTypes();
+    public static NativeClusteringTypes getDefaultTypes(Cluster cluster) throws UnknownHostException {
+        NativeClusteringTypes t = new NativeClusteringTypes();
         t.setId(1);
         t.setT_ascii("ascii");
         t.setT_bigint(2L);
@@ -239,8 +243,8 @@ public class ClusteringTypes {
         return t;
     }
 
-    public static ClusteringTypes getNewTypes(Cluster cluster) throws UnknownHostException {
-        ClusteringTypes t = new ClusteringTypes();
+    public static NativeClusteringTypes getNewTypes(Cluster cluster) throws UnknownHostException {
+        NativeClusteringTypes t = new NativeClusteringTypes();
         t.setId(101);
         t.setT_ascii("ascii");
         t.setT_bigint(Long.MAX_VALUE);
@@ -262,8 +266,8 @@ public class ClusteringTypes {
         return t;
     }
 
-    public static ClusteringTypes getNullTypes(int id) {
-        ClusteringTypes t = new ClusteringTypes();
+    public static NativeClusteringTypes getNullTypes(int id) {
+        NativeClusteringTypes t = new NativeClusteringTypes();
         t.setId(id);
         return t;
     }

@@ -1,12 +1,5 @@
 package org.sqlproc.engine.cassandra.type;
 
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.net.InetAddress;
-import java.nio.ByteBuffer;
-import java.time.Instant;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -178,37 +171,37 @@ public class CassandraTypeFactory implements SqlTypeFactory {
      * Static init.
      */
     static {
-        CLASS_TO_TYPE_MAP.put(BigDecimal.class, BIG_DECIMAL);
-        CLASS_TO_TYPE_MAP.put(BigInteger.class, BIG_INTEGER);
-        CLASS_TO_TYPE_MAP.put(boolean.class, BOOLEAN);
-        CLASS_TO_TYPE_MAP.put(Boolean.class, BOOLEAN);
-        CLASS_TO_TYPE_MAP.put(byte[].class, BYTE_ARRAY);
-        CLASS_TO_TYPE_MAP.put(Byte[].class, BYTE_ARRAY);
-        CLASS_TO_TYPE_MAP.put(ByteBuffer.class, BYTE_ARRAY);
-        CLASS_TO_TYPE_MAP.put(byte.class, BYTE);
-        CLASS_TO_TYPE_MAP.put(Byte.class, BYTE);
-        CLASS_TO_TYPE_MAP.put(char.class, CHAR);
-        CLASS_TO_TYPE_MAP.put(Character.class, CHAR);
-        CLASS_TO_TYPE_MAP.put(LocalDate.class, DATE);
-        CLASS_TO_TYPE_MAP.put(double.class, DOUBLE);
-        CLASS_TO_TYPE_MAP.put(Double.class, DOUBLE);
-        CLASS_TO_TYPE_MAP.put(float.class, FLOAT);
-        CLASS_TO_TYPE_MAP.put(Float.class, FLOAT);
-        CLASS_TO_TYPE_MAP.put(InetAddress.class, INET);
-        CLASS_TO_TYPE_MAP.put(int.class, INTEGER);
-        CLASS_TO_TYPE_MAP.put(Integer.class, INTEGER);
+        // CLASS_TO_TYPE_MAP.put(BigDecimal.class, BIG_DECIMAL);
+        // CLASS_TO_TYPE_MAP.put(BigInteger.class, BIG_INTEGER);
+        // CLASS_TO_TYPE_MAP.put(boolean.class, BOOLEAN);
+        // CLASS_TO_TYPE_MAP.put(Boolean.class, BOOLEAN);
+        // CLASS_TO_TYPE_MAP.put(byte[].class, BYTE_ARRAY);
+        // CLASS_TO_TYPE_MAP.put(Byte[].class, BYTE_ARRAY);
+        // CLASS_TO_TYPE_MAP.put(ByteBuffer.class, BYTE_ARRAY);
+        // CLASS_TO_TYPE_MAP.put(byte.class, BYTE);
+        // CLASS_TO_TYPE_MAP.put(Byte.class, BYTE);
+        // CLASS_TO_TYPE_MAP.put(char.class, CHAR);
+        // CLASS_TO_TYPE_MAP.put(Character.class, CHAR);
+        // CLASS_TO_TYPE_MAP.put(LocalDate.class, DATE);
+        // CLASS_TO_TYPE_MAP.put(double.class, DOUBLE);
+        // CLASS_TO_TYPE_MAP.put(Double.class, DOUBLE);
+        // CLASS_TO_TYPE_MAP.put(float.class, FLOAT);
+        // CLASS_TO_TYPE_MAP.put(Float.class, FLOAT);
+        // CLASS_TO_TYPE_MAP.put(InetAddress.class, INET);
+        // CLASS_TO_TYPE_MAP.put(int.class, INTEGER);
+        // CLASS_TO_TYPE_MAP.put(Integer.class, INTEGER);
         CLASS_TO_TYPE_MAP.put(java.util.List.class, LIST);
-        CLASS_TO_TYPE_MAP.put(long.class, LONG);
-        CLASS_TO_TYPE_MAP.put(Long.class, LONG);
+        // CLASS_TO_TYPE_MAP.put(long.class, LONG);
+        // CLASS_TO_TYPE_MAP.put(Long.class, LONG);
         CLASS_TO_TYPE_MAP.put(java.util.Map.class, MAP);
         CLASS_TO_TYPE_MAP.put(java.util.Set.class, SET);
-        CLASS_TO_TYPE_MAP.put(short.class, SHORT);
-        CLASS_TO_TYPE_MAP.put(Short.class, SHORT);
-        CLASS_TO_TYPE_MAP.put(String.class, STRING);
-        CLASS_TO_TYPE_MAP.put(Instant.class, TIMESTAMP);
-        CLASS_TO_TYPE_MAP.put(LocalTime.class, TIME);
-        CLASS_TO_TYPE_MAP.put(java.util.UUID.class, UUID);
-        CLASS_TO_TYPE_MAP.put(com.datastax.driver.core.TupleValue.class, TUPLE);
+        // CLASS_TO_TYPE_MAP.put(short.class, SHORT);
+        // CLASS_TO_TYPE_MAP.put(Short.class, SHORT);
+        // CLASS_TO_TYPE_MAP.put(String.class, STRING);
+        // CLASS_TO_TYPE_MAP.put(Instant.class, TIMESTAMP);
+        // CLASS_TO_TYPE_MAP.put(LocalTime.class, TIME);
+        // CLASS_TO_TYPE_MAP.put(java.util.UUID.class, UUID);
+        // CLASS_TO_TYPE_MAP.put(com.datastax.driver.core.TupleValue.class, TUPLE);
 
         META_TO_TYPE_MAP.put("BIGDEC", BIG_DECIMAL);
         META_TO_TYPE_MAP.put("BIGDECIMAL", BIG_DECIMAL);

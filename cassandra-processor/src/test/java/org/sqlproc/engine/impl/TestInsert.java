@@ -12,6 +12,7 @@ import org.sqlproc.engine.SqlCrudEngine;
 import org.sqlproc.engine.SqlQueryEngine;
 import org.sqlproc.engine.SqlSession;
 import org.sqlproc.engine.impl.SqlMetaStatement.Type;
+import org.sqlproc.engine.model.NativeTypes;
 import org.sqlproc.engine.model.Types;
 
 public class TestInsert extends TestDatabase {
@@ -42,9 +43,8 @@ public class TestInsert extends TestDatabase {
         SqlSession session = getSession(basicCQLUnit);
 
         SqlCrudEngine sqlEngine = getCrudEngine("INSERT_TYPES");
-        Types types = new Types();
-        types.setId(102);
 
+        Types types = new Types(102);
         String sql = sqlEngine.getSql(types, null, Type.CREATE);
         System.out.println(sql);
         int count = sqlEngine.insert(session, types);
@@ -98,5 +98,88 @@ public class TestInsert extends TestDatabase {
         assertThat(list.size(), is(1));
         assertThat(list.get(0), notNullValue());
         Types.assertTypes(list.get(0), Types.getDefaultTypes(basicCQLUnit.cluster));
+    }
+
+    @Test
+    public void testNativeInsertFull() throws UnknownHostException {
+        SqlSession session = getSession(basicCQLUnit);
+
+        SqlCrudEngine sqlEngine = getCrudEngine("INSERT_TYPES");
+
+        NativeTypes types = NativeTypes.getNewTypes(basicCQLUnit.cluster, 101);
+        String sql = sqlEngine.getSql(types, null, Type.CREATE);
+        System.out.println(sql);
+        int count = sqlEngine.insert(session, types);
+        System.out.println(types);
+        assertThat(count, is(1));
+
+        SqlQueryEngine sqlQueryEngine = getQueryEngine("LIST_TYPES");
+
+        List<NativeTypes> list = sqlQueryEngine.query(session, NativeTypes.class, new NativeTypes(types.getId()));
+        assertThat(list.size(), is(1));
+        assertThat(list.get(0), notNullValue());
+        NativeTypes.assertTypes(list.get(0), types);
+    }
+
+    @Test
+    public void testNativeInsertNull() {
+        SqlSession session = getSession(basicCQLUnit);
+
+        SqlCrudEngine sqlEngine = getCrudEngine("INSERT_TYPES");
+
+        NativeTypes types = new NativeTypes(102);
+        String sql = sqlEngine.getSql(types, null, Type.CREATE);
+        System.out.println(sql);
+        int count = sqlEngine.insert(session, types);
+        System.out.println(types);
+        assertThat(count, is(1));
+
+        SqlQueryEngine sqlQueryEngine = getQueryEngine("LIST_TYPES");
+        List<NativeTypes> list = sqlQueryEngine.query(session, NativeTypes.class, new NativeTypes(types.getId()));
+        assertThat(list.size(), is(1));
+        assertThat(list.get(0), notNullValue());
+        NativeTypes.assertTypes(list.get(0), NativeTypes.getNullTypes(102));
+    }
+
+    @Test
+    public void testNativeInsertExistingRow() throws UnknownHostException {
+        SqlSession session = getSession(basicCQLUnit);
+
+        SqlCrudEngine sqlEngine = getCrudEngine("INSERT_TYPES");
+
+        NativeTypes types = NativeTypes.getNewTypes(basicCQLUnit.cluster, 2);
+        String sql = sqlEngine.getSql(types, null, Type.CREATE);
+        System.out.println(sql);
+        int count = sqlEngine.insert(session, types);
+        System.out.println(types);
+        assertThat(count, is(1));
+
+        SqlQueryEngine sqlQueryEngine = getQueryEngine("LIST_TYPES");
+
+        List<NativeTypes> list = sqlQueryEngine.query(session, NativeTypes.class, new NativeTypes(types.getId()));
+        assertThat(list.size(), is(1));
+        assertThat(list.get(0), notNullValue());
+        NativeTypes.assertTypes(list.get(0), types);
+    }
+
+    @Test
+    public void testNativeInsertConditional() throws UnknownHostException {
+        SqlSession session = getSession(basicCQLUnit);
+
+        SqlCrudEngine sqlEngine = getCrudEngine("INSERT_TYPES_IF_NOT_EXISTS");
+
+        NativeTypes types = NativeTypes.getNewTypes(basicCQLUnit.cluster, 1);
+        String sql = sqlEngine.getSql(types, null, Type.CREATE);
+        System.out.println(sql);
+        int count = sqlEngine.insert(session, types);
+        System.out.println(types);
+        assertThat(count, is(0));
+
+        SqlQueryEngine sqlQueryEngine = getQueryEngine("LIST_TYPES");
+
+        List<NativeTypes> list = sqlQueryEngine.query(session, NativeTypes.class, new NativeTypes(types.getId()));
+        assertThat(list.size(), is(1));
+        assertThat(list.get(0), notNullValue());
+        NativeTypes.assertTypes(list.get(0), NativeTypes.getDefaultTypes(basicCQLUnit.cluster));
     }
 }
