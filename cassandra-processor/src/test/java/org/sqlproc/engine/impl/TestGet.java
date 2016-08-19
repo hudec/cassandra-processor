@@ -88,7 +88,6 @@ public class TestGet extends TestDatabase {
         SqlCrudEngine sqlEngine = getCrudEngine("GET_CLUSTERING_TYPES");
 
         NativeClusteringTypes types = NativeClusteringTypes.getDefaultTypes(basicCQLUnit.cluster);
-        types.setId(0);
         String sql = sqlEngine.getSql(types, null, Type.QUERY);
         System.out.println(sql);
         NativeClusteringTypes typesDb = sqlEngine.get(session, NativeClusteringTypes.class, types);
