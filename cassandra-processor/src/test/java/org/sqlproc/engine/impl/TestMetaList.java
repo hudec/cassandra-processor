@@ -41,7 +41,7 @@ public class TestMetaList extends TestDatabase {
         List<Types> list = sqlEngine.query(session, Types.class, types);
         System.out.println(list);
         assertThat(list, hasSize(1));
-        Types.assertTypes(list.get(0), Types.getNullTypes(2));
+        Types.assertTypes(list.get(0), Types.getNativeNullTypes(2));
     }
 
     @Test

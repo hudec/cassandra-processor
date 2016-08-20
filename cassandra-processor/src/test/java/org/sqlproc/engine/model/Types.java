@@ -410,23 +410,23 @@ public class Types {
         return t;
     }
 
-    // public static Types getNullTypes(int id) {
-    // Types t = new Types();
-    // t.setId(id);
-    // t.setT_bigint(0L);
-    // t.setT_boolean(false);
-    // t.setT_double(0.0);
-    // t.setT_float(0.0F);
-    // t.setT_int(0);
-    // t.setT_list_int(Arrays.asList());
-    // t.setT_list_text(Arrays.asList());
-    // t.setT_map(new HashMap<>());
-    // t.setT_set_int(new HashSet<>());
-    // t.setT_set_text(new HashSet<>());
-    // t.setT_smallint((short) 0);
-    // t.setT_tinyint((byte) 0);
-    // return t;
-    // }
+    public static Types getNativeNullTypes(int id) {
+        Types t = new Types();
+        t.setId(id);
+        t.setT_bigint(0L);
+        t.setT_boolean(false);
+        t.setT_double(0.0);
+        t.setT_float(0.0F);
+        t.setT_int(0);
+        t.setT_list_int(Arrays.asList());
+        t.setT_list_text(Arrays.asList());
+        t.setT_map(new HashMap<>());
+        t.setT_set_int(new HashSet<>());
+        t.setT_set_text(new HashSet<>());
+        t.setT_smallint((short) 0);
+        t.setT_tinyint((byte) 0);
+        return t;
+    }
 
     public static Types getNullTypes(int id) {
         Types t = new Types();
