@@ -125,6 +125,39 @@ GET_CLUSTERING_TYPES(OUT)=
   t_varint$t_varint t_uuid$t_uuid
 ;
 
+GET_CLUSTERING_META_TYPES(CRUD)=
+  select id, t_ascii, t_bigint, t_boolean, t_date, t_decimal, t_double, t_float, t_int, 
+             t_smallint, t_text, t_time, t_timestamp, t_timeuuid, t_tinyint, t_varchar, t_varint, t_uuid
+  from clustering_types
+  {= where
+    {& id = :id(type=int)}
+    {& t_ascii = :t_ascii(type=string)}
+    {& t_bigint = :t_bigint(type=long)}
+    {& t_boolean = :t_boolean(type=boolean)}
+    {& t_date = :t_date(type=date)}
+    {& t_decimal = :t_decimal(type=bigdecimal)}
+    {& t_double = :t_double(type=double)}
+    {& t_float = :t_float(type=float)}
+    {& t_int = :t_int(type=int)}
+    {& t_smallint = :t_smallint(type=short)}
+    {& t_text = :t_text(type=string)}
+    {& t_time = :t_time(type=time)}
+    {& t_timestamp = :t_timestamp(type=timestamp)}
+    {& t_timeuuid = :t_timeuuid(type=uuid)}
+    {& t_tinyint = :t_tinyint(type=byte)}
+    {& t_varchar = :t_varchar(type=string)}
+    {& t_varint = :t_varint(type=bigint)}
+    {& t_uuid = :t_uuid(type=uuid)}
+  }
+  ALLOW FILTERING  
+;
+
+GET_CLUSTERING_META_TYPES(OUT)=
+  id$id t_ascii$t_ascii t_bigint$t_bigint t_boolean$t_boolean t_date$t_date t_decimal$t_decimal t_double$t_double t_float$t_float 
+  t_int$t_int t_smallint$t_smallint t_text$t_text t_time$t_time t_timestamp$t_timestamp t_timeuuid$t_timeuuid t_tinyint$t_tinyint t_varchar$t_varchar 
+  t_varint$t_varint t_uuid$t_uuid
+;
+
 LIST_ENUM_TYPES(QRY)=
   select id, t_int, t_varchar
   from enum_types
