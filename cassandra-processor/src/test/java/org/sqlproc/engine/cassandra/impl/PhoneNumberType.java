@@ -115,7 +115,7 @@ public class PhoneNumberType implements SqlTaggedMetaType {
             PhoneNumber phoneNumber = (PhoneNumber) inputValue;
             String sPhoneNumber = String.format("%03d-%03d-%04d", phoneNumber.getArea(), phoneNumber.getExch(),
                     phoneNumber.getExt());
-            query.setParameter(paramName, sPhoneNumber, Types.VARCHAR);
+            query.setParameter(paramName, sPhoneNumber, new CassandraClassType(String.class), inputTypes);
         }
     }
 }

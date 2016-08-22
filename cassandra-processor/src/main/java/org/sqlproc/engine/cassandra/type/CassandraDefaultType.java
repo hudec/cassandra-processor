@@ -71,6 +71,12 @@ public class CassandraDefaultType implements SqlMetaType {
             return;
         }
 
+        Object type = runtimeCtx.getTypeFactory().getMetaType(attributeType);
+        if (type != null && type instanceof SqlTaggedMetaType) {
+            ((SqlTaggedMetaType) type).setResult(runtimeCtx, resultInstance, attributeName, resultValue, ingoreError);
+            return;
+        }
+
         if (resultValue != null && attributeType.isEnum()) {
             Object enumInstance = null;
             try {
@@ -116,10 +122,15 @@ public class CassandraDefaultType implements SqlMetaType {
             query.setParameter(paramName, inputValue, getProviderSqlType(), inputTypes);
         } else {
             Object type = (inputTypes.length > 0) ? runtimeCtx.getTypeFactory().getMetaType(inputTypes[0]) : null;
-            if (type != null)
-                query.setParameter(paramName, inputValue, type, inputTypes);
-            else
+            if (type != null) {
+                if (type instanceof SqlTaggedMetaType)
+                    ((SqlTaggedMetaType) type).setParameter(runtimeCtx, query, paramName, inputValue, ingoreError,
+                            inputTypes);
+                else
+                    query.setParameter(paramName, inputValue, type, inputTypes);
+            } else {
                 query.setParameter(paramName, inputValue, new CassandraClassType(inputTypes));
+            }
         }
     }
 
