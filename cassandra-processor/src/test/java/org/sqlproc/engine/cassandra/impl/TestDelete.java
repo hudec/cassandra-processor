@@ -1,4 +1,4 @@
-package org.sqlproc.engine.impl;
+package org.sqlproc.engine.cassandra.impl;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -6,8 +6,8 @@ import static org.hamcrest.Matchers.is;
 import org.junit.Test;
 import org.sqlproc.engine.SqlCrudEngine;
 import org.sqlproc.engine.SqlSession;
+import org.sqlproc.engine.cassandra.model.Types;
 import org.sqlproc.engine.impl.SqlMetaStatement.Type;
-import org.sqlproc.engine.model.Types;
 
 public class TestDelete extends TestDatabase {
 

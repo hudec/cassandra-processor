@@ -1,4 +1,4 @@
-package org.sqlproc.engine.model;
+package org.sqlproc.engine.cassandra.model;
 
 import java.io.Serializable;
 import java.util.HashMap;

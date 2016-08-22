@@ -6,6 +6,7 @@ import org.sqlproc.engine.SqlQuery;
 import org.sqlproc.engine.SqlRuntimeContext;
 import org.sqlproc.engine.SqlRuntimeException;
 import org.sqlproc.engine.type.SqlMetaType;
+import org.sqlproc.engine.type.SqlTaggedMetaType;
 import org.sqlproc.engine.type.SqlTypeFactory;
 
 import com.datastax.driver.core.BoundStatement;
@@ -40,10 +41,14 @@ public class CassandraDefaultType implements SqlMetaType {
             query.addScalar(dbName, getProviderSqlType(), attributeTypes);
         } else {
             Object type = (attributeTypes.length > 0) ? typeFactory.getMetaType(attributeTypes[0]) : null;
-            if (type != null)
-                query.addScalar(dbName, type, attributeTypes);
-            else
+            if (type != null) {
+                if (type instanceof SqlTaggedMetaType)
+                    ((SqlTaggedMetaType) type).addScalar(typeFactory, query, dbName, attributeTypes);
+                else
+                    query.addScalar(dbName, type, attributeTypes);
+            } else {
                 query.addScalar(dbName, new CassandraClassType(attributeTypes));
+            }
         }
     }
 

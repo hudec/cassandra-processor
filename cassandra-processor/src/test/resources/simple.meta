@@ -1,6 +1,6 @@
 LIST_TYPES(QRY)=
   select id, t_ascii, t_bigint, t_blob, t_boolean, t_date, t_decimal, t_double, t_float, t_inet, t_int, t_list_int, t_list_text, t_map, t_set_int, t_set_text, 
-             t_smallint, t_text, t_time, t_timestamp, t_timeuuid, t_tinyint, t_tuple, t_varchar, t_varint, t_uuid, t_type1
+             t_smallint, t_text, t_time, t_timestamp, t_timeuuid, t_tinyint, t_tuple, t_varchar, t_varint, t_uuid, t_type1, t_phone
   from types
   {= where
     {& id = :id}
@@ -11,12 +11,12 @@ LIST_TYPES(OUT)=
   id$id t_ascii$t_ascii t_bigint$t_bigint t_blob$t_blob t_boolean$t_boolean t_date$t_date t_decimal$t_decimal t_double$t_double t_float$t_float t_inet$t_inet 
   t_int$t_int t_list_int$t_list_int t_list_text$t_list_text t_map$t_map t_set_int$t_set_int t_set_text$t_set_text
   t_smallint$t_smallint t_text$t_text t_time$t_time t_timestamp$t_timestamp t_timeuuid$t_timeuuid t_tinyint$t_tinyint t_tuple$t_tuple t_varchar$t_varchar 
-  t_varint$t_varint t_uuid$t_uuid t_type1$t_type1
+  t_varint$t_varint t_uuid$t_uuid t_type1$t_type1 t_phone$t_phone(type=phone)
 ;
 
 LIST_META_TYPES(QRY)=
   select id, t_ascii, t_bigint, t_blob, t_boolean, t_date, t_decimal, t_double, t_float, t_inet, t_int, t_list_int, t_list_text, t_map, t_set_int, t_set_text, 
-             t_smallint, t_text, t_time, t_timestamp, t_timeuuid, t_tinyint, t_tuple, t_varchar, t_varint, t_uuid, t_type1
+             t_smallint, t_text, t_time, t_timestamp, t_timeuuid, t_tinyint, t_tuple, t_varchar, t_varint, t_uuid, t_type1, t_phone
   from types
   {= where
     {& id = :id}
@@ -27,12 +27,12 @@ LIST_META_TYPES(OUT)=
   id$id(type=int) t_ascii$t_ascii(type=string) t_bigint$t_bigint(type=long) t_blob$t_blob(type=bytes) t_boolean$t_boolean(type=bool) t_date$t_date(type=date) t_decimal$t_decimal(type=bigdecimal) t_double$t_double(type=double) t_float$t_float(type=float) t_inet$t_inet(type=inet) 
   t_int$t_int(type=int) t_list_int$t_list_int(type=list) t_list_text$t_list_text(type=list) t_map$t_map(type=map) t_set_int$t_set_int(type=set) t_set_text$t_set_text(type=set)
   t_smallint$t_smallint(type=short) t_text$t_text(type=string) t_time$t_time(type=time) t_timestamp$t_timestamp(type=stamp) t_timeuuid$t_timeuuid(type=uuid) t_tinyint$t_tinyint(type=byte) t_tuple$t_tuple(type=tuple) t_varchar$t_varchar(type=string) 
-  t_varint$t_varint(type=bigint) t_uuid$t_uuid(type=uuid) t_type1$t_type1
+  t_varint$t_varint(type=bigint) t_uuid$t_uuid(type=uuid) t_type1$t_type1 t_phone$t_phone(type=phone)
 ;
 
 INSERT_TYPES(CRUD)=
   insert into types (id, t_ascii, t_bigint, t_blob, t_boolean, t_date, t_decimal, t_double, t_float, t_inet, t_int, t_list_int, t_list_text, t_map, t_set_int, t_set_text, t_smallint, t_text, t_time, t_timestamp, t_timeuuid, t_tinyint, t_varchar, t_varint, t_tuple, t_uuid, t_type1)
-  {= values (:id, :t_ascii, :t_bigint, :t_blob, :t_boolean, :t_date, :t_decimal, :t_double, :t_float, :t_inet, :t_int, :t_list_int, :t_list_text, :t_map, :t_set_int, :t_set_text, :t_smallint, :t_text, :t_time, :t_timestamp, :t_timeuuid, :t_tinyint, :t_varchar, :t_varint, :t_tuple, :t_uuid, :t_type1) }
+  {= values (:id, :t_ascii, :t_bigint, :t_blob, :t_boolean, :t_date, :t_decimal, :t_double, :t_float, :t_inet, :t_int, :t_list_int, :t_list_text, :t_map, :t_set_int, :t_set_text, :t_smallint, :t_text, :t_time, :t_timestamp, :t_timeuuid, :t_tinyint, :t_varchar, :t_varint, :t_tuple, :t_uuid, :t_type1, :t_phone(type=phone)) }
 ;
 
 INSERT_META_TYPES(CRUD)=
@@ -42,7 +42,7 @@ INSERT_META_TYPES(CRUD)=
 
 INSERT_TYPES_IF_NOT_EXISTS(CRUD)=
   insert into types (id, t_ascii, t_bigint, t_blob, t_boolean, t_date, t_decimal, t_double, t_float, t_inet, t_int, t_list_int, t_list_text, t_map, t_set_int, t_set_text, t_smallint, t_text, t_time, t_timestamp, t_timeuuid, t_tinyint, t_varchar, t_varint, t_tuple, t_uuid, t_type1)
-  {= values (:id, :t_ascii, :t_bigint, :t_blob, :t_boolean, :t_date, :t_decimal, :t_double, :t_float, :t_inet, :t_int, :t_list_int, :t_list_text, :t_map, :t_set_int, :t_set_text, :t_smallint, :t_text, :t_time, :t_timestamp, :t_timeuuid, :t_tinyint, :t_varchar, :t_varint, :t_tuple, :t_uuid, :t_type1) }
+  {= values (:id, :t_ascii, :t_bigint, :t_blob, :t_boolean, :t_date, :t_decimal, :t_double, :t_float, :t_inet, :t_int, :t_list_int, :t_list_text, :t_map, :t_set_int, :t_set_text, :t_smallint, :t_text, :t_time, :t_timestamp, :t_timeuuid, :t_tinyint, :t_varchar, :t_varint, :t_tuple, :t_uuid, :t_type1, :t_phone(type=phone)) }
   if not exists
 ;
 

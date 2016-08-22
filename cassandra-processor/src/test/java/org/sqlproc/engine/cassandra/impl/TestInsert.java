@@ -1,4 +1,4 @@
-package org.sqlproc.engine.impl;
+package org.sqlproc.engine.cassandra.impl;
 
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -11,9 +11,9 @@ import org.junit.Test;
 import org.sqlproc.engine.SqlCrudEngine;
 import org.sqlproc.engine.SqlQueryEngine;
 import org.sqlproc.engine.SqlSession;
+import org.sqlproc.engine.cassandra.model.NativeTypes;
+import org.sqlproc.engine.cassandra.model.Types;
 import org.sqlproc.engine.impl.SqlMetaStatement.Type;
-import org.sqlproc.engine.model.NativeTypes;
-import org.sqlproc.engine.model.Types;
 
 public class TestInsert extends TestDatabase {
 

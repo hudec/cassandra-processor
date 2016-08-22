@@ -1,4 +1,4 @@
-package org.sqlproc.engine.model;
+package org.sqlproc.engine.cassandra.model;
 
 public class EnumTypes {
 

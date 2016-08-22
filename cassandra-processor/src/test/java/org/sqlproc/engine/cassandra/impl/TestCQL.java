@@ -1,4 +1,4 @@
-package org.sqlproc.engine.impl;
+package org.sqlproc.engine.cassandra.impl;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;

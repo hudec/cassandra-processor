@@ -1,4 +1,4 @@
-package org.sqlproc.engine.model;
+package org.sqlproc.engine.cassandra.model;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -56,6 +56,7 @@ public class Types {
     private BigInteger t_varint;
     private UUID t_uuid;
     private Type1 t_type1;
+    private PhoneNumber t_phone;
 
     public Types() {
     }
@@ -280,6 +281,14 @@ public class Types {
         this.t_type1 = t_type1;
     }
 
+    public PhoneNumber getT_phone() {
+        return t_phone;
+    }
+
+    public void setT_phone(PhoneNumber t_phone) {
+        this.t_phone = t_phone;
+    }
+
     @Override
     public String toString() {
         return "Types [id=" + id + ", t_ascii=" + t_ascii + ", t_bigint=" + t_bigint + ", t_blob=" + t_blob
@@ -289,7 +298,19 @@ public class Types {
                 + ", t_set_text=" + t_set_text + ", t_smallint=" + t_smallint + ", t_text=" + t_text + ", t_time="
                 + t_time + ", t_timestamp=" + t_timestamp + ", t_timeuuid=" + t_timeuuid + ", t_tinyint=" + t_tinyint
                 + ", t_tuple=" + t_tuple + ", t_varchar=" + t_varchar + ", t_varint=" + t_varint + ", t_uuid=" + t_uuid
-                + ", t_type1=" + t_type1 + "]";
+                + ", t_type1=" + t_type1 + ", t_phone=" + t_phone + ", getId()=" + getId() + ", getT_ascii()="
+                + getT_ascii() + ", getT_bigint()=" + getT_bigint() + ", getT_blob()=" + getT_blob()
+                + ", getT_boolean()=" + getT_boolean() + ", getT_date()=" + getT_date() + ", getT_decimal()="
+                + getT_decimal() + ", getT_double()=" + getT_double() + ", getT_float()=" + getT_float()
+                + ", getT_inet()=" + getT_inet() + ", getT_int()=" + getT_int() + ", getT_list_int()=" + getT_list_int()
+                + ", getT_list_text()=" + getT_list_text() + ", getT_map()=" + getT_map() + ", getT_set_int()="
+                + getT_set_int() + ", getT_set_text()=" + getT_set_text() + ", getT_smallint()=" + getT_smallint()
+                + ", getT_text()=" + getT_text() + ", getT_time()=" + getT_time() + ", getT_timestamp()="
+                + getT_timestamp() + ", getT_timeuuid()=" + getT_timeuuid() + ", getT_tinyint()=" + getT_tinyint()
+                + ", getT_uuid()=" + getT_uuid() + ", getT_tuple()=" + getT_tuple() + ", getT_varchar()="
+                + getT_varchar() + ", getT_varint()=" + getT_varint() + ", getT_type1()=" + getT_type1()
+                + ", getT_phone()=" + getT_phone() + ", getClass()=" + getClass() + ", hashCode()=" + hashCode()
+                + ", toString()=" + super.toString() + "]";
     }
 
     public static void assertTypes(Types t1, Types t2) {
@@ -326,6 +347,7 @@ public class Types {
             assertThat(t1.getT_type1().getT_varchar(), is(t2.getT_type1().getT_varchar()));
             assertThat(t1.getT_type1().getT_int(), is(t2.getT_type1().getT_int()));
         }
+        assertThat(t1.getT_phone(), equalTo(t2.getT_phone()));
     }
 
     public static Types getDefaultTypes(Cluster cluster) throws UnknownHostException {
@@ -367,6 +389,7 @@ public class Types {
         t.setT_uuid(UUID.fromString("a9c9b8ae-4911-4bf4-a855-4b5f634d0664"));
         Type1 t1 = new Type1("varchar", 501);
         t.setT_type1(t1);
+        t.setT_phone(new PhoneNumber(1, 2, 3));
         return t;
     }
 
@@ -407,6 +430,7 @@ public class Types {
         t.setT_tuple(tuple);
         t.setT_uuid(UUID.fromString("a9c9b8ae-4911-4bf4-a855-4b5f634d0664"));
         t.setT_type1(new Type1("varchar", 501));
+        t.setT_phone(new PhoneNumber(4, 5, 6));
         return t;
     }
 

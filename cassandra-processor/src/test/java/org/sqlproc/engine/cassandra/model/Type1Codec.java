@@ -1,4 +1,4 @@
-package org.sqlproc.engine.model;
+package org.sqlproc.engine.cassandra.model;
 
 import com.datastax.driver.core.TypeCodec;
 import com.datastax.driver.core.UDTValue;

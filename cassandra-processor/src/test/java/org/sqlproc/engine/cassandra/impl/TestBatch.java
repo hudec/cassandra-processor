@@ -1,4 +1,4 @@
-package org.sqlproc.engine.impl;
+package org.sqlproc.engine.cassandra.impl;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -12,7 +12,7 @@ import org.sqlproc.engine.SqlCrudEngine;
 import org.sqlproc.engine.SqlQueryEngine;
 import org.sqlproc.engine.cassandra.CassandraSimpleSession;
 import org.sqlproc.engine.cassandra.CassandraStandardControl;
-import org.sqlproc.engine.model.Types;
+import org.sqlproc.engine.cassandra.model.Types;
 
 import com.datastax.driver.core.BatchStatement;
 

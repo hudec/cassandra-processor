@@ -1,4 +1,4 @@
-package org.sqlproc.engine.impl;
+package org.sqlproc.engine.cassandra.impl;
 
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -8,11 +8,11 @@ import java.net.UnknownHostException;
 import org.junit.Test;
 import org.sqlproc.engine.SqlCrudEngine;
 import org.sqlproc.engine.SqlSession;
+import org.sqlproc.engine.cassandra.model.ClusteringTypes;
+import org.sqlproc.engine.cassandra.model.NativeClusteringTypes;
+import org.sqlproc.engine.cassandra.model.NativeTypes;
+import org.sqlproc.engine.cassandra.model.Types;
 import org.sqlproc.engine.impl.SqlMetaStatement.Type;
-import org.sqlproc.engine.model.ClusteringTypes;
-import org.sqlproc.engine.model.NativeClusteringTypes;
-import org.sqlproc.engine.model.NativeTypes;
-import org.sqlproc.engine.model.Types;
 
 public class TestGet extends TestDatabase {
 

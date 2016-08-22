@@ -1,4 +1,4 @@
-package org.sqlproc.engine.impl;
+package org.sqlproc.engine.cassandra.impl;
 
 import org.cassandraunit.CassandraCQLUnit;
 import org.cassandraunit.dataset.cql.ClassPathCQLDataSet;
@@ -11,8 +11,8 @@ import org.sqlproc.engine.SqlFilesLoader;
 import org.sqlproc.engine.SqlQueryEngine;
 import org.sqlproc.engine.cassandra.CassandraEngineFactory;
 import org.sqlproc.engine.cassandra.CassandraSimpleSession;
-import org.sqlproc.engine.model.Type1;
-import org.sqlproc.engine.model.Type1Codec;
+import org.sqlproc.engine.cassandra.model.Type1;
+import org.sqlproc.engine.cassandra.model.Type1Codec;
 
 import com.datastax.driver.core.TypeCodec;
 import com.datastax.driver.core.UserType;
@@ -37,6 +37,7 @@ public class TestDatabase {
         StringBuilder metaStatements = SqlFilesLoader.getStatements(TestDatabase.class, "simple.meta");
         factory = new CassandraEngineFactory();
         factory.setMetaStatements(metaStatements);
+        factory.addCustomType(new PhoneNumberType());
         factory.init();
     }
 

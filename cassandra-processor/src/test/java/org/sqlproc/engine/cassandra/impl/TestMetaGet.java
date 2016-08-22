@@ -1,13 +1,13 @@
-package org.sqlproc.engine.impl;
+package org.sqlproc.engine.cassandra.impl;
 
 import java.net.UnknownHostException;
 
 import org.junit.Test;
 import org.sqlproc.engine.SqlCrudEngine;
 import org.sqlproc.engine.SqlSession;
+import org.sqlproc.engine.cassandra.model.ClusteringTypes;
+import org.sqlproc.engine.cassandra.model.NativeClusteringTypes;
 import org.sqlproc.engine.impl.SqlMetaStatement.Type;
-import org.sqlproc.engine.model.ClusteringTypes;
-import org.sqlproc.engine.model.NativeClusteringTypes;
 
 public class TestMetaGet extends TestDatabase {
 

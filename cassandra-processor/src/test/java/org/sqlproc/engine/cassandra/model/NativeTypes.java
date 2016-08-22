@@ -1,4 +1,4 @@
-package org.sqlproc.engine.model;
+package org.sqlproc.engine.cassandra.model;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.notNullValue;
@@ -56,6 +56,7 @@ public class NativeTypes {
     private BigInteger t_varint;
     private UUID t_uuid;
     private Type1 t_type1;
+    private PhoneNumber t_phone;
 
     public NativeTypes() {
     }
@@ -280,16 +281,24 @@ public class NativeTypes {
         this.t_type1 = t_type1;
     }
 
+    public PhoneNumber getT_phone() {
+        return t_phone;
+    }
+
+    public void setT_phone(PhoneNumber t_phone) {
+        this.t_phone = t_phone;
+    }
+
     @Override
     public String toString() {
-        return "Types [id=" + id + ", t_ascii=" + t_ascii + ", t_bigint=" + t_bigint + ", t_blob=" + t_blob
+        return "NativeTypes [id=" + id + ", t_ascii=" + t_ascii + ", t_bigint=" + t_bigint + ", t_blob=" + t_blob
                 + ", t_boolean=" + t_boolean + ", t_date=" + t_date + ", t_decimal=" + t_decimal + ", t_double="
                 + t_double + ", t_float=" + t_float + ", t_inet=" + t_inet + ", t_int=" + t_int + ", t_list_int="
                 + t_list_int + ", t_map=" + t_map + ", t_list_text=" + t_list_text + ", t_set_int=" + t_set_int
                 + ", t_set_text=" + t_set_text + ", t_smallint=" + t_smallint + ", t_text=" + t_text + ", t_time="
                 + t_time + ", t_timestamp=" + t_timestamp + ", t_timeuuid=" + t_timeuuid + ", t_tinyint=" + t_tinyint
                 + ", t_tuple=" + t_tuple + ", t_varchar=" + t_varchar + ", t_varint=" + t_varint + ", t_uuid=" + t_uuid
-                + ", t_type1=" + t_type1 + "]";
+                + ", t_type1=" + t_type1 + ", t_phone=" + t_phone + "]";
     }
 
     public static void assertTypes(NativeTypes t1, NativeTypes t2) {
@@ -326,6 +335,7 @@ public class NativeTypes {
             assertThat(t1.getT_type1().getT_varchar(), is(t2.getT_type1().getT_varchar()));
             assertThat(t1.getT_type1().getT_int(), is(t2.getT_type1().getT_int()));
         }
+        assertThat(t1.getT_phone(), equalTo(t2.getT_phone()));
     }
 
     public static NativeTypes getDefaultTypes(Cluster cluster) throws UnknownHostException {
@@ -367,6 +377,7 @@ public class NativeTypes {
         t.setT_uuid(UUID.fromString("a9c9b8ae-4911-4bf4-a855-4b5f634d0664"));
         Type1 t1 = new Type1("varchar", 501);
         t.setT_type1(t1);
+        t.setT_phone(new PhoneNumber(1, 2, 3));
         return t;
     }
 
@@ -407,6 +418,7 @@ public class NativeTypes {
         t.setT_tuple(tuple);
         t.setT_uuid(UUID.fromString("a9c9b8ae-4911-4bf4-a855-4b5f634d0664"));
         t.setT_type1(new Type1("varchar", 501));
+        t.setT_phone(new PhoneNumber(4, 5, 6));
         return t;
     }
 

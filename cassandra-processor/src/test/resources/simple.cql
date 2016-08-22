@@ -31,6 +31,7 @@ t_varchar varchar,
 t_varint varint, 
 t_uuid uuid, 
 t_type1 frozen<type1>,
+t_phone varchar,
 PRIMARY KEY(id));
 
 CREATE TABLE clustering_types (
@@ -92,6 +93,7 @@ id
 ,t_varint 
 ,t_uuid
 ,t_type1
+,t_phone
 ) values(
 1
 ,'ascii'
@@ -120,6 +122,7 @@ id
 ,9
 ,a9c9b8ae-4911-4bf4-a855-4b5f634d0664
 ,{t_varchar: 'varchar', t_int: 501}
+,'001-002-0003'
 );
 
 
