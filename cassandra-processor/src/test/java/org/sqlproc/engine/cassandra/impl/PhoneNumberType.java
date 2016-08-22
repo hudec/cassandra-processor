@@ -1,6 +1,5 @@
 package org.sqlproc.engine.cassandra.impl;
 
-import java.sql.Types;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,9 +37,11 @@ public class PhoneNumberType implements SqlTaggedMetaType {
         return this;
     }
 
+    public static final CassandraClassType CASSANDRA_TYPE = new CassandraClassType(String.class);
+
     @Override
     public void addScalar(SqlTypeFactory typeFactory, SqlQuery query, String dbName, Class<?>... attributeTypes) {
-        query.addScalar(dbName, new CassandraClassType(String.class), attributeTypes);
+        query.addScalar(dbName, CASSANDRA_TYPE, attributeTypes);
     }
 
     @Override
@@ -101,7 +102,7 @@ public class PhoneNumberType implements SqlTaggedMetaType {
             boolean ingoreError, Class<?>... inputTypes) throws SqlRuntimeException {
 
         if (inputValue == null) {
-            query.setParameter(paramName, inputValue, Types.VARCHAR);
+            query.setParameter(paramName, inputValue, CASSANDRA_TYPE, inputTypes);
         } else {
             if (!(inputValue instanceof PhoneNumber)) {
                 if (ingoreError) {
@@ -115,7 +116,7 @@ public class PhoneNumberType implements SqlTaggedMetaType {
             PhoneNumber phoneNumber = (PhoneNumber) inputValue;
             String sPhoneNumber = String.format("%03d-%03d-%04d", phoneNumber.getArea(), phoneNumber.getExch(),
                     phoneNumber.getExt());
-            query.setParameter(paramName, sPhoneNumber, new CassandraClassType(String.class), inputTypes);
+            query.setParameter(paramName, sPhoneNumber, CASSANDRA_TYPE, inputTypes);
         }
     }
 }
