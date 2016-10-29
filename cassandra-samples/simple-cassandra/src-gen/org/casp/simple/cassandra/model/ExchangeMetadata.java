@@ -1,6 +1,6 @@
 package org.casp.simple.cassandra.model;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 import org.sqlproc.engine.annotation.Pojo;
 
 @Pojo
@@ -36,17 +36,17 @@ public class ExchangeMetadata {
     return this;
   }
   
-  private Timestamp last_updated_date;
+  private Instant last_updated_date;
   
-  public Timestamp getLast_updated_date() {
+  public Instant getLast_updated_date() {
     return this.last_updated_date;
   }
   
-  public void setLast_updated_date(final Timestamp last_updated_date) {
+  public void setLast_updated_date(final Instant last_updated_date) {
     this.last_updated_date = last_updated_date;
   }
   
-  public ExchangeMetadata _setLast_updated_date(final Timestamp last_updated_date) {
+  public ExchangeMetadata _setLast_updated_date(final Instant last_updated_date) {
     this.last_updated_date = last_updated_date;
     return this;
   }

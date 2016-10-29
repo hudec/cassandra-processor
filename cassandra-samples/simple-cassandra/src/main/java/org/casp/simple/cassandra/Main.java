@@ -1,6 +1,6 @@
 package org.casp.simple.cassandra;
 
-import java.util.Date;
+import java.time.Instant;
 
 import org.casp.simple.cassandra.dao.DividendDao;
 import org.casp.simple.cassandra.dao.ExchangeMetadataDao;
@@ -15,6 +15,9 @@ import org.sqlproc.engine.cassandra.CassandraSessionFactory;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.SocketOptions;
+import com.datastax.driver.extras.codecs.jdk8.InstantCodec;
+import com.datastax.driver.extras.codecs.jdk8.LocalDateCodec;
+import com.datastax.driver.extras.codecs.jdk8.LocalTimeCodec;
 
 public class Main {
 
@@ -35,8 +38,8 @@ public class Main {
         socketOptions.setReadTimeoutMillis(STARTUP_TIMEOUT);
         cluster = new Cluster.Builder().addContactPoints(CONTACT_POINTS).withPort(CONTACT_PORT)
                 .withSocketOptions(socketOptions).build();
-        // cluster.getConfiguration().getCodecRegistry().register(InstantCodec.instance, LocalTimeCodec.instance,
-        // LocalDateCodec.instance);
+        cluster.getConfiguration().getCodecRegistry().register(InstantCodec.instance, LocalTimeCodec.instance,
+                LocalDateCodec.instance);
 
         sessionFactory = new CassandraSessionFactory(cluster.connect(KEYSPACE));
 
@@ -62,18 +65,22 @@ public class Main {
 
     public void run() {
         setupDb();
-        Date now = new Date();
 
+        Instant now = Instant.now();
         HistoricData hd = new HistoricData()._setExchange("AMEX")._setSymbol("AMEX")._setDate(now)._setOpen(40.83)
                 ._setHigh(41.10)._setLow(40.59)._setClose(40.59)._setVolume(15100)._setAdj_close(40.59);
-        historicDataDao.insert(hd, null);
-
+        historicDataDao.insert(hd);
         Dividend di = new Dividend()._setExchange("AMEX")._setSymbol("AMEX")._setDate(now)._setDividend(40.83);
-        dividendDao.insert(di, null);
+        dividendDao.insert(di);
+        ExchangeMetadata em = new ExchangeMetadata()._setExchange("AMEX")._setSymbol("AMEX")._setLast_updated_date(now);
+        exchangeMetadataDao.insert(em);
 
-        ExchangeMetadata em = new ExchangeMetadata()._setExchange("AMEX")._setSymbol("AMEX")
-                ._setLast_updated_date(new java.sql.Timestamp(now.getTime()));
-        exchangeMetadataDao.insert(em, null);
+        // List<HistoricData> lhd = historicDataDao.list(null);
+        // assert lhd.size() == 1;
+        // List<Dividend> ldi = dividendDao.list(null);
+        // assert ldi.size() == 1;
+        // List<ExchangeMetadata> lem = exchangeMetadataDao.list(null);
+        // assert lem.size() == 1;
     }
 
     public static void main(String[] args) throws Exception {

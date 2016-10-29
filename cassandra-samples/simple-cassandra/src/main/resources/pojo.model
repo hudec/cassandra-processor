@@ -1,9 +1,11 @@
 package org.casp.simple.cassandra.model {
 	
+	import java.time.Instant
+	
 	#Pojo HistoricData {
 	    #Attr String exchange 
 	    #Attr String symbol
-	    #Attr java.util.Date date
+	    #Attr Instant date
 	    #Attr Double open
 	    #Attr Double high
 	    #Attr Double low
@@ -15,13 +17,13 @@ package org.casp.simple.cassandra.model {
 	#Pojo Dividend {
 		#Attr String exchange
 	    #Attr String symbol
-	    #Attr java.util.Date date
+	    #Attr Instant date
 	    #Attr Double dividend
 	}
 
 	#Pojo ExchangeMetadata {
 		#Attr String exchange
 		#Attr String symbol
-		#Attr java.sql.Timestamp last_updated_date
+		#Attr Instant last_updated_date
 	}
 }

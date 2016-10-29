@@ -3,6 +3,22 @@ INSERT_HISTORIC_DATA(CRUD,in=HistoricData)=
 	values (:exchange, :symbol, :date, :open, :high, :low, :close, :volume, :adj_close)
 ;
 
+SELECT_HISTORIC_DATA(QRY,in=HistoricData,out=HistoricData)=
+  select historic_data (exchange, symbol, date, open, high, low, close, volume, adj_close
+  from historic_data
+  {= where
+    {& exchange ::= :exchange }
+    {& symbol ::= :symbol }
+    {& date ::= :date }
+    {& open ::= :open }
+    {& high ::= :high }
+    {& low ::= :low }
+    {& close ::= :close }
+    {& volume ::= :volume }
+    {& adj_close ::= :adj_close }
+  }
+;
+
 INSERT_DIVIDEND(CRUD,in=Dividend)=
 	insert into dividends (exchange, symbol, date, dividend)
 	values (:exchange, :symbol, :date, :dividend)

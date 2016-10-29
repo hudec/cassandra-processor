@@ -1,6 +1,6 @@
 package org.casp.simple.cassandra.model;
 
-import java.util.Date;
+import java.time.Instant;
 import org.sqlproc.engine.annotation.Pojo;
 
 @Pojo
@@ -36,17 +36,17 @@ public class Dividend {
     return this;
   }
   
-  private Date date;
+  private Instant date;
   
-  public Date getDate() {
+  public Instant getDate() {
     return this.date;
   }
   
-  public void setDate(final Date date) {
+  public void setDate(final Instant date) {
     this.date = date;
   }
   
-  public Dividend _setDate(final Date date) {
+  public Dividend _setDate(final Instant date) {
     this.date = date;
     return this;
   }
