@@ -62,6 +62,7 @@ public class CassandraEngineFactory extends SqlDefaultFactory {
         super(lazyInit);
         setJdbc(true);
         setCollectionsAreStandardTypes(true);
+        setSkipAliasesInQqlCommand(true);
         setTypeFactory(CassandraTypeFactory.getInstance());
         setPluginFactory(CassandraPluginFactory.getInstance());
     }
@@ -76,6 +77,7 @@ public class CassandraEngineFactory extends SqlDefaultFactory {
         super(asyncInitThreads);
         setJdbc(true);
         setCollectionsAreStandardTypes(true);
+        setSkipAliasesInQqlCommand(true);
         setTypeFactory(CassandraTypeFactory.getInstance());
         setPluginFactory(CassandraPluginFactory.getInstance());
     }
@@ -92,6 +94,7 @@ public class CassandraEngineFactory extends SqlDefaultFactory {
         super(lazyInit, asyncInitThreads);
         setJdbc(true);
         setCollectionsAreStandardTypes(true);
+        setSkipAliasesInQqlCommand(true);
         setTypeFactory(CassandraTypeFactory.getInstance());
         setPluginFactory(CassandraPluginFactory.getInstance());
     }

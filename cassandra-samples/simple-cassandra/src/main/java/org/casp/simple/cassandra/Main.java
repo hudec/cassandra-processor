@@ -1,6 +1,7 @@
 package org.casp.simple.cassandra;
 
 import java.time.Instant;
+import java.util.List;
 
 import org.casp.simple.cassandra.dao.DividendDao;
 import org.casp.simple.cassandra.dao.ExchangeMetadataDao;
@@ -75,12 +76,12 @@ public class Main {
         ExchangeMetadata em = new ExchangeMetadata()._setExchange("AMEX")._setSymbol("AMEX")._setLast_updated_date(now);
         exchangeMetadataDao.insert(em);
 
-        // List<HistoricData> lhd = historicDataDao.list(null);
-        // assert lhd.size() == 1;
-        // List<Dividend> ldi = dividendDao.list(null);
-        // assert ldi.size() == 1;
-        // List<ExchangeMetadata> lem = exchangeMetadataDao.list(null);
-        // assert lem.size() == 1;
+        List<HistoricData> lhd = historicDataDao.list(null);
+        assert lhd.size() == 1;
+        List<Dividend> ldi = dividendDao.list(null);
+        assert ldi.size() == 1;
+        List<ExchangeMetadata> lem = exchangeMetadataDao.list(null);
+        assert lem.size() == 1;
     }
 
     public static void main(String[] args) throws Exception {
