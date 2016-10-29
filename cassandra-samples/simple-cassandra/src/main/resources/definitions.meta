@@ -1,0 +1,5 @@
+resolve-pojo-on;
+
+is-pojo HistoricData org.casp.simple.cassandra.model.HistoricData;
+is-pojo Dividend org.casp.simple.cassandra.model.Dividend;
+is-pojo ExchangeMetadata org.casp.simple.cassandra.model.ExchangeMetadata;

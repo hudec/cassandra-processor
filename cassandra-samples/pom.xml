@@ -9,7 +9,7 @@
     <description>SQL Processor Simple Cassandra Samples, Parent Module</description>
 
     <modules>
-        <module>simple-embedded-cassandra</module>
+        <module>simple-cassandra</module>
     </modules>
 
 </project>

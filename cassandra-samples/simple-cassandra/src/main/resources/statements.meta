@@ -1,0 +1,14 @@
+INSERT_HISTORIC_DATA(CRUD,in=HistoricData)=
+	insert into historic_data (exchange, symbol, date, open, high, low, close, volume, adj_close) 
+	values (:exchange, :symbol, :date, :open, :high, :low, :close, :volume, :adjClose)
+;
+
+INSERT_DIVIDEND(CRUD,in=Dividend)=
+	insert into dividends (exchange, symbol, date, dividend)
+	values (:exchange, :symbol, :date, :dividend)
+;
+
+INSERT_EXCHANGE_METADATA(CRUD,in=ExchangeMetadata)=
+	insert into exchange_metadata (exchange, symbol, last_updated_date) 
+	values (:exchange, :symbol, :lastUpdatedDate)
+;
