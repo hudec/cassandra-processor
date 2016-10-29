@@ -4,7 +4,7 @@ INSERT_HISTORIC_DATA(CRUD,in=HistoricData)=
 ;
 
 SELECT_HISTORIC_DATA(QRY,in=HistoricData,out=HistoricData)=
-  select historic_data (exchange, symbol, date, open, high, low, close, volume, adj_close
+  select exchange, symbol, date, open, high, low, close, volume, adj_close
   from historic_data
   {= where
     {& exchange ::= :exchange }
@@ -24,7 +24,28 @@ INSERT_DIVIDEND(CRUD,in=Dividend)=
 	values (:exchange, :symbol, :date, :dividend)
 ;
 
+SELECT_DIVIDEND(QRY,in=Dividend,out=Dividend)=
+  select exchange, symbol, date, dividend
+  from dividends
+  {= where
+    {& exchange ::= :exchange }
+    {& symbol ::= :symbol }
+    {& date ::= :date }
+    {& dividend ::= :dividend }
+  }
+;
+
 INSERT_EXCHANGE_METADATA(CRUD,in=ExchangeMetadata)=
 	insert into exchange_metadata (exchange, symbol, last_updated_date) 
 	values (:exchange, :symbol, :last_updated_date)
+;
+
+SELECT_EXCHANGE_METADATA(QRY,in=ExchangeMetadata,out=ExchangeMetadata)=
+  select exchange, symbol, last_updated_date
+  from exchange_metadata
+  {= where
+    {& exchange ::= :exchange }
+    {& symbol ::= :symbol }
+    {& last_updated_date ::= :last_updated_date }
+  }
 ;
