@@ -9,7 +9,7 @@ package org.casp.simple.cassandra.model {
 	    #Attr Double low
 	    #Attr Double close
 	    #Attr Integer volume
-	    #Attr Double adjClose
+	    #Attr Double adj_close
 	}
 
 	#Pojo Dividend {
@@ -22,6 +22,6 @@ package org.casp.simple.cassandra.model {
 	#Pojo ExchangeMetadata {
 		#Attr String exchange
 		#Attr String symbol
-		#Attr java.sql.Timestamp lastUpdatedDate
+		#Attr java.sql.Timestamp last_updated_date
 	}
 }

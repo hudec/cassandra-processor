@@ -28,7 +28,8 @@ public class HistoricDataDao {
 
     protected CassandraSessionFactory casSessionFactory;
 
-    public HistoricData insert(final SqlSession casSession, final HistoricData historicData, CassandraControl casControl) {
+    public HistoricData insert(final SqlSession casSession, final HistoricData historicData,
+            CassandraControl casControl) {
         if (logger.isTraceEnabled()) {
             logger.trace("sql insert contact: " + historicData + " " + casControl);
         }
@@ -39,5 +40,9 @@ public class HistoricDataDao {
             logger.trace("sql insert contact result: " + count + " " + historicData);
         }
         return (count > 0) ? historicData : null;
+    }
+
+    public HistoricData insert(final HistoricData historicData, CassandraControl casControl) {
+        return insert(casSessionFactory.getSqlSession(), historicData, casControl);
     }
 }

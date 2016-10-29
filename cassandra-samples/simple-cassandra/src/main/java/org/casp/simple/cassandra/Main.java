@@ -51,9 +51,9 @@ public class Main {
 
     public void setupDb() {
         HistoricData hd = new HistoricData()._setExchange("AMEX")._setSymbol("AMEX")._setDate(new java.util.Date())
-                ._setOpen(40.83)._setHigh(41.10)._setLow(40.59)._setClose(40.59)._setVolume(15100)._setAdjClose(40.59);
+                ._setOpen(40.83)._setHigh(41.10)._setLow(40.59)._setClose(40.59)._setVolume(15100)._setAdj_close(40.59);
 
-        historicDataDao.insert(sessionFactory.getSqlSession(), hd, null);
+        historicDataDao.insert(hd, null);
     }
 
     public void run() {
