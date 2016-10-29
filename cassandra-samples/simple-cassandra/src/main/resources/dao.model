@@ -1,0 +1,14 @@
+package org.casp.simple.cassandra.dao {
+
+    #CRUD(org.casp.simple.cassandra.model.HistoricData) #Query(org.casp.simple.cassandra.model.HistoricData)
+    #Dao HistoricDataDao {
+    }
+
+    #CRUD(org.casp.simple.cassandra.model.Dividend) #Query(org.casp.simple.cassandra.model.Dividend)
+    #Dao DividendDao {
+    }
+
+    #CRUD(org.casp.simple.cassandra.model.ExchangeMetadata) #Query(org.casp.simple.cassandra.model.ExchangeMetadata)
+    #Dao ExchangeMetadataDao {
+    }
+}

@@ -1,8 +1,12 @@
 package org.casp.simple.cassandra;
 
+import java.util.Date;
+
 import org.casp.simple.cassandra.dao.DividendDao;
 import org.casp.simple.cassandra.dao.ExchangeMetadataDao;
 import org.casp.simple.cassandra.dao.HistoricDataDao;
+import org.casp.simple.cassandra.model.Dividend;
+import org.casp.simple.cassandra.model.ExchangeMetadata;
 import org.casp.simple.cassandra.model.HistoricData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,14 +54,26 @@ public class Main {
     private ExchangeMetadataDao exchangeMetadataDao;
 
     public void setupDb() {
-        HistoricData hd = new HistoricData()._setExchange("AMEX")._setSymbol("AMEX")._setDate(new java.util.Date())
-                ._setOpen(40.83)._setHigh(41.10)._setLow(40.59)._setClose(40.59)._setVolume(15100)._setAdj_close(40.59);
-
-        historicDataDao.insert(hd, null);
+        com.datastax.driver.core.Session session = ((com.datastax.driver.core.Session) sessionFactory.getSqlSession());
+        session.execute("truncate historic_data");
+        session.execute("truncate dividends");
+        session.execute("truncate exchange_metadata");
     }
 
     public void run() {
         setupDb();
+        Date now = new Date();
+
+        HistoricData hd = new HistoricData()._setExchange("AMEX")._setSymbol("AMEX")._setDate(now)._setOpen(40.83)
+                ._setHigh(41.10)._setLow(40.59)._setClose(40.59)._setVolume(15100)._setAdj_close(40.59);
+        historicDataDao.insert(hd, null);
+
+        Dividend di = new Dividend()._setExchange("AMEX")._setSymbol("AMEX")._setDate(now)._setDividend(40.83);
+        dividendDao.insert(di, null);
+
+        ExchangeMetadata em = new ExchangeMetadata()._setExchange("AMEX")._setSymbol("AMEX")
+                ._setLast_updated_date(new java.sql.Timestamp(now.getTime()));
+        exchangeMetadataDao.insert(em, null);
     }
 
     public static void main(String[] args) throws Exception {
