@@ -37,7 +37,6 @@ public class EmbeddedCassandraServer {
     public static final long DEFAULT_STARTUP_TIMEOUT = 10000;
     public static final String DEFAULT_TMP_DIR = "target/embeddedCassandra";
     public static final String DEFAULT_CASSANDRA_YML_FILE = "cu-cassandra.yaml";
-    public static final String CASSANDRA_RNDPORT_YML_FILE = "cu-cassandra-rndport.yaml";
     public static final String DEFAULT_LOG4J_CONFIG_FILE = "/log4j-embedded-cassandra.properties";
     private static final String INTERNAL_CASSANDRA_KEYSPACE = "system";
     private static final String INTERNAL_CASSANDRA_AUTH_KEYSPACE = "system_auth";
