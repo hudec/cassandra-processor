@@ -41,31 +41,26 @@ public class TestDatabase {
 
         EmbeddedCassandraServer.startEmbeddedCassandra(30000);
 
-        SocketOptions socketOptions = new SocketOptions();
-        socketOptions.setReadTimeoutMillis(30000);
-        Cluster cluster = new Cluster.Builder().addContactPoints(EmbeddedCassandraServer.getHost())
-                .withPort(EmbeddedCassandraServer.getNativeTransportPort()).withSocketOptions(socketOptions).build();
-        System.out.println(cluster);
+        Cluster cluster = getCluster();
         Session session = cluster.connect();
-        System.out.println(session);
-        List<String> ddlCreateDb = DDLLoader.getDDLs(TestDatabase.class, "simple.cql");
+        List<String> ddlCreateDb = DDLLoader.getDDLs(TestDatabase.class, "simple.ddl");
         for (String ddl : ddlCreateDb) {
-            System.out.println(ddl);
+            // System.out.println(ddl);
             session.execute(ddl);
         }
         registerTypes(cluster);
     }
 
     @Before
-    public void setup() {
+    public void setupData() {
         System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
-        SocketOptions socketOptions = new SocketOptions();
-        socketOptions.setReadTimeoutMillis(30000);
-        cluster = new Cluster.Builder().addContactPoints(EmbeddedCassandraServer.getHost())
-                .withPort(EmbeddedCassandraServer.getNativeTransportPort()).withSocketOptions(socketOptions).build();
-        System.out.println(cluster);
-        session = cluster.connect("basic");
-        System.out.println(session);
+        cluster = getCluster();
+        session = cluster.connect("simple");
+        List<String> ddlCreateDb = DDLLoader.getDDLs(TestDatabase.class, "simple.cql");
+        for (String ddl : ddlCreateDb) {
+            // System.out.println(ddl);
+            session.execute(ddl);
+        }
     }
 
     public TestDatabase() {
@@ -87,10 +82,17 @@ public class TestDatabase {
     }
 
     protected static void registerTypes(Cluster cluster) {
-        UserType type1Type = cluster.getMetadata().getKeyspace("basic").getUserType("type1");
+        UserType type1Type = cluster.getMetadata().getKeyspace("simple").getUserType("type1");
         Type1Codec type1Codec = new Type1Codec(TypeCodec.userType(type1Type), Type1.class);
         cluster.getConfiguration().getCodecRegistry().register(InstantCodec.instance, LocalTimeCodec.instance,
                 LocalDateCodec.instance, type1Codec);
+    }
+
+    protected static Cluster getCluster() {
+        SocketOptions socketOptions = new SocketOptions();
+        socketOptions.setReadTimeoutMillis(30000);
+        return new Cluster.Builder().addContactPoints(EmbeddedCassandraServer.getHost())
+                .withPort(EmbeddedCassandraServer.getNativeTransportPort()).withSocketOptions(socketOptions).build();
     }
 
     protected CassandraSimpleSession getSession() {
