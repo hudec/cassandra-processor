@@ -1,9 +1,13 @@
-CREATE TYPE type1 (
+CREATE KEYSPACE IF NOT EXISTS basic WITH replication = {'class': 'SimpleStrategy', 'replication_factor':  '1' };
+
+USE basic; 
+
+CREATE TYPE IF NOT EXISTS type1 (
 t_varchar varchar,
 t_int int
 );
 
-CREATE TABLE types (
+CREATE TABLE IF NOT EXISTS types (
 id int, 
 t_ascii ascii, 
 t_bigint bigint, 
@@ -34,7 +38,7 @@ t_type1 frozen<type1>,
 t_phone varchar,
 PRIMARY KEY(id));
 
-CREATE TABLE clustering_types (
+CREATE TABLE IF NOT EXISTS clustering_types (
 id int, 
 t_ascii ascii, 
 t_bigint bigint, 
@@ -55,15 +59,15 @@ t_varint varint,
 t_uuid uuid, 
 PRIMARY KEY((id), t_ascii, t_bigint, t_boolean, t_date, t_decimal, t_double, t_float, t_int, t_smallint, t_text, t_time, t_timestamp, t_timeuuid, t_tinyint, t_varchar, t_varint, t_uuid));
 
-CREATE TABLE enum_types (
+CREATE TABLE IF NOT EXISTS enum_types (
 id int, 
 t_int int, 
 t_varchar varchar, 
 PRIMARY KEY(id));
 
-/*
-t_counter counter, 
-*/
+TRUNCATE types;
+TRUNCATE clustering_types;
+TRUNCATE enum_types;
 
 INSERT INTO types(
 id
