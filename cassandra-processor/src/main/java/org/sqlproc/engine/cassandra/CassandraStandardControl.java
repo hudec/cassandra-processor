@@ -1,6 +1,7 @@
 package org.sqlproc.engine.cassandra;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -22,6 +23,7 @@ public class CassandraStandardControl extends SqlStandardControl implements Cass
     private Map<String, ByteBuffer> outgoingPayload;
     private BatchStatement batchStatement;
     private ConcurrentHashMap<String, PreparedStatement> preparedStatements;
+    private List<UpdateFuture> updateCounts;
 
     /**
      * {@inheritDoc}
@@ -136,6 +138,18 @@ public class CassandraStandardControl extends SqlStandardControl implements Cass
 
     public void setPreparedStatements(ConcurrentHashMap<String, PreparedStatement> preparedStatements) {
         this.preparedStatements = preparedStatements;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<UpdateFuture> getUpdateCounts() {
+        return updateCounts;
+    }
+
+    public void setUpdateCounts(List<UpdateFuture> updateCounts) {
+        this.updateCounts = updateCounts;
     }
 
     @Override

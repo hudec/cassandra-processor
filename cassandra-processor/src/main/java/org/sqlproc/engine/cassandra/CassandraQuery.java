@@ -17,6 +17,7 @@ import com.datastax.driver.core.BatchStatement;
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.ResultSet;
+import com.datastax.driver.core.ResultSetFuture;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
 import com.datastax.driver.core.SimpleStatement;
@@ -330,8 +331,21 @@ public class CassandraQuery implements SqlQuery {
                 batch.add(bs);
                 updated = 0;
             } else {
-                rs = session.execute(bs);
-                updated = rs.wasApplied() ? 1 : 0;
+                if (sqlControl != null && sqlControl instanceof CassandraControl
+                        && ((CassandraControl) sqlControl).getUpdateCounts() != null) {
+                    final ResultSetFuture rsf = session.executeAsync(bs);
+                    ((CassandraControl) sqlControl).getUpdateCounts().add(new CassandraControl.UpdateFuture() {
+
+                        @Override
+                        public int updateCount() {
+                            return rsf.getUninterruptibly().wasApplied() ? 1 : 0;
+                        }
+                    });
+                    updated = 0;
+                } else {
+                    rs = session.execute(bs);
+                    updated = rs.wasApplied() ? 1 : 0;
+                }
             }
             if (logger.isDebugEnabled()) {
                 logger.debug("update, number of updated rows=" + updated);

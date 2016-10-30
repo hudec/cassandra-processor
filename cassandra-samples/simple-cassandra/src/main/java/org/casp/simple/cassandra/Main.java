@@ -1,6 +1,7 @@
 package org.casp.simple.cassandra;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.casp.simple.cassandra.dao.DividendDao;
@@ -11,8 +12,10 @@ import org.casp.simple.cassandra.model.ExchangeMetadata;
 import org.casp.simple.cassandra.model.HistoricData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.sqlproc.engine.cassandra.CassandraControl.UpdateFuture;
 import org.sqlproc.engine.cassandra.CassandraEngineFactory;
 import org.sqlproc.engine.cassandra.CassandraSessionFactory;
+import org.sqlproc.engine.cassandra.CassandraStandardControl;
 
 import com.datastax.driver.core.Cluster;
 import com.datastax.driver.core.SocketOptions;
@@ -68,12 +71,12 @@ public class Main {
         setupDb();
 
         Instant now = Instant.now();
-        HistoricData hd = new HistoricData()._setExchange("AMEX")._setSymbol("AMEX")._setDate(now)._setOpen(40.83)
+        HistoricData hd = new HistoricData()._setExchange("AMEX")._setSymbol("BOI")._setDate(now)._setOpen(40.83)
                 ._setHigh(41.10)._setLow(40.59)._setClose(40.59)._setVolume(15100)._setAdjClose(40.59);
         historicDataDao.insert(hd);
-        Dividend di = new Dividend()._setExchange("AMEX")._setSymbol("AMEX")._setDate(now)._setDividend(40.83);
+        Dividend di = new Dividend()._setExchange("AMEX")._setSymbol("BOI")._setDate(now)._setDividend(40.83);
         dividendDao.insert(di);
-        ExchangeMetadata em = new ExchangeMetadata()._setExchange("AMEX")._setSymbol("AMEX")._setLastUpdatedDate(now);
+        ExchangeMetadata em = new ExchangeMetadata()._setExchange("AMEX")._setSymbol("BOI")._setLastUpdatedDate(now);
         exchangeMetadataDao.insert(em);
 
         List<HistoricData> lhd = historicDataDao.list(null);
@@ -82,6 +85,23 @@ public class Main {
         assert ldi.size() == 1;
         List<ExchangeMetadata> lem = exchangeMetadataDao.list(null);
         assert lem.size() == 1;
+
+        CassandraStandardControl csc = new CassandraStandardControl();
+        csc.setUpdateCounts(new ArrayList<>());
+        hd = new HistoricData()._setExchange("AMEX")._setSymbol("BOI1")._setDate(now)._setOpen(40.83)._setHigh(41.10)
+                ._setLow(40.59)._setClose(40.59)._setVolume(15100)._setAdjClose(40.59);
+        historicDataDao.insert(hd, csc);
+        hd = new HistoricData()._setExchange("AMEX")._setSymbol("BOI2")._setDate(now)._setOpen(40.83)._setHigh(41.10)
+                ._setLow(40.59)._setClose(40.59)._setVolume(15100)._setAdjClose(40.59);
+        historicDataDao.insert(hd, csc);
+        hd = new HistoricData()._setExchange("AMEX")._setSymbol("BOI3")._setDate(now)._setOpen(40.83)._setHigh(41.10)
+                ._setLow(40.59)._setClose(40.59)._setVolume(15100)._setAdjClose(40.59);
+        historicDataDao.insert(hd, csc);
+        int i = 1;
+        for (UpdateFuture fuc : csc.getUpdateCounts()) {
+            System.out.println("BOI" + (i++) + " -> " + fuc.updateCount());
+        }
+
     }
 
     public static void main(String[] args) throws Exception {

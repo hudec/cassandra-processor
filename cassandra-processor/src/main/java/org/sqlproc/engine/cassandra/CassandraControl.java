@@ -1,6 +1,7 @@
 package org.sqlproc.engine.cassandra;
 
 import java.nio.ByteBuffer;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -21,6 +22,13 @@ import com.datastax.driver.core.policies.RetryPolicy;
  * @author <a href="mailto:Vladimir.Hudec@gmail.com">Vladimir Hudec</a>
  */
 public interface CassandraControl extends SqlControl {
+
+    /**
+     * The holder for asynchronous update.
+     */
+    public static interface UpdateFuture {
+        int updateCount();
+    }
 
     /**
      * The consistency level for this query.
@@ -135,4 +143,11 @@ public interface CassandraControl extends SqlControl {
      * @return the PreparedStatement cache for their re-usag
      */
     public ConcurrentHashMap<String, PreparedStatement> getPreparedStatements();
+
+    /**
+     * Returns the holder for asynchronous update.
+     * 
+     * @return the holder for asynchronous update
+     */
+    public List<UpdateFuture> getUpdateCounts();
 }
