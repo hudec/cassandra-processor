@@ -30,47 +30,31 @@ import com.datastax.driver.extras.codecs.jdk8.LocalTimeCodec;
 public class TestDatabase {
 
     protected final Logger logger = LoggerFactory.getLogger(getClass());
+    protected static CassandraEngineFactory factory;
+
     protected Cluster cluster;
-    protected CassandraEngineFactory factory;
     protected Session session;
 
     @BeforeClass
     public static void startCassabdra()
             throws ConfigurationException, TTransportException, IOException, InterruptedException {
-        System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-
         EmbeddedCassandraServer.startEmbeddedCassandra(30000);
 
         Cluster cluster = getCluster();
-        Session session = cluster.connect();
-        List<String> ddlCreateDb = DDLLoader.getDDLs(TestDatabase.class, "simple.ddl");
-        for (String ddl : ddlCreateDb) {
-            // System.out.println(ddl);
-            session.execute(ddl);
-        }
+        executeCQL(cluster.connect(), "simple.ddl");
         registerTypes(cluster);
+
+        factory = getEngineFactory("simple.meta");
     }
 
     @Before
     public void setupData() {
-        System.out.println("YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY");
         cluster = getCluster();
         session = cluster.connect("simple");
-        List<String> ddlCreateDb = DDLLoader.getDDLs(TestDatabase.class, "simple.cql");
-        for (String ddl : ddlCreateDb) {
-            // System.out.println(ddl);
-            session.execute(ddl);
-        }
+        executeCQL(session, "simple.cql");
     }
 
     public TestDatabase() {
-        System.out.println("ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
-
-        StringBuilder metaStatements = SqlFilesLoader.getStatements(TestDatabase.class, "simple.meta");
-        factory = new CassandraEngineFactory();
-        factory.setMetaStatements(metaStatements);
-        factory.addCustomType(new PhoneNumberType());
-        factory.init();
     }
 
     protected SqlQueryEngine getQueryEngine(String name) {
@@ -79,6 +63,23 @@ public class TestDatabase {
 
     protected SqlCrudEngine getCrudEngine(String name) {
         return factory.getCrudEngine(name);
+    }
+
+    protected static CassandraEngineFactory getEngineFactory(String metafile) {
+        StringBuilder metaStatements = SqlFilesLoader.getStatements(TestDatabase.class, "simple.meta");
+        CassandraEngineFactory factory = new CassandraEngineFactory();
+        factory.setMetaStatements(metaStatements);
+        factory.addCustomType(new PhoneNumberType());
+        factory.init();
+        return factory;
+    }
+
+    protected static void executeCQL(Session session, String cqlfile) {
+        List<String> ddlCreateDb = DDLLoader.getDDLs(TestDatabase.class, cqlfile);
+        for (String ddl : ddlCreateDb) {
+            // System.out.println(ddl);
+            session.execute(ddl);
+        }
     }
 
     protected static void registerTypes(Cluster cluster) {
