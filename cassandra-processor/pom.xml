@@ -17,7 +17,6 @@
         <dependency>
             <groupId>org.sqlproc</groupId>
             <artifactId>sql-processor</artifactId>
-            <version>${version.sqlproc}</version>
         </dependency>
 
         <!-- LOG -->
@@ -45,43 +44,37 @@
             <artifactId>cassandra-driver-extras</artifactId>
         </dependency>
 
-        <!-- TEST -->
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <!-- scope>test</scope -->
-            <exclusions>
-                <exclusion>
-                    <artifactId>mail</artifactId>
-                    <groupId>javax.mail</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jms</artifactId>
-                    <groupId>javax.jms</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jmxtools</artifactId>
-                    <groupId>com.sun.jdmk</groupId>
-                </exclusion>
-                <exclusion>
-                    <artifactId>jmxri</artifactId>
-                    <groupId>com.sun.jmx</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.cassandraunit</groupId>
-            <artifactId>cassandra-unit-spring</artifactId>
+            <groupId>org.apache.cassandra</groupId>
+            <artifactId>cassandra-all</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>logback-core</artifactId>
+                    <groupId>ch.qos.logback</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>logback-classic</artifactId>
+                    <groupId>ch.qos.logback</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>log4j-over-slf4j</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+                <exclusion>
+                    <artifactId>jcl-over-slf4j</artifactId>
+                    <groupId>org.slf4j</groupId>
+                </exclusion>
+            </exclusions>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.hectorclient</groupId>
-            <artifactId>hector-core</artifactId>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-all</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

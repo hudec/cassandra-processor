@@ -16,7 +16,7 @@ public class TestList extends TestDatabase {
 
     @Test
     public void testListFull() throws UnknownHostException {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlQueryEngine sqlEngine = getQueryEngine("LIST_TYPES");
         Types types = new Types(1);
@@ -26,12 +26,12 @@ public class TestList extends TestDatabase {
         List<Types> list = sqlEngine.query(session, Types.class, types);
         System.out.println(list);
         assertThat(list, hasSize(1));
-        Types.assertTypes(list.get(0), Types.getDefaultTypes(basicCQLUnit.cluster));
+        Types.assertTypes(list.get(0), Types.getDefaultTypes(cluster));
     }
 
     @Test
     public void testListNull() {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlQueryEngine sqlEngine = getQueryEngine("LIST_TYPES");
         Types types = new Types(2);
@@ -46,7 +46,7 @@ public class TestList extends TestDatabase {
 
     @Test
     public void testNativeListFull() throws UnknownHostException {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlQueryEngine sqlEngine = getQueryEngine("LIST_TYPES");
         NativeTypes types = new NativeTypes(1);
@@ -56,12 +56,12 @@ public class TestList extends TestDatabase {
         List<NativeTypes> list = sqlEngine.query(session, NativeTypes.class, types);
         System.out.println(list);
         assertThat(list, hasSize(1));
-        NativeTypes.assertTypes(list.get(0), NativeTypes.getDefaultTypes(basicCQLUnit.cluster));
+        NativeTypes.assertTypes(list.get(0), NativeTypes.getDefaultTypes(cluster));
     }
 
     @Test
     public void testNativeListNull() {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlQueryEngine sqlEngine = getQueryEngine("LIST_TYPES");
         NativeTypes types = new NativeTypes(2);

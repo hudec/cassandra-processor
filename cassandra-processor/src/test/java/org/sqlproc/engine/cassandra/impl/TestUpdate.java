@@ -19,11 +19,11 @@ public class TestUpdate extends TestDatabase {
 
     @Test
     public void testUpdateFull() throws UnknownHostException {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES");
 
-        Types types = Types.getNewTypes(basicCQLUnit.cluster, 1);
+        Types types = Types.getNewTypes(cluster, 1);
         types.setId(1);
         String sql = sqlEngine.getSql(types, null, Type.UPDATE);
         System.out.println(sql);
@@ -41,7 +41,7 @@ public class TestUpdate extends TestDatabase {
 
     @Test
     public void testUpdateNull() {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES");
         Types types = new Types();
@@ -63,11 +63,11 @@ public class TestUpdate extends TestDatabase {
 
     @Test
     public void testUpdateNotExistingRow() throws UnknownHostException {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES");
 
-        Types types = Types.getNewTypes(basicCQLUnit.cluster, 9999);
+        Types types = Types.getNewTypes(cluster, 9999);
         String sql = sqlEngine.getSql(types, null, Type.UPDATE);
         System.out.println(sql);
         int count = sqlEngine.update(session, types);
@@ -85,11 +85,11 @@ public class TestUpdate extends TestDatabase {
 
     @Test
     public void testUpdateConditional() throws UnknownHostException {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES_IF_EXISTS");
 
-        Types types = Types.getNewTypes(basicCQLUnit.cluster, 9999);
+        Types types = Types.getNewTypes(cluster, 9999);
         String sql = sqlEngine.getSql(types, null, Type.UPDATE);
         System.out.println(sql);
         int count = sqlEngine.update(session, types);
@@ -105,11 +105,11 @@ public class TestUpdate extends TestDatabase {
 
     @Test
     public void testNativeUpdateFull() throws UnknownHostException {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES");
 
-        NativeTypes types = NativeTypes.getNewTypes(basicCQLUnit.cluster, 1);
+        NativeTypes types = NativeTypes.getNewTypes(cluster, 1);
         types.setId(1);
         String sql = sqlEngine.getSql(types, null, Type.UPDATE);
         System.out.println(sql);
@@ -127,7 +127,7 @@ public class TestUpdate extends TestDatabase {
 
     @Test
     public void testNativeUpdateNull() {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES");
 
@@ -148,11 +148,11 @@ public class TestUpdate extends TestDatabase {
 
     @Test
     public void testNativeUpdateNotExistingRow() throws UnknownHostException {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES");
 
-        NativeTypes types = NativeTypes.getNewTypes(basicCQLUnit.cluster, 9999);
+        NativeTypes types = NativeTypes.getNewTypes(cluster, 9999);
         String sql = sqlEngine.getSql(types, null, Type.UPDATE);
         System.out.println(sql);
         int count = sqlEngine.update(session, types);
@@ -170,11 +170,11 @@ public class TestUpdate extends TestDatabase {
 
     @Test
     public void testNativeUpdateConditional() throws UnknownHostException {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlCrudEngine sqlEngine = getCrudEngine("UPDATE_TYPES_IF_EXISTS");
 
-        NativeTypes types = NativeTypes.getNewTypes(basicCQLUnit.cluster, 9999);
+        NativeTypes types = NativeTypes.getNewTypes(cluster, 9999);
         String sql = sqlEngine.getSql(types, null, Type.UPDATE);
         System.out.println(sql);
         int count = sqlEngine.update(session, types);

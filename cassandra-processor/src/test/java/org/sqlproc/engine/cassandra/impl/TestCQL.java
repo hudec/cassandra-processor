@@ -11,7 +11,7 @@ public class TestCQL extends TestDatabase {
 
     @Test
     public void testCQL() {
-        ResultSet result = basicCQLUnit.session.execute("select * from types WHERE id=1");
+        ResultSet result = getSession().getSession().execute("select * from types WHERE id=1");
         assertThat(result.iterator().next().getString("t_ascii"), is("ascii"));
     }
 }

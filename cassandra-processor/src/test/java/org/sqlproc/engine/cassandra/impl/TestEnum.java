@@ -21,7 +21,7 @@ public class TestEnum extends TestDatabase {
 
     @Test
     public void testEnumAll() throws UnknownHostException {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlQueryEngine sqlEngine = getQueryEngine("LIST_ENUM_TYPES");
         List<EnumTypes> list = sqlEngine.query(session, EnumTypes.class);
@@ -37,7 +37,7 @@ public class TestEnum extends TestDatabase {
 
     @Test
     public void testInsertFull() throws UnknownHostException {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlCrudEngine sqlEngine = getCrudEngine("INSERT_ENUM_TYPES");
 
@@ -59,7 +59,7 @@ public class TestEnum extends TestDatabase {
 
     @Test
     public void testInsertNull() throws UnknownHostException {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlCrudEngine sqlEngine = getCrudEngine("INSERT_ENUM_TYPES");
 

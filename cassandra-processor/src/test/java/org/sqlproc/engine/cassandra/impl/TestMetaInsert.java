@@ -19,11 +19,11 @@ public class TestMetaInsert extends TestDatabase {
 
     @Test
     public void testInsertFull() throws UnknownHostException {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlCrudEngine sqlEngine = getCrudEngine("INSERT_META_TYPES");
 
-        Types types = Types.getNewTypes(basicCQLUnit.cluster, 101);
+        Types types = Types.getNewTypes(cluster, 101);
         String sql = sqlEngine.getSql(types, null, Type.CREATE);
         System.out.println(sql);
         int count = sqlEngine.insert(session, types);
@@ -40,7 +40,7 @@ public class TestMetaInsert extends TestDatabase {
 
     @Test
     public void testInsertNull() {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlCrudEngine sqlEngine = getCrudEngine("INSERT_META_TYPES");
 
@@ -60,11 +60,11 @@ public class TestMetaInsert extends TestDatabase {
 
     @Test
     public void testInsertExistingRow() throws UnknownHostException {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlCrudEngine sqlEngine = getCrudEngine("INSERT_META_TYPES");
 
-        Types types = Types.getNewTypes(basicCQLUnit.cluster, 2);
+        Types types = Types.getNewTypes(cluster, 2);
         String sql = sqlEngine.getSql(types, null, Type.CREATE);
         System.out.println(sql);
         int count = sqlEngine.insert(session, types);
@@ -81,11 +81,11 @@ public class TestMetaInsert extends TestDatabase {
 
     @Test
     public void testNativeInsertFull() throws UnknownHostException {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlCrudEngine sqlEngine = getCrudEngine("INSERT_META_TYPES");
 
-        NativeTypes types = NativeTypes.getNewTypes(basicCQLUnit.cluster, 101);
+        NativeTypes types = NativeTypes.getNewTypes(cluster, 101);
         String sql = sqlEngine.getSql(types, null, Type.CREATE);
         System.out.println(sql);
         int count = sqlEngine.insert(session, types);
@@ -102,7 +102,7 @@ public class TestMetaInsert extends TestDatabase {
 
     @Test
     public void testNativeInsertNull() {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlCrudEngine sqlEngine = getCrudEngine("INSERT_META_TYPES");
 
@@ -122,11 +122,11 @@ public class TestMetaInsert extends TestDatabase {
 
     @Test
     public void testNativeInsertExistingRow() throws UnknownHostException {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlCrudEngine sqlEngine = getCrudEngine("INSERT_META_TYPES");
 
-        NativeTypes types = NativeTypes.getNewTypes(basicCQLUnit.cluster, 2);
+        NativeTypes types = NativeTypes.getNewTypes(cluster, 2);
         String sql = sqlEngine.getSql(types, null, Type.CREATE);
         System.out.println(sql);
         int count = sqlEngine.insert(session, types);

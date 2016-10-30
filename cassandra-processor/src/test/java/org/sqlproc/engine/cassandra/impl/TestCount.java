@@ -14,7 +14,7 @@ public class TestCount extends TestDatabase {
 
     @Test
     public void testListOne() throws UnknownHostException {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlQueryEngine sqlEngine = getQueryEngine("LIST_TYPES");
         Types types = new Types(1);
@@ -28,7 +28,7 @@ public class TestCount extends TestDatabase {
 
     @Test
     public void testListAll() {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlQueryEngine sqlEngine = getQueryEngine("LIST_TYPES");
         int count = sqlEngine.queryCount(session);
@@ -38,7 +38,7 @@ public class TestCount extends TestDatabase {
 
     @Test
     public void testListNone() {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
 
         SqlQueryEngine sqlEngine = getQueryEngine("LIST_TYPES");
         int count = sqlEngine.queryCount(session, new Types(99999));

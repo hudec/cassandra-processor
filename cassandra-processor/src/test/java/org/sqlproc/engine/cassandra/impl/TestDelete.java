@@ -13,7 +13,7 @@ public class TestDelete extends TestDatabase {
 
     @Test
     public void testDeleteFull() {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
         SqlCrudEngine sqlEngine = getCrudEngine("DELETE_TYPES");
 
         Types types = new Types();
@@ -27,7 +27,7 @@ public class TestDelete extends TestDatabase {
 
     @Test
     public void testDeleteNotExisting() {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
         SqlCrudEngine sqlEngine = getCrudEngine("DELETE_TYPES");
 
         Types types = new Types();
@@ -41,7 +41,7 @@ public class TestDelete extends TestDatabase {
 
     @Test
     public void testDeleteConditional() {
-        SqlSession session = getSession(basicCQLUnit);
+        SqlSession session = getSession();
         SqlCrudEngine sqlEngine = getCrudEngine("DELETE_TYPES_IF_EXISTS");
 
         Types types = new Types();

@@ -20,7 +20,7 @@ public class TestBatch extends TestDatabase {
 
     @Test
     public void testInsertDynamic() throws UnknownHostException {
-        CassandraSimpleSession session = getSession(basicCQLUnit);
+        CassandraSimpleSession session = getSession();
 
         SqlQueryEngine sqlQueryEngine = getQueryEngine("LIST_TYPES");
         List<Types> list = sqlQueryEngine.query(session, Types.class);
@@ -30,13 +30,13 @@ public class TestBatch extends TestDatabase {
         csc.setBatchStatement(new BatchStatement());
         csc.setPreparedStatements(new ConcurrentHashMap<>());
 
-        Types types101 = Types.getNewTypes(basicCQLUnit.cluster, 101);
+        Types types101 = Types.getNewTypes(cluster, 101);
         int count = sqlEngine.insert(session, types101, csc);
         assertThat(count, is(0));
-        Types types102 = Types.getNewTypes(basicCQLUnit.cluster, 102);
+        Types types102 = Types.getNewTypes(cluster, 102);
         count = sqlEngine.insert(session, types102, csc);
         assertThat(count, is(0));
-        Types types103 = Types.getNewTypes(basicCQLUnit.cluster, 103);
+        Types types103 = Types.getNewTypes(cluster, 103);
         count = sqlEngine.insert(session, types103, csc);
         assertThat(count, is(0));
         count = session.executeBatch(csc.getBatchStatement(), null);
@@ -48,7 +48,7 @@ public class TestBatch extends TestDatabase {
 
     @Test
     public void testDeleteStatic() throws UnknownHostException {
-        CassandraSimpleSession session = getSession(basicCQLUnit);
+        CassandraSimpleSession session = getSession();
 
         int[] rc = session.executeBatch("delete from types where id = 1", "delete from types where id = 2");
         System.out.println(rc[0]);
@@ -57,7 +57,7 @@ public class TestBatch extends TestDatabase {
 
     @Test
     public void testDeleteStaticNotExistingRow() throws UnknownHostException {
-        CassandraSimpleSession session = getSession(basicCQLUnit);
+        CassandraSimpleSession session = getSession();
 
         // this is correct, if exists can't be used in batch
         int[] rc = session.executeBatch("delete from types where id = 3");
