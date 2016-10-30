@@ -36,7 +36,7 @@ public class CassandraUUIDType extends CassandraDefaultType implements Cassandra
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
-        st.setUUID(columnLabel, (UUID) value);
+    public void set(BoundStatement st, int index, Object value, Class<?>... moreTypes) {
+        st.setUUID(index, (UUID) value);
     }
 }

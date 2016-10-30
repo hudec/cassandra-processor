@@ -36,7 +36,7 @@ public class CassandraInetType extends CassandraDefaultType implements Cassandra
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
-        st.setInet(columnLabel, (InetAddress) value);
+    public void set(BoundStatement st, int index, Object value, Class<?>... moreTypes) {
+        st.setInet(index, (InetAddress) value);
     }
 }

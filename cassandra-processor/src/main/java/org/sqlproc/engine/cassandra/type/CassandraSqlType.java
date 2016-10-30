@@ -15,7 +15,7 @@ public interface CassandraSqlType {
     /**
      * Retrieves the value of the designated column in the current row of this <code>ResultSet</code> object as a Java
      * type value.
-     * 
+     *
      * @param rs
      *            a ResultSet instance
      * @param columnLabel
@@ -42,5 +42,5 @@ public interface CassandraSqlType {
      *             if parameterIndex does not correspond to a parameter marker in the SQL statement; if a database
      *             access error occurs or this method is called on a closed <code>PreparedStatement</code>
      */
-    public abstract void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes);
+    public abstract void set(BoundStatement st, int index, Object value, Class<?>... moreTypes);
 }

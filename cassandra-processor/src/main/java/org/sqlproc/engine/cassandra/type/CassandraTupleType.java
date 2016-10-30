@@ -28,7 +28,7 @@ public class CassandraTupleType extends CassandraDefaultType implements Cassandr
     }
 
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
-        st.setTupleValue(columnLabel, (TupleValue) value);
+    public void set(BoundStatement st, int index, Object value, Class<?>... moreTypes) {
+        st.setTupleValue(index, (TupleValue) value);
     }
 }

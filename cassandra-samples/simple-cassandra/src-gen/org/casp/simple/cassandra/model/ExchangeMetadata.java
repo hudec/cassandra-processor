@@ -36,22 +36,22 @@ public class ExchangeMetadata {
     return this;
   }
   
-  private Instant last_updated_date;
+  private Instant lastUpdatedDate;
   
-  public Instant getLast_updated_date() {
-    return this.last_updated_date;
+  public Instant getLastUpdatedDate() {
+    return this.lastUpdatedDate;
   }
   
-  public void setLast_updated_date(final Instant last_updated_date) {
-    this.last_updated_date = last_updated_date;
+  public void setLastUpdatedDate(final Instant lastUpdatedDate) {
+    this.lastUpdatedDate = lastUpdatedDate;
   }
   
-  public ExchangeMetadata _setLast_updated_date(final Instant last_updated_date) {
-    this.last_updated_date = last_updated_date;
+  public ExchangeMetadata _setLastUpdatedDate(final Instant lastUpdatedDate) {
+    this.lastUpdatedDate = lastUpdatedDate;
     return this;
   }
   
   public String toStringFull() {
-    return "ExchangeMetadata [exchange=" + exchange + ", symbol=" + symbol + ", last_updated_date=" + last_updated_date + "]";
+    return "ExchangeMetadata [exchange=" + exchange + ", symbol=" + symbol + ", lastUpdatedDate=" + lastUpdatedDate + "]";
   }
 }

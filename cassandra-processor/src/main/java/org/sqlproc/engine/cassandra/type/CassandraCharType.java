@@ -33,7 +33,7 @@ public class CassandraCharType extends CassandraDefaultType implements Cassandra
     }
 
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
-        st.setString(columnLabel, (value).toString());
+    public void set(BoundStatement st, int index, Object value, Class<?>... moreTypes) {
+        st.setString(index, (value).toString());
     }
 }

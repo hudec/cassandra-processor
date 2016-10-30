@@ -29,18 +29,18 @@ public class CassandraByteArrayType extends CassandraDefaultType implements Cass
     }
 
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
+    public void set(BoundStatement st, int index, Object value, Class<?>... moreTypes) {
         if (value instanceof byte[]) {
             ByteBuffer bf = ByteBuffer.wrap((byte[]) value);
-            st.setBytes(columnLabel, bf);
+            st.setBytes(index, bf);
         } else if (value instanceof Byte[]) {
             byte[] b = new byte[((Byte[]) value).length];
             for (int i = 0; i < b.length; i++)
                 b[i] = ((Byte[]) value)[i].byteValue();
             ByteBuffer bf = ByteBuffer.wrap(b);
-            st.setBytes(columnLabel, bf);
+            st.setBytes(index, bf);
         } else {
-            st.setBytes(columnLabel, (ByteBuffer) value);
+            st.setBytes(index, (ByteBuffer) value);
         }
     }
 }

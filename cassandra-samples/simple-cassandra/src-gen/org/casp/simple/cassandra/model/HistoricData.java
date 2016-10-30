@@ -126,22 +126,22 @@ public class HistoricData {
     return this;
   }
   
-  private Double adj_close;
+  private Double adjClose;
   
-  public Double getAdj_close() {
-    return this.adj_close;
+  public Double getAdjClose() {
+    return this.adjClose;
   }
   
-  public void setAdj_close(final Double adj_close) {
-    this.adj_close = adj_close;
+  public void setAdjClose(final Double adjClose) {
+    this.adjClose = adjClose;
   }
   
-  public HistoricData _setAdj_close(final Double adj_close) {
-    this.adj_close = adj_close;
+  public HistoricData _setAdjClose(final Double adjClose) {
+    this.adjClose = adjClose;
     return this;
   }
   
   public String toStringFull() {
-    return "HistoricData [exchange=" + exchange + ", symbol=" + symbol + ", date=" + date + ", open=" + open + ", high=" + high + ", low=" + low + ", close=" + close + ", volume=" + volume + ", adj_close=" + adj_close + "]";
+    return "HistoricData [exchange=" + exchange + ", symbol=" + symbol + ", date=" + date + ", open=" + open + ", high=" + high + ", low=" + low + ", close=" + close + ", volume=" + volume + ", adjClose=" + adjClose + "]";
   }
 }

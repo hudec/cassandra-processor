@@ -69,11 +69,11 @@ public class Main {
 
         Instant now = Instant.now();
         HistoricData hd = new HistoricData()._setExchange("AMEX")._setSymbol("AMEX")._setDate(now)._setOpen(40.83)
-                ._setHigh(41.10)._setLow(40.59)._setClose(40.59)._setVolume(15100)._setAdj_close(40.59);
+                ._setHigh(41.10)._setLow(40.59)._setClose(40.59)._setVolume(15100)._setAdjClose(40.59);
         historicDataDao.insert(hd);
         Dividend di = new Dividend()._setExchange("AMEX")._setSymbol("AMEX")._setDate(now)._setDividend(40.83);
         dividendDao.insert(di);
-        ExchangeMetadata em = new ExchangeMetadata()._setExchange("AMEX")._setSymbol("AMEX")._setLast_updated_date(now);
+        ExchangeMetadata em = new ExchangeMetadata()._setExchange("AMEX")._setSymbol("AMEX")._setLastUpdatedDate(now);
         exchangeMetadataDao.insert(em);
 
         List<HistoricData> lhd = historicDataDao.list(null);

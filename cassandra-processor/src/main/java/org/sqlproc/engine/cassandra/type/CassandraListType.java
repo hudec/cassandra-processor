@@ -35,9 +35,9 @@ public class CassandraListType extends CassandraDefaultType implements Cassandra
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
+    public void set(BoundStatement st, int index, Object value, Class<?>... moreTypes) {
         if (moreTypes == null || moreTypes.length < 1)
             throw new IllegalArgumentException("Missing generic type for Cassandra list");
-        st.setList(columnLabel, (java.util.List) value, moreTypes[1]);
+        st.setList(index, (java.util.List) value, moreTypes[1]);
     }
 }

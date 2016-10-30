@@ -33,7 +33,7 @@ public class CassandraByteType extends CassandraDefaultType implements Cassandra
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
-        st.setByte(columnLabel, ((Byte) value).byteValue());
+    public void set(BoundStatement st, int index, Object value, Class<?>... moreTypes) {
+        st.setByte(index, ((Byte) value).byteValue());
     }
 }

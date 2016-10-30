@@ -459,12 +459,12 @@ public class CassandraQuery implements SqlQuery {
                             if (logger.isTraceEnabled()) {
                                 logger.trace("setNull, name=" + name + ", type=" + type);
                             }
-                            bs.setToNull(name);
+                            bs.setToNull(i);
                         } else {
                             if (logger.isTraceEnabled()) {
                                 logger.trace("setParameter, name=" + name + ", value=" + value);
                             }
-                            type.set(bs, name, value, parameterMoreTypes.get(name));
+                            type.set(bs, i, value, parameterMoreTypes.get(name));
                         }
                     } catch (ClassCastException cce) {
                         throw new SqlProcessorException("Not compatible input value of type " + type + " for " + name,

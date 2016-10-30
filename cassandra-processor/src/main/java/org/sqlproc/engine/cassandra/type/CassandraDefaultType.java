@@ -157,8 +157,8 @@ public class CassandraDefaultType implements SqlMetaType {
         }
 
         @Override
-        public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
-            st.set(columnLabel, (V) value, inputTypes[0]);
+        public void set(BoundStatement st, int index, Object value, Class<?>... moreTypes) {
+            st.set(index, (V) value, inputTypes[0]);
         }
     }
 }

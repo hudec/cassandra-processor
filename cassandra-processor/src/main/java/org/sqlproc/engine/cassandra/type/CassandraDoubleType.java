@@ -33,7 +33,7 @@ public class CassandraDoubleType extends CassandraDefaultType implements Cassand
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
-        st.setDouble(columnLabel, ((Double) value).doubleValue());
+    public void set(BoundStatement st, int index, Object value, Class<?>... moreTypes) {
+        st.setDouble(index, ((Double) value).doubleValue());
     }
 }

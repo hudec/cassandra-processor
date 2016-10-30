@@ -1,10 +1,10 @@
 INSERT_HISTORIC_DATA(CRUD,in=HistoricData)=
 	insert into historic_data (exchange, symbol, date, open, high, low, close, volume, adj_close) 
-	values (:exchange, :symbol, :date, :open, :high, :low, :close, :volume, :adj_close)
+	values (:exchange, :symbol, :date, :open, :high, :low, :close, :volume, :adjClose)
 ;
 
 SELECT_HISTORIC_DATA(QRY,in=HistoricData,out=HistoricData)=
-  select exchange @exchange, symbol @symbol, date @date, open @open, high @high, low @low, close @close, volume @volume, adj_close @adj_close
+  select exchange @exchange, symbol @symbol, date @date, open @open, high @high, low @low, close @close, volume @volume, adj_close @adjClose
   from historic_data
   {= where
     {& exchange ::= :exchange }
@@ -15,7 +15,7 @@ SELECT_HISTORIC_DATA(QRY,in=HistoricData,out=HistoricData)=
     {& low ::= :low }
     {& close ::= :close }
     {& volume ::= :volume }
-    {& adj_close ::= :adj_close }
+    {& adj_close ::= :adjClose }
   }
 ;
 
@@ -37,15 +37,15 @@ SELECT_DIVIDEND(QRY,in=Dividend,out=Dividend)=
 
 INSERT_EXCHANGE_METADATA(CRUD,in=ExchangeMetadata)=
 	insert into exchange_metadata (exchange, symbol, last_updated_date) 
-	values (:exchange, :symbol, :last_updated_date)
+	values (:exchange, :symbol, :lastUpdatedDate)
 ;
 
 SELECT_EXCHANGE_METADATA(QRY,in=ExchangeMetadata,out=ExchangeMetadata)=
-  select exchange @exchange, symbol @symbol, last_updated_date @last_updated_date
+  select exchange @exchange, symbol @symbol, last_updated_date @lastUpdatedDate
   from exchange_metadata
   {= where
     {& exchange ::= :exchange }
     {& symbol ::= :symbol }
-    {& last_updated_date ::= :last_updated_date }
+    {& last_updated_date ::= :lastUpdatedDate }
   }
 ;

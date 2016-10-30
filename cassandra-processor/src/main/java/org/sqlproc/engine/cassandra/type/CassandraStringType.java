@@ -33,7 +33,7 @@ public class CassandraStringType extends CassandraDefaultType implements Cassand
      * {@inheritDoc}
      */
     @Override
-    public void set(BoundStatement st, String columnLabel, Object value, Class<?>... moreTypes) {
-        st.setString(columnLabel, (String) value);
+    public void set(BoundStatement st, int index, Object value, Class<?>... moreTypes) {
+        st.setString(index, (String) value);
     }
 }
