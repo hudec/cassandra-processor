@@ -18,6 +18,7 @@ import org.sqlproc.engine.cassandra.CassandraSessionFactory;
 import org.sqlproc.engine.cassandra.CassandraStandardControl;
 
 import com.datastax.driver.core.Cluster;
+import com.datastax.driver.core.Session;
 import com.datastax.driver.core.SocketOptions;
 import com.datastax.driver.extras.codecs.jdk8.InstantCodec;
 import com.datastax.driver.extras.codecs.jdk8.LocalDateCodec;
@@ -34,6 +35,7 @@ public class Main {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
     private Cluster cluster;
+    private Session session;
     private CassandraEngineFactory engineFactory;
     private CassandraSessionFactory sessionFactory;
 
@@ -45,7 +47,8 @@ public class Main {
         cluster.getConfiguration().getCodecRegistry().register(InstantCodec.instance, LocalTimeCodec.instance,
                 LocalDateCodec.instance);
 
-        sessionFactory = new CassandraSessionFactory(cluster.connect(KEYSPACE));
+        session = cluster.connect(KEYSPACE);
+        sessionFactory = new CassandraSessionFactory(session);
 
         engineFactory = new CassandraEngineFactory();
         engineFactory.setMetaFilesNames("statements.meta");
@@ -102,6 +105,8 @@ public class Main {
             System.out.println("BOI" + (i++) + " -> " + fuc.updateCount());
         }
 
+        session.close();
+        System.out.println("bye");
     }
 
     public static void main(String[] args) throws Exception {
