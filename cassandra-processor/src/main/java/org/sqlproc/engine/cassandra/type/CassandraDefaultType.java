@@ -153,6 +153,8 @@ public class CassandraDefaultType implements SqlMetaType {
 
         @Override
         public Object get(Row row, String columnLabel, Class<?>... moreTypes) {
+            if (Character.isDigit(columnLabel.charAt(0)))
+                return row.get(Integer.parseInt(columnLabel), inputTypes[0]);
             return row.get(columnLabel, inputTypes[0]);
         }
 

@@ -511,7 +511,7 @@ public class CassandraQuery implements SqlQuery {
                 CassandraSqlType type = scalarTypes.get(name);
                 Object value = null;
                 if (type != null)
-                    value = ((CassandraSqlType) type).get(data, name, scalarMoreTypes.get(name));
+                    value = ((CassandraSqlType) type).get(data, "" + i, scalarMoreTypes.get(name));
                 else
                     throw new SqlProcessorException("Not supported output value of null type for " + name);
                 row.add(value);
