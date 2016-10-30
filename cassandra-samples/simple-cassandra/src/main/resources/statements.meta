@@ -10,12 +10,6 @@ SELECT_HISTORIC_DATA(QRY,in=HistoricData,out=HistoricData)=
     {& exchange ::= :exchange }
     {& symbol ::= :symbol }
     {& date ::= :date }
-    {& open ::= :open }
-    {& high ::= :high }
-    {& low ::= :low }
-    {& close ::= :close }
-    {& volume ::= :volume }
-    {& adj_close ::= :adjClose }
   }
 ;
 
@@ -31,7 +25,6 @@ SELECT_DIVIDEND(QRY,in=Dividend,out=Dividend)=
     {& exchange ::= :exchange }
     {& symbol ::= :symbol }
     {& date ::= :date }
-    {& dividend ::= :dividend }
   }
 ;
 
@@ -46,6 +39,5 @@ SELECT_EXCHANGE_METADATA(QRY,in=ExchangeMetadata,out=ExchangeMetadata)=
   {= where
     {& exchange ::= :exchange }
     {& symbol ::= :symbol }
-    {& last_updated_date ::= :lastUpdatedDate }
   }
 ;

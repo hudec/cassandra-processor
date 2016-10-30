@@ -85,7 +85,7 @@ public class CassandraSession implements InvocationHandler {
         }
 
         if ("executeBatch".equals(method.getName())) {
-            if (args[0] instanceof String) {
+            if (args[0] instanceof String[]) {
                 String[] statements = (String[]) args[0];
                 CassandraQuery jdbcQuery = new CassandraQuery(session, null);
                 return jdbcQuery.executeBatch(statements);
